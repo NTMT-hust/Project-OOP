@@ -1,0 +1,12 @@
+{
+    "damage_types": {
+        "PEOPLE_AFFECTED": ["người", "dân", "bị thương", "thiệt mạng"],
+        "BUILDING_DAMAGE": ["nhà", "tòa nhà", "sập", "đổ", "hư hỏng"],
+        "INFRASTRUCTURE_DAMAGE": ["đường", "cầu", "điện", "nước"]
+    },
+    "relief_items": {
+        "SHELTER": ["nhà ở", "chỗ ở", "nơi trú"],
+        "FOOD": ["thực phẩm", "gạo", "mì", "ăn"],
+        "MEDICAL": ["y tế", "thuốc", "bác sĩ"]
+    }
+}
