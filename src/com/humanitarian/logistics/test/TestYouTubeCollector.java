@@ -7,6 +7,8 @@ import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import com.google.gson.*;
 import java.util.List;
 
 public class TestYouTubeCollector {
@@ -106,6 +108,31 @@ public class TestYouTubeCollector {
         
         System.out.println("Total likes: " + totalLikes);
         System.out.println("Average likes per comment: " + String.format("%.2f", avgLikes));
+
+        System.out.println("\n--- Saving Results ---");
+        try {
+            java.io.File dataDir = new java.io.File("data");
+            if (!dataDir.exists()) dataDir.mkdirs();
+
+            String fileName = "data/youtube_posts.json";
+
+            // Custom Gson with LocalDateTime support
+            Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, 
+                    (JsonSerializer<LocalDateTime>) (src, typeOfSrc, context) -> 
+                        new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                .setPrettyPrinting()
+                .create();
+
+            try (java.io.FileWriter writer = new java.io.FileWriter(fileName)) {
+                gson.toJson(posts, writer);
+            }
+
+            System.out.println("✓ Saved " + posts.size() + " posts to " + fileName);
+        } catch (Exception e) {
+            System.err.println("✗ Failed to save data: " + e.getMessage());
+            e.printStackTrace();
+        }
         
         System.out.println("\n========================================");
         System.out.println("✓ Test completed successfully!");

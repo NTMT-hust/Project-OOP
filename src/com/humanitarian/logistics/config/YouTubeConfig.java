@@ -15,8 +15,7 @@ public class YouTubeConfig {
     
     public boolean isValid() {
         return  apiKey != null && 
-                !apiKey.isEmpty() && 
-                !apiKey.equals("AIzaSyAcQFFgiE5EoK_yeV3kzJQ_FgF2YqyvRUc");
+                !apiKey.isEmpty();
     }
     
     public String getApiKey() { 

@@ -16,9 +16,11 @@ public class AppConfig {
     private void loadConfig() {
         try {
             // Try loading from resources folder
-            InputStream input = new FileInputStream("resources/application.properties");
+            InputStream input = new FileInputStream("E:\\ProjecOOP\\resources\\application.properties");
             properties.load(input);
             System.out.println("✓ Loaded config from resources/application.properties");
+            System.out.println("DEBUG: youtube.api.key = " + properties.getProperty("youtube.api.key"));
+
         } catch (IOException e) {
             System.err.println("Error loading config: " + e.getMessage());
             loadDefaults();
