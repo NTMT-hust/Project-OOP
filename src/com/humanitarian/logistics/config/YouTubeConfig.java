@@ -1,24 +1,33 @@
 package com.humanitarian.logistics.config;
 
-public class YouTubeConfig extends ApiConfig {
+public class YouTubeConfig {
+    private AppConfig appConfig;
     private String apiKey;
-
-    public  YouTubeConfig(AppConfig config){
-        super(config);
+    private int rateLimit;
+    private int rateWindow;
+    
+    public YouTubeConfig(AppConfig appConfig) {
+        this.appConfig = appConfig;
+        this.apiKey = appConfig.get("youtube.api.key");
+        this.rateLimit = appConfig.getInt("youtube.rate.limit", 100);
+        this.rateWindow = appConfig.getInt("youtube.rate.window", 60);
     }
-
-    @Override
-    protected void loadKeys(){
-        this.apiKey = config.get(apiKey);
-    }
-
-    @Override
+    
     public boolean isValid() {
-        return  apiKey != null && !apiKey.isEmpty() &&
+        return  apiKey != null && 
+                !apiKey.isEmpty() && 
                 !apiKey.equals("AIzaSyAcQFFgiE5EoK_yeV3kzJQ_FgF2YqyvRUc");
     }
-
-    public String getApiKey() {
-        return apiKey;
+    
+    public String getApiKey() { 
+        return apiKey; 
+    }
+    
+    public int getRateLimit() { 
+        return rateLimit; 
+    }
+    
+    public int getRateWindow() { 
+        return rateWindow; 
     }
 }

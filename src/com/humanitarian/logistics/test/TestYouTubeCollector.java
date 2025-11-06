@@ -1,0 +1,114 @@
+package com.humanitarian.logistics.test;
+
+import com.humanitarian.logistics.config.AppConfig;
+import com.humanitarian.logistics.config.YouTubeConfig;
+import com.humanitarian.logistics.collector.YouTubeCollector;
+import com.humanitarian.logistics.model.SearchCriteria;
+import com.humanitarian.logistics.model.SocialPost;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class TestYouTubeCollector {
+    public static void main(String[] args) {
+        System.out.println("========================================");
+        System.out.println("YouTube Collector Test");
+        System.out.println("========================================\n");
+        
+        // Load config
+        AppConfig appConfig = new AppConfig();
+        YouTubeConfig config = new YouTubeConfig(appConfig);
+        
+        if (!config.isValid()) {
+            System.err.println("✗ YouTube API key not configured!");
+            System.err.println("Edit resources/application.properties");
+            System.err.println("Add: youtube.api.key=YOUR_API_KEY");
+            return;
+        }
+        
+        System.out.println("✓ Configuration loaded");
+        
+        // Create collector
+        YouTubeCollector collector;
+        try {
+            collector = new YouTubeCollector(config);
+        } catch (Exception e) {
+            System.err.println("✗ Failed to create collector: " + e.getMessage());
+            return;
+        }
+        
+        // Test connection
+        System.out.println("\n--- Testing Connection ---");
+        if (!collector.testConnection()) {
+            return;
+        }
+        
+        // Build criteria
+        System.out.println("\n--- Building Search Criteria ---");
+        SearchCriteria criteria = new SearchCriteria.Builder()
+            .keyword("bão Yagi Việt Nam")
+            .hashtags("baoYagi", "cuutro")
+            .dateRange(
+                LocalDateTime.of(2024, 9, 6, 0, 0),
+                LocalDateTime.of(2024, 9, 15, 23, 59)
+            )
+            .language("vi")
+            .maxResults(20)
+            .build();
+        
+        System.out.println("Keyword: " + criteria.getKeyword());
+        System.out.println("Max results: " + criteria.getMaxResults());
+        
+        // Collect
+        System.out.println("\n--- Starting Collection ---");
+        List<SocialPost> posts = collector.collect(criteria);
+        
+        // Display results
+        System.out.println("\n========================================");
+        System.out.println("Collection Results");
+        System.out.println("========================================");
+        System.out.println("Total posts: " + posts.size());
+        
+        if (posts.isEmpty()) {
+            System.out.println("\n⚠ No posts collected");
+            System.out.println("Try different keywords or date range");
+            return;
+        }
+        
+        // Show first 5 posts
+        System.out.println("\n--- Sample Posts ---");
+        for (int i = 0; i < Math.min(5, posts.size()); i++) {
+            SocialPost post = posts.get(i);
+            System.out.println("\n💬 Comment #" + (i + 1));
+            System.out.println("  Author: " + post.getAuthor());
+            System.out.println("  Date: " + post.getTimestamp());
+            System.out.println("  Likes: " + post.getLikes());
+            System.out.println("  Video: " + post.getMetadata().get("video_title"));
+            System.out.println("  Channel: " + post.getMetadata().get("channel"));
+            
+            String content = post.getContent();
+            if (content.length() > 100) {
+                content = content.substring(0, 100) + "...";
+            }
+            System.out.println("  Content: " + content);
+        }
+        
+        // Statistics
+        System.out.println("\n--- Statistics ---");
+        int totalLikes = posts.stream()
+            .mapToInt(SocialPost::getLikes)
+            .sum();
+        
+        double avgLikes = posts.stream()
+            .mapToInt(SocialPost::getLikes)
+            .average()
+            .orElse(0);
+        
+        System.out.println("Total likes: " + totalLikes);
+        System.out.println("Average likes per comment: " + String.format("%.2f", avgLikes));
+        
+        System.out.println("\n========================================");
+        System.out.println("✓ Test completed successfully!");
+        System.out.println("========================================");
+    }
+}
