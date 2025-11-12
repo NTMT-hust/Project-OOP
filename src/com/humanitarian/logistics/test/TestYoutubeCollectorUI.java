@@ -2,18 +2,56 @@ package com.humanitarian.logistics.test;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import com.google.gson.*;
+import java.util.Arrays;
+import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
 import com.humanitarian.logistics.collector.YouTubeCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
+import com.humanitarian.logistics.userInterface.InputBoxController;
+import com.humanitarian.logistics.userInterface.InputData;
 
-import java.util.List;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
-public class TestYouTubeCollector {
+public class TestYoutubeCollectorUI extends Application {
+	public static InputData userData;
+	
+	@Override
+    public void start(Stage primaryStage) {
+        try {
+            // Load the FXML file
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Test.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            
+            InputBoxController controller = loader.getController();
+            
+            primaryStage.setTitle("Input Example");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            
+            controller.setOnSubmit(data -> {
+                userData = data;
+            });
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) {
+        launch(args);
+        
         System.out.println("========================================");
         System.out.println("YouTube Collector Test");
         System.out.println("========================================\n");
@@ -49,14 +87,14 @@ public class TestYouTubeCollector {
         // Build criteria
         System.out.println("\n--- Building Search Criteria ---");
         SearchCriteria criteria = new SearchCriteria.Builder()
-            .keyword("vietnam storm")
-            .hashtags("baoYagi", "cuutro")
+            .keyword(userData.getKeyWord())
+            .hashtags(userData.getHashTags())
             .dateRange(
-                LocalDateTime.of(2023, 1, 1, 0, 0),
-                LocalDateTime.of(2025, 11, 10, 23, 59)
+                userData.getStartDate(),
+                userData.getEndDate()
             )
             .language("vi")
-            .maxResults(40)
+            .maxResults(userData.getMaxResult())
             .build();
         
         System.out.println("Keyword: " + criteria.getKeyword());
