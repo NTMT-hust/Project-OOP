@@ -30,7 +30,7 @@ public class TestYoutubeCollectorUI extends Application {
     public void start(Stage primaryStage) {
         try {
             // Load the FXML file
-        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Test.fxml"));
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/InputInterface.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             
@@ -51,6 +51,10 @@ public class TestYoutubeCollectorUI extends Application {
     
     public static void main(String[] args) {
         launch(args);
+        if (userData == null) {
+        	System.out.println("Cancelling search...");
+        	return;
+        }
         
         System.out.println("========================================");
         System.out.println("YouTube Collector Test");
