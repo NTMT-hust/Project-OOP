@@ -34,6 +34,23 @@ $libraries = @{
     "grpc-context-1.64.0.jar" = "https://repo1.maven.org/maven2/io/grpc/grpc-context/1.64.0/grpc-context-1.64.0.jar"
     "grpc-api-1.64.0.jar" = "https://repo1.maven.org/maven2/io/grpc/grpc-api/1.64.0/grpc-api-1.64.0.jar"
     "grpc-core-1.64.0.jar" = "https://repo1.maven.org/maven2/io/grpc/grpc-core/1.64.0/grpc-core-1.64.0.jar"
+    # RSS Parser
+    "rome-1.19.0.jar" = "https://repo1.maven.org/maven2/com/rometools/rome/1.19.0/rome-1.19.0.jar"
+    "rome-utils-1.19.0.jar" = "https://repo1.maven.org/maven2/com/rometools/rome-utils/1.19.0/rome-utils-1.19.0.jar"
+    "jdom2-2.0.6.1.jar" = "https://repo1.maven.org/maven2/org/jdom/jdom2/2.0.6.1/jdom2-2.0.6.1.jar"
+    
+    # Google Custom Search (optional)
+    "google-api-services-customsearch-v1-rev20230920-2.0.0.jar" = "https://repo1.maven.org/maven2/com/google/apis/google-api-services-customsearch/v1-rev20230920-2.0.0/google-api-services-customsearch-v1-rev20230920-2.0.0.jar"
+
+    # JSON Parser
+    "https://repo1.maven.org/maven2/org/json/json/20230227/json-20230227.jar" = "$libDir\json-20230227.jar"
+
+    # OkHttp for HTTP requests
+    "https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar" = "$libDir\okhttp-4.12.0.jar"
+
+    # Okio (dependency of OkHttp)
+    "https://repo1.maven.org/maven2/com/squareup/okio/okio-jvm/3.9.0/okio-jvm-3.9.0.jar" = "$libDir\okio-jvm-3.9.0.jar"
+
 
 }
 

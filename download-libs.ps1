@@ -13,6 +13,12 @@ $libraries = @{
 "slf4j-simple-2.0.9.jar" = "https://repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar"
 "guava-33.3.1-jre.jar" = "https://repo1.maven.org/maven2/com/google/guava/guava/33.3.1-jre/guava-33.3.1-jre.jar"
 "kotlin-stdlib-1.9.10.jar" = "httpsS://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.9.10/kotlin-stdlib-1.9.10.jar"
+# twitter api libs
+"twitter4j-core-4.0.7.jar"   = "https://repo1.maven.org/maven2/org/twitter4j/twitter4j-core/4.0.7/twitter4j-core-4.0.7.jar"
+"twitter4j-async-4.0.7.jar"  = "https://repo1.maven.org/maven2/org/twitter4j/twitter4j-async/4.0.7/twitter4j-async-4.0.7.jar"
+"twitter4j-stream-4.0.7.jar" = "https://repo1.maven.org/maven2/org/twitter4j/twitter4j-stream/4.0.7/twitter4j-stream-4.0.7.jar"
+"slf4j-api-2.0.7.jar"        = "https://repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.7/slf4j-api-2.0.7.jar"
+"slf4j-simple-2.0.7.jar"     = "https://repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.7/slf4j-simple-2.0.7.jar"
 }
 
 foreach ($lib in $libraries.GetEnumerator()) {

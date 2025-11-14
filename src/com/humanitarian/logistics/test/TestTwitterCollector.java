@@ -1,39 +1,41 @@
 package com.humanitarian.logistics.test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
+import com.humanitarian.logistics.collector.TwitterCollector;
 import com.humanitarian.logistics.config.AppConfig;
-import com.humanitarian.logistics.config.YouTubeConfig;
-import com.humanitarian.logistics.collector.YouTubeCollector;
+import com.humanitarian.logistics.config.TwitterConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import com.google.gson.*;
-import java.util.List;
-
-public class TestYouTubeCollector {
+public class TestTwitterCollector {
     public static void main(String[] args) {
         System.out.println("========================================");
-        System.out.println("YouTube Collector Test");
+        System.out.println("Twitter Collector Test");
         System.out.println("========================================\n");
         
         // Load config
-        AppConfig appConfig = new AppConfig("youtube");
-        YouTubeConfig config = new YouTubeConfig(appConfig);
+        AppConfig appConfig = new AppConfig("twitter");
+        TwitterConfig config = new TwitterConfig(appConfig);
         
         if (!config.isValid()) {
-            System.err.println("✗ YouTube API key not configured!");
+            System.err.println("✗ Twitter API key not configured!");
             System.err.println("Edit resources/application.properties");
-            System.err.println("Add: youtube.api.key=YOUR_API_KEY");
             return;
         }
         
         System.out.println("✓ Configuration loaded");
         
         // Create collector
-        YouTubeCollector collector;
+        TwitterCollector collector;
         try {
-            collector = new YouTubeCollector(config);
+            collector = new TwitterCollector(config);
         } catch (Exception e) {
             System.err.println("✗ Failed to create collector: " + e.getMessage());
             return;
@@ -114,7 +116,7 @@ public class TestYouTubeCollector {
             java.io.File dataDir = new java.io.File("data");
             if (!dataDir.exists()) dataDir.mkdirs();
 
-            String fileName = "data/youtube_posts.json";
+            String fileName = "data/twitter_posts.json";
 
             // Custom Gson with LocalDateTime support
             Gson gson = new GsonBuilder()

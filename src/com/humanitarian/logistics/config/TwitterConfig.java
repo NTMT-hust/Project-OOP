@@ -1,28 +1,43 @@
 package com.humanitarian.logistics.config;
 
-public class TwitterConfig {
+public class TwitterConfig extends ApiConfig{
     private AppConfig config;
     private String apiKey;
     private String apiSecret;
     private String accessToken;
     private String accessSecret;
+    private int rateLimit;
+    private int rateWindow;
     
-    public TwitterConfig(AppConfig config) {
+    public TwitterConfig(AppConfig config){
+        super();
         this.config = config;
-        this.apiKey = config.get("twitter.api.key");
-        this.apiSecret = config.get("twitter.api.secret");
-        this.accessToken = config.get("twitter.access.token");
-        this.accessSecret = config.get("twitter.access.secret");
+        loadKeys();
     }
     
     public boolean isValid() {
         return  apiKey != null && !apiKey.isEmpty() &&
-                !apiKey.equals("YOUR_API_KEY") &&
                 apiSecret != null && !apiSecret.isEmpty() &&
                 accessToken != null && !accessToken.isEmpty() &&
                 accessSecret != null && !accessSecret.isEmpty();
     }
-    
+    @Override 
+    public void loadKeys(){
+        this.apiKey = config.get("twitter.api.key");
+        this.apiSecret = config.get("twitter.api.secret");
+        this.accessToken = config.get("twitter.access.token");
+        this.accessSecret = config.get("twitter.access.secret");
+        this.rateLimit = getRateLimit();
+        this.rateWindow = getRateWindow();
+    }
+    @Override
+    public int getRateLimit(){
+        return config.getInt(apiKey + ".rate.limit", 180);
+    }
+    @Override
+    public int getRateWindow(){
+        return config.getInt(apiKey + ".rate.window", 15);
+    }
     public String getApiKey() { return apiKey; }
     public String getApiSecret() { return apiSecret; }
     public String getAccessToken() { return accessToken; }

@@ -7,9 +7,11 @@ import java.util.Properties;
 
 public class AppConfig {
     private Properties properties;
+    private String apiName;
     
-    public AppConfig() {
+    public AppConfig(String apiName) {
         properties = new Properties();
+        this.apiName = apiName;
         loadConfig();
     }
     
@@ -19,8 +21,7 @@ public class AppConfig {
             InputStream input = new FileInputStream(".\\resources\\application.properties");
             properties.load(input);
             System.out.println("✓ Loaded config from resources/application.properties");
-            System.out.println("DEBUG: youtube.api.key = " + properties.getProperty("youtube.api.key"));
-
+            System.out.println(String.format("DEBUG: %s.api.key = " + get(apiName + ".api.key"), apiName));
         } catch (IOException e) {
             System.err.println("Error loading config: " + e.getMessage());
             loadDefaults();
@@ -47,4 +48,11 @@ public class AppConfig {
         String value = properties.getProperty(key);
         return value != null ? Integer.parseInt(value) : defaultValue;
     }
+
+    public boolean getBoolean(String key) {
+        String value = properties.getProperty(key);
+        if (value == null) return false;  // default
+        return Boolean.parseBoolean(value.trim());
+    }
+
 }
