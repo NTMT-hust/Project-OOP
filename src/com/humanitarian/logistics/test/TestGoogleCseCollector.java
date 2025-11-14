@@ -64,12 +64,12 @@ public class TestGoogleCseCollector {
         // Build criteria
         logger.info("--- Building Search Criteria ---");
         SearchCriteria criteria = new SearchCriteria.Builder()
-            .keyword("bách khoa")
+            .keyword("Thiệt hại")
             .dateRange(
-                LocalDateTime.now().minusDays(60),
+                LocalDateTime.now().minusDays(100),
                 LocalDateTime.now()
             )
-            .maxResults(30)
+            .maxResults(1000)
             .build();
         
         logger.info("Keyword: {}", criteria.getKeyword());
