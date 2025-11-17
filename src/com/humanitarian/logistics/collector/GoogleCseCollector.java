@@ -26,8 +26,8 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GoogleCseCollector{
-    private static final Logger logger = LoggerFactory.getLogger(TwitterCollector.class);
+public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, List<SocialPost>>{
+    private static final Logger logger = LoggerFactory.getLogger(GoogleCseCollector.class);
     
     private final GoogleCseConfig config;
     private final CustomRateLimiter rateLimiter;
@@ -42,6 +42,7 @@ public class GoogleCseCollector{
     );
     
     public GoogleCseCollector(GoogleCseConfig config) {
+        super("google.cse");
         this.config = config;
         this.totalRequests = 0;
         this.remainingQuota = config.getRateLimit();
@@ -57,7 +58,7 @@ public class GoogleCseCollector{
             this.rateLimiter = null;
         }
     }
-    
+    @Override
     public void initializeClient() {
         try {
             logger.info("Initializing Google CSE HTTP client...");
@@ -76,7 +77,7 @@ public class GoogleCseCollector{
             this.initialized = false;
         }
     }
-    
+    @Override
     public boolean testConnection() {
         try {
             String url = buildSearchUrl("test", 1, 1);
@@ -112,8 +113,8 @@ public class GoogleCseCollector{
             return false;
         }
     }
-
-    public List<SocialPost> collect(SearchCriteria criteria) {
+    @Override
+    public List<SocialPost> doCollect(SearchCriteria criteria) {
         List<SocialPost> posts = new ArrayList<>();
 
         logger.info("Using Google Custom Search Engine");
@@ -186,7 +187,7 @@ public class GoogleCseCollector{
         logger.info("Collected {} articles from Google CSE", posts.size());
         return posts;
     }
-    
+    @Override
     protected void beforeCollect(SearchCriteria criteria) {
         
         logger.info("Google CSE Configuration:");
@@ -196,7 +197,7 @@ public class GoogleCseCollector{
         logger.info("  Search Type: {}", config.getSearchType());
         logger.info("  Remaining quota: {}/{}", remainingQuota, config.getRateLimit());
     }
-    
+    @Override
     protected void afterCollect(List<SocialPost> result) {
         
         logger.info("Total articles collected: {}", result.size());
@@ -214,7 +215,7 @@ public class GoogleCseCollector{
             logger.info("Articles from {} unique sources", sources.size());
         }
     }
-    
+    @Override
     public List<SocialPost> getEmptyResult() {
         return new ArrayList<>();
     }

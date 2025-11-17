@@ -1,13 +1,18 @@
 package com.humanitarian.logistics.test;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.humanitarian.logistics.collector.NewsCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.NewsApiConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
+import com.humanitarian.logistics.util.LocalDateTimeAdapter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +59,7 @@ public class TestNewsApiCollector {
         // Build criteria
         logger.info("--- Building Search Criteria ---");
         SearchCriteria criteria = new SearchCriteria.Builder()
-            .keyword("Việt Nam")
+            .keyword("bão")
             .dateRange(
                 LocalDateTime.now().minusDays(30), // NewsAPI free: max 1 month back
                 LocalDateTime.now()
@@ -120,7 +125,21 @@ public class TestNewsApiCollector {
             .forEach(entry -> 
                 logger.info("  {}: {} articles", entry.getKey(), entry.getValue())
             );
-        
+        try {
+            // 5. Write to JSON file
+            Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                        .setPrettyPrinting()
+                        .create();
+            try (FileWriter writer = new FileWriter(".\\data\\news_api_results.json")) {
+                gson.toJson(posts, writer);
+            }
+
+            System.out.println("Saved " + posts.size() + " results to news_api_results.json");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Date distribution
         LocalDateTime earliest = posts.stream()
             .map(SocialPost::getTimestamp)

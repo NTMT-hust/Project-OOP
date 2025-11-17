@@ -1,27 +1,38 @@
 package com.humanitarian.logistics.config;
 
-public class GoogleCseConfig {
-    private final AppConfig appConfig;
+public class GoogleCseConfig extends ApiConfig{
+    private AppConfig appConfig;
     
-    private final boolean enabled;
-    private final String apiKey;
-    private final String searchEngineId;
-    private final String baseUrl;
+    private boolean enabled;
+    private String apiKey;
+    private String searchEngineId;
+    private String baseUrl;
     
-    private final String defaultLanguage;
-    private final String defaultCountry;
-    private final String searchType;
-    private final String safeSearch;
-    private final int resultsPerPage;
-    private final int maxResults;
-    private final int timeout;
+    private String defaultLanguage;
+    private String defaultCountry;
+    private String searchType;
+    private String safeSearch;
+    private int resultsPerPage;
+    private int maxResults;
+    private int timeout;
     
-    private final int rateLimit;
-    private final int rateWindow;
+    private int rateLimit;
+    private int rateWindow;
     
-    public GoogleCseConfig(AppConfig appConfig) {
+    public GoogleCseConfig(AppConfig appConfig){
         this.appConfig = appConfig;
         
+    }
+    
+    public boolean isValid() {
+        return  enabled && 
+                apiKey != null && !apiKey.isEmpty() && 
+                !apiKey.equals("YOUR_GOOGLE_API_KEY") &&
+                searchEngineId != null && !searchEngineId.isEmpty() &&
+                !searchEngineId.equals("YOUR_SEARCH_ENGINE_ID");
+    }
+    @Override
+    public void loadKeys(){
         this.enabled = appConfig.getBoolean("google.cse.enabled");
         this.apiKey = appConfig.get("google.cse.api.key");
         this.searchEngineId = appConfig.get("google.cse.engine.id");
@@ -39,15 +50,6 @@ public class GoogleCseConfig {
         this.rateLimit = appConfig.getInt("google.cse.rate.limit", 100);
         this.rateWindow = appConfig.getInt("google.cse.rate.window", 1440);
     }
-    
-    public boolean isValid() {
-        return  enabled && 
-                apiKey != null && !apiKey.isEmpty() && 
-                !apiKey.equals("YOUR_GOOGLE_API_KEY") &&
-                searchEngineId != null && !searchEngineId.isEmpty() &&
-                !searchEngineId.equals("YOUR_SEARCH_ENGINE_ID");
-    }
-    
     // Getters
     public boolean isEnabled() { return enabled; }
     public String getApiKey() { return apiKey; }
@@ -60,6 +62,8 @@ public class GoogleCseConfig {
     public int getResultsPerPage() { return resultsPerPage; }
     public int getMaxResults() { return maxResults; }
     public int getTimeout() { return timeout; }
+    @Override
     public int getRateLimit() { return rateLimit; }
+    @Override
     public int getRateWindow() { return rateWindow; }
 }

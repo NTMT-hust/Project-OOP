@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class NewsCollector {
+public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<SocialPost>>{
     private NewsApiConfig config;
     private CustomRateLimiter rateLimiter;
     private int totalRequest;
@@ -37,6 +37,7 @@ public class NewsCollector {
     private static final String ENDPOINT_TOP_HEADLINES = "/top-headlines";
     
     public NewsCollector(NewsApiConfig config){
+        super("newsapi");
         this.config = config;
         this.totalRequest = 0;
         this. remaningRequest = config.getRateLimit();
@@ -48,8 +49,8 @@ public class NewsCollector {
         }
     }
 
-
-    private void initializeClient(){
+    @Override
+    public void initializeClient(){
         try {
             logger.info("Initializing NewsAPI HTTP client...");
             
@@ -71,6 +72,7 @@ public class NewsCollector {
     public String getSourceName(){
         return "news";
     }
+    @Override
     public boolean testConnection(){
         if(!initialized){
             logger.warn("Cannot test connection, client not initialized");
@@ -127,7 +129,8 @@ public class NewsCollector {
         
         return url.toString();
     }
-    public List<SocialPost> collect(SearchCriteria criteria){
+    @Override
+    public List<SocialPost> doCollect(SearchCriteria criteria){
         List<SocialPost> posts = new ArrayList<>();
         logger.info("Collecting ....");
         int maxResults = Math.min(criteria.getMaxResults(), config.getMaxResults());
@@ -147,14 +150,15 @@ public class NewsCollector {
             int toFetch = Math.min(pageSize, maxResults - totalFetched);
 
             logger.debug("Fetching page {} size {}", page, toFetch);
-            String url = buildTopHeadlinesUrl(buildQuery(criteria), pageSize);
+            // String url = buildTopHeadlinesUrl(buildQuery(criteria), pageSize);
             // Build URL
-            // String url = buildEverythingUrl(
-            //     buildQuery(criteria),
-            //     toFetch,
-            //     criteria.getStartDate().format(formatter),
-            //     criteria.getEndDate().format(formatter)
-            // );
+            String url = buildEverythingUrl(
+                buildQuery(criteria),
+                page,
+                criteria.getStartDate().format(formatter),
+                criteria.getEndDate().format(formatter)
+            );
+                            
 
             List<SocialPost> pagePosts;
             try{
@@ -191,8 +195,9 @@ public class NewsCollector {
         logger.info("Collected {} articles from NewsAPI", posts.size());
         return posts;
     }
-
+    @Override
     protected void beforeCollect(SearchCriteria criteria) {        
+        super.beforeCollect(criteria);
         logger.info("NewsAPI Configuration:");
         logger.info("  Base URL: {}", config.getBaseUrl());
         logger.info("  Language: {}", config.getDefaultLanguage());
@@ -200,8 +205,9 @@ public class NewsCollector {
         logger.info("  Max results: {}", config.getMaxResults());
         logger.info("  Remaining requests: {}/{}", remaningRequest, config.getRateLimit());
     }
-    
+    @Override
     protected void afterCollect(List<SocialPost> result) {        
+        super.afterCollect(result);
         logger.info("Total articles collected: {}", result.size());
         logger.info("Total API requests made: {}", totalRequest);
         logger.info("Remaining requests: {}", remaningRequest);
@@ -221,6 +227,7 @@ public class NewsCollector {
                 .toList());
         }
     }
+    @Override
     protected List<SocialPost> getEmptyResult() {
         return new ArrayList<>();
     }
@@ -285,8 +292,7 @@ public class NewsCollector {
                 logger.debug("Parsed {} articles from response", posts.size());
             }
         } catch (IOException e) {
-            logger.error("Request failed", e);
-            throw e;
+            super.handleError(e);
         }
         return posts;
     }
@@ -311,7 +317,7 @@ public class NewsCollector {
                     errorBody = response.body().string();
                 } catch(IOException e){
                     errorBody = "NoDetail";
-                    logger.error("IOException in handleErrorReponse");
+                    super.handleError(e);
                 }
                 logger.error("HTTP Error {}: {}", code, errorBody);
         }

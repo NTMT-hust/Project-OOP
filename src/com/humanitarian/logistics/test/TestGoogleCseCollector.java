@@ -106,10 +106,13 @@ public class TestGoogleCseCollector {
             logger.info("  Title: {}", post.getMetadata().get("title"));
             
             String content = post.getContent();
+            String contentShort;
             if (content.length() > 150) {
-                content = content.substring(0, 150) + "...";
+                contentShort = content.substring(0, 150) + "...";
+            } else{
+                contentShort = content;
             }
-            logger.info("  Content: {}", content);
+            logger.info("  Content: {}", contentShort);
         }
         
         // Statistics
@@ -147,7 +150,7 @@ public class TestGoogleCseCollector {
                         .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                         .setPrettyPrinting()
                         .create();
-            try (FileWriter writer = new FileWriter("google_cse_results.json")) {
+            try (FileWriter writer = new FileWriter("E:\\something\\test\\Project-OOP\\data\\google_cse_results.json")) {
                 gson.toJson(posts, writer);
             }
 

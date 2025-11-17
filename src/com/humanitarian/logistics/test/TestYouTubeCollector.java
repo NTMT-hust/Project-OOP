@@ -48,7 +48,7 @@ public class TestYouTubeCollector {
         // Build criteria
         System.out.println("\n--- Building Search Criteria ---");
         SearchCriteria criteria = new SearchCriteria.Builder()
-            .keyword("T1 6 cup")
+            .keyword("Bão")
             //.hashtags("", "")
             .dateRange(
                 LocalDateTime.of(2025, 9, 6, 0, 0),

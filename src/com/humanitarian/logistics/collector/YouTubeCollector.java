@@ -18,19 +18,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class YouTubeCollector {
+public class YouTubeCollector extends Collector<SearchCriteria, Object, List<SocialPost>>{
     private YouTube youtube;
     private YouTubeConfig config;
     
     public YouTubeCollector(YouTubeConfig config) {
+        super("youtube");
         this.config = config;
         if (!config.isValid()) {
             throw new IllegalStateException("YouTube API key is not configured");
         }
         initializeClient();
     }
-    
-    private void initializeClient() {
+    @Override
+    public void initializeClient() {
         try {
             youtube = new YouTube.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(),
@@ -46,7 +47,7 @@ public class YouTubeCollector {
             throw new RuntimeException("YouTube initialization failed", e);
         }
     }
-    
+    @Override
     public boolean testConnection() {
         try {
             YouTube.Search.List search = youtube.search().list(Collections.singletonList("snippet"));
@@ -66,7 +67,8 @@ public class YouTubeCollector {
     /**
      * Thu thập comments từ YouTube
      */
-    public List<SocialPost> collect(SearchCriteria criteria) {
+    @Override
+    public List<SocialPost> doCollect(SearchCriteria criteria) {
         List<SocialPost> posts = new ArrayList<>();
         
         try {
@@ -299,7 +301,10 @@ public class YouTubeCollector {
 
         return post;
     }
-    
+    @Override
+    public List<SocialPost> getEmptyResult(){
+        return new ArrayList<>();
+    }
     /**
      * Inner class để lưu thông tin video
      */

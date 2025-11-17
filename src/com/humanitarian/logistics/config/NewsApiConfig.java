@@ -1,23 +1,31 @@
 package com.humanitarian.logistics.config;
 
-public class NewsApiConfig {
-    private final AppConfig appConfig;
+public class NewsApiConfig extends ApiConfig{
+    private AppConfig appConfig;
 
-    private final String apiKey;
-    private final String baseUrl;
+    private String apiKey;
+    private String baseUrl;
     
-    private final String defaultLanguage;
-    private final String defaultCountry;
-    private final int defaultPageSize;
-    private final int maxResults;
-    private final int timeout;
+    private String defaultLanguage;
+    private String defaultCountry;
+    private int defaultPageSize;
+    private int maxResults;
+    private int timeout;
     
-    private final int rateLimit;
-    private final int rateWindow;
+    private int rateLimit;
+    private int rateWindow;
     
-    public NewsApiConfig(AppConfig appConfig) {
+    public NewsApiConfig(AppConfig appConfig){
         this.appConfig = appConfig;
-
+        loadKeys();
+    }
+    
+    public boolean isValid() {
+        return  apiKey != null && 
+                !apiKey.isEmpty();
+    }
+    @Override
+    public void loadKeys(){
         this.apiKey = appConfig.get("newsapi.api.key");
         this.baseUrl = appConfig.get("newsapi.base.url", "https://newsapi.org/v2");
         
@@ -29,11 +37,7 @@ public class NewsApiConfig {
         
         this.rateLimit = appConfig.getInt("newsapi.rate.limit", 100);
         this.rateWindow = appConfig.getInt("newsapi.rate.window", 1440); // minutes in a day
-    }
-    
-    public boolean isValid() {
-        return  apiKey != null && 
-                !apiKey.isEmpty();
+
     }
     
     // Getters
@@ -44,6 +48,8 @@ public class NewsApiConfig {
     public int getDefaultPageSize() { return defaultPageSize; }
     public int getMaxResults() { return maxResults; }
     public int getTimeout() { return timeout; }
+    @Override
     public int getRateLimit() { return rateLimit; }
+    @Override
     public int getRateWindow() { return rateWindow; }
 }
