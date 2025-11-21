@@ -1,0 +1,13 @@
+.root {
+	-fx-background-color: #111111;
+}
+
+.label {
+	-fx-font-family: "Montserrat";
+	-fx-font-size: 20;
+	-fx-text-fill: "white";
+}
+
+#titleLabel {
+	-fx-font-size: 20;
+}

@@ -2,7 +2,6 @@ package com.humanitarian.logistics.test;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -12,10 +11,10 @@ import com.google.gson.JsonSerializer;
 import com.humanitarian.logistics.collector.YouTubeCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
+import com.humanitarian.logistics.dataStructure.InputData;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 import com.humanitarian.logistics.userInterface.InputBoxController;
-import com.humanitarian.logistics.userInterface.InputData;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +32,9 @@ public class TestYoutubeCollectorUI extends Application {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/InputInterface.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
+            
+//            String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
+//            scene.getStylesheets().add(css);
             
             InputBoxController controller = loader.getController();
             
@@ -52,7 +54,6 @@ public class TestYoutubeCollectorUI extends Application {
     public static void main(String[] args) {
         launch(args);
         if (userData == null) {
-        	System.out.println("Cancelling search...");
         	return;
         }
         

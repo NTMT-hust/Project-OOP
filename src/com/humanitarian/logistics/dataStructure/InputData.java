@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userInterface;
+package com.humanitarian.logistics.dataStructure;
 
 import java.time.LocalDateTime;
 
