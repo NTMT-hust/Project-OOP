@@ -1,9 +1,10 @@
-package com.humanitarian.logistics.userInterface;
+package com.humanitarian.logistics.userInterface.youtube;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 import com.humanitarian.logistics.dataStructure.InputData;
+import com.humanitarian.logistics.userInterface.SearchingController;
 
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
@@ -38,15 +39,6 @@ public class InputBoxController {
     private Scene scene;
     private Parent root;
     
-    public interface SubmitListener {
-    	void onSubmit(InputData data);
-    }
-    private SubmitListener submitListener;
-    
-    public void setOnSubmit(SubmitListener listener) {
-    	this.submitListener = listener;
-    }
-    
     @FXML
     public void submit(ActionEvent e) throws IOException {
     	keyWord = userKeyword.getText();
@@ -57,37 +49,31 @@ public class InputBoxController {
     	
     	InputData userInput = new InputData(keyWord, hashTags, startDate, endDate, maxResult);
     	
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SearchingInterface.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/SearchingInterface.fxml"));
     	root = loader.load();
+    	
+    	SearchingController searchController = loader.getController();
+    	
     	stage = (Stage)((Node)e.getSource()).getScene().getWindow();
     	scene = new Scene(root);
     	stage.setScene(scene);
-    	stage.show();
+    	stage.setTitle("Searching data...");
     	
-    	if (submitListener != null) {
-    		submitListener.onSubmit(userInput);
-    	}
+    	stage.centerOnScreen();
+    	stage.show();
+    
+    	searchController.searchProcedure(userInput);
     }
     
     @FXML
     public void cancel(ActionEvent e) throws IOException {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/CancellingInterface.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/CancellingInterface.fxml"));
     	root = loader.load();
     	stage = (Stage)((Node)e.getSource()).getScene().getWindow();
     	scene = new Scene(root);
     	stage.setScene(scene);
     	
-//    	stage.setWidth(300);
-//    	stage.setHeight(150);
-//    	stage.centerOnScreen();
-    	
+    	stage.centerOnScreen();
     	stage.show();
-    	
-    	PauseTransition delay = new PauseTransition(Duration.seconds(1));
-    	delay.setOnFinished(event -> {
-    		stage.close();
-    	});
-    	
-    	delay.play();
     }
 }

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="scenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.InputBoxController">
+<AnchorPane fx:id="scenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.youtube.InputBoxController">
    <children>
       <Button fx:id="OK" layoutX="220.0" layoutY="308.0" mnemonicParsing="false" onAction="#submit" text="OK" />
       <TextField fx:id="userKeyword" layoutX="55.0" layoutY="108.0" promptText="Keyword:" />

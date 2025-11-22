@@ -1,20 +1,31 @@
 package com.humanitarian.logistics;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("========================================");
-        System.out.println("Humanitarian Logistics Analyzer");
-        System.out.println("========================================");
-        System.out.println("Java Version: " + System.getProperty("java.version"));
-        System.out.println("Working Directory: " + System.getProperty("user.dir"));
-        System.out.println("========================================");
+import java.io.IOException;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+	
+	@Override
+	public void start(Stage primaryStage) throws IOException {
+        // Load the FXML file
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SelectionMenu.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
         
-        // Test config loading
-        try {
-            com.humanitarian.logistics.config.AppConfig config = new com.humanitarian.logistics.config.AppConfig();
-            System.out.println("✓ Configuration loaded successfully");
-        } catch (Exception e) {
-            System.err.println("✗ Configuration failed: " + e.getMessage());
-        }
+//        String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//        scene.getStylesheets().add(css);
+        
+        primaryStage.setTitle("Humanitarian Logistics Project");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+	}
+	
+    public static void main(String[] args) {
+        launch(args);
     }
 }

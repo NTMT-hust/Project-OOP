@@ -9,6 +9,10 @@ import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,6 +26,12 @@ import java.util.Map;
 public class YouTubeCollector {
     private YouTube youtube;
     private YouTubeConfig config;
+    
+    @FXML
+    private Label statusLabel;
+    
+    @FXML
+    private ProgressBar progressBar;
     
     public YouTubeCollector(YouTubeConfig config) {
         this.config = config;
@@ -41,9 +51,9 @@ public class YouTubeCollector {
             .setApplicationName("Humanitarian-Logistics-Analyzer")
             .build();
             
-            System.out.println("✓ YouTube client initialized");
+            statusLabel.setText("✓ YouTube client initialized");
         } catch (Exception e) {
-            System.err.println("✗ Failed to initialize YouTube client: " + e.getMessage());
+            statusLabel.setText("✗ Failed to initialize YouTube client: " + e.getMessage());
             throw new RuntimeException("YouTube initialization failed", e);
         }
     }
@@ -99,11 +109,11 @@ public class YouTubeCollector {
                         break;
                     }
                     
-                    // Rate limiting - wait 1 second between videos
+//                    Rate limiting - wait 1 second between videos
                     if (i < videoIds.size() - 1) {
                         Thread.sleep(1000);
                     }
-                    
+//                    
                 } catch (Exception e) {
                     System.err.println("    ✗ Error getting comments: " + e.getMessage());
                 }
