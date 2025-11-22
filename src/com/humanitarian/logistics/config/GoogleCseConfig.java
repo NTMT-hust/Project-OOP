@@ -21,7 +21,7 @@ public class GoogleCseConfig extends ApiConfig{
     
     public GoogleCseConfig(AppConfig appConfig){
         this.appConfig = appConfig;
-        
+        loadKeys();
     }
     
     public boolean isValid() {

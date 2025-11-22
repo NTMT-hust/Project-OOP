@@ -8,6 +8,7 @@ public class YouTubeConfig extends ApiConfig {
     
     public YouTubeConfig(AppConfig appConfig) {
         this.appConfig = appConfig;
+        loadKeys();
     }
     
     public boolean isValid() {

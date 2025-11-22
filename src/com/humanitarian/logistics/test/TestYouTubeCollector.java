@@ -16,20 +16,20 @@ public class TestYouTubeCollector {
         System.out.println("========================================");
         System.out.println("YouTube Collector Test");
         System.out.println("========================================\n");
-        
+
         // Load config
         AppConfig appConfig = new AppConfig("youtube");
         YouTubeConfig config = new YouTubeConfig(appConfig);
-        
+
         if (!config.isValid()) {
             System.err.println("✗ YouTube API key not configured!");
             System.err.println("Edit resources/application.properties");
             System.err.println("Add: youtube.api.key=YOUR_API_KEY");
             return;
         }
-        
+
         System.out.println("✓ Configuration loaded");
-        
+
         // Create collector
         YouTubeCollector collector;
         try {
@@ -38,45 +38,44 @@ public class TestYouTubeCollector {
             System.err.println("✗ Failed to create collector: " + e.getMessage());
             return;
         }
-        
+
         // Test connection
         System.out.println("\n--- Testing Connection ---");
         if (!collector.testConnection()) {
             return;
         }
-        
+
         // Build criteria
         System.out.println("\n--- Building Search Criteria ---");
         SearchCriteria criteria = new SearchCriteria.Builder()
-            .keyword("Bão")
-            //.hashtags("", "")
-            .dateRange(
-                LocalDateTime.of(2025, 9, 6, 0, 0),
-                LocalDateTime.of(2025, 12, 15, 23, 59)
-            )
-            .language("vi")
-            .maxResults(20)
-            .build();
-        
+                .keyword("Bão Yagi")
+                // .hashtags("", "")
+                .dateRange(
+                        LocalDateTime.of(2021, 9, 6, 0, 0),
+                        LocalDateTime.of(2025, 12, 15, 23, 59))
+                .language("vi")
+                .maxResults(100)
+                .build();
+
         System.out.println("Keyword: " + criteria.getKeyword());
         System.out.println("Max results: " + criteria.getMaxResults());
-        
+
         // Collect
         System.out.println("\n--- Starting Collection ---");
         List<SocialPost> posts = collector.collect(criteria);
-        
+
         // Display results
         System.out.println("\n========================================");
         System.out.println("Collection Results");
         System.out.println("========================================");
         System.out.println("Total posts: " + posts.size());
-        
+
         if (posts.isEmpty()) {
             System.out.println("\n⚠ No posts collected");
             System.out.println("Try different keywords or date range");
             return;
         }
-        
+
         // Show first 5 posts
         System.out.println("\n--- Sample Posts ---");
         for (int i = 0; i < Math.min(5, posts.size()); i++) {
@@ -87,42 +86,43 @@ public class TestYouTubeCollector {
             System.out.println("  Likes: " + post.getLikes());
             System.out.println("  Video: " + post.getMetadata().get("video_title"));
             System.out.println("  Channel: " + post.getMetadata().get("channel"));
-            
+
             String content = post.getContent();
             if (content.length() > 100) {
                 content = content.substring(0, 100) + "...";
             }
             System.out.println("  Content: " + content);
         }
-        
+
         // Statistics
         System.out.println("\n--- Statistics ---");
         int totalLikes = posts.stream()
-            .mapToInt(SocialPost::getLikes)
-            .sum();
-        
+                .mapToInt(SocialPost::getLikes)
+                .sum();
+
         double avgLikes = posts.stream()
-            .mapToInt(SocialPost::getLikes)
-            .average()
-            .orElse(0);
-        
+                .mapToInt(SocialPost::getLikes)
+                .average()
+                .orElse(0);
+
         System.out.println("Total likes: " + totalLikes);
         System.out.println("Average likes per comment: " + String.format("%.2f", avgLikes));
 
         System.out.println("\n--- Saving Results ---");
         try {
             java.io.File dataDir = new java.io.File("data");
-            if (!dataDir.exists()) dataDir.mkdirs();
+            if (!dataDir.exists())
+                dataDir.mkdirs();
 
             String fileName = "data/youtube_posts.json";
 
             // Custom Gson with LocalDateTime support
             Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, 
-                    (JsonSerializer<LocalDateTime>) (src, typeOfSrc, context) -> 
-                        new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
-                .setPrettyPrinting()
-                .create();
+                    .registerTypeAdapter(LocalDateTime.class,
+                            (JsonSerializer<LocalDateTime>) (src, typeOfSrc,
+                                    context) -> new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                    .setPrettyPrinting()
+                    .create();
 
             try (java.io.FileWriter writer = new java.io.FileWriter(fileName)) {
                 gson.toJson(posts, writer);
@@ -133,7 +133,7 @@ public class TestYouTubeCollector {
             System.err.println("✗ Failed to save data: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         System.out.println("\n========================================");
         System.out.println("✓ Test completed successfully!");
         System.out.println("========================================");
