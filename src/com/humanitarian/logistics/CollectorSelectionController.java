@@ -20,7 +20,7 @@ public class CollectorSelectionController {
 	private String selection;
 	
 	@FXML
-	private MenuButton menuSelection = new MenuButton("                ");
+	private MenuButton menuSelection = new MenuButton("             ");
 	
 	@FXML
 	private Button startButton;
@@ -29,8 +29,20 @@ public class CollectorSelectionController {
     private Scene scene;
     private Parent root;
 	
-	public void initialize(ActionEvent e) {
-		
+    @FXML
+	public void initialize() {
+    	menuSelection.getItems().clear();
+    	
+		for (String option: collectorList) {
+			MenuItem item = new MenuItem(option);
+			
+			item.setOnAction(event -> {
+				menuSelection.setText(option);
+				this.selection = option;
+			});
+			
+			menuSelection.getItems().add(item);
+		}
 	}
 	
 	@FXML
@@ -56,6 +68,5 @@ public class CollectorSelectionController {
 			case "NewsAPI":
 				return;
 		}
-
 	}
 }

@@ -58,22 +58,6 @@ public class YouTubeCollector {
         }
     }
     
-    public boolean testConnection() {
-        try {
-            YouTube.Search.List search = youtube.search().list(Collections.singletonList("snippet"));
-            search.setKey(config.getApiKey());
-            search.setQ("test");
-            search.setMaxResults(1L);
-            search.execute();
-            
-            System.out.println("✓ YouTube connection successful");
-            return true;
-        } catch (Exception e) {
-            System.err.println("✗ YouTube connection failed: " + e.getMessage());
-            return false;
-        }
-    }
-    
     /**
      * Thu thập comments từ YouTube
      */
@@ -81,7 +65,7 @@ public class YouTubeCollector {
         List<SocialPost> posts = new ArrayList<>();
         
         try {
-            System.out.println("Step 1: Searching for videos...");
+            System.out.println("Searching for videos...");
             List<String> videoIds = searchVideos(criteria);
             System.out.println("Found " + videoIds.size() + " videos");
             

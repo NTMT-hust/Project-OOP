@@ -28,7 +28,7 @@ public class CancellingController {
 
         // 3. Create the Timeline with that frame
         Timeline timeline = new Timeline(keyFrame);
-        
+        	
         // 4. Cleanup when done
         timeline.setOnFinished(e -> {
             Platform.exit(); 
