@@ -14,14 +14,14 @@ import javafx.stage.Stage;
 public class ProblemSelectionController {
 	
 	@FXML
-	private Button buttonProblem1, buttonProblem2, buttonProblem3;
+	private Button buttonProblem1, buttonProblem2, buttonProblem3, buttonCollectData;
 	
     private Stage stage;
     private Scene scene;
     private Parent root;
 
 	@FXML
-	public void problem1(ActionEvent e) throws IOException {
+	public void collectData(ActionEvent e) throws IOException {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/CollectorSelectionMenu.fxml"));
         root = loader.load();
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
@@ -34,6 +34,11 @@ public class ProblemSelectionController {
     	stage.setTitle("Select Collector");
     	stage.centerOnScreen();
     	stage.show();
+	}
+	
+	@FXML
+	public void problem1(ActionEvent e) {
+		return;
 	}
 	
 	@FXML

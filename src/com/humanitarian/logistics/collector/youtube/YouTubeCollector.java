@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.collector;
+package com.humanitarian.logistics.collector.youtube;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
@@ -10,9 +10,15 @@ import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -27,13 +33,9 @@ public class YouTubeCollector {
     private YouTube youtube;
     private YouTubeConfig config;
     
-    @FXML
-    private Label statusLabel;
+    private boolean initialize;
     
-    @FXML
-    private ProgressBar progressBar;
-    
-    public YouTubeCollector(YouTubeConfig config) {
+    public YouTubeCollector(YouTubeConfig config) throws IOException {
         this.config = config;
         if (!config.isValid()) {
             throw new IllegalStateException("YouTube API key is not configured");
@@ -50,12 +52,14 @@ public class YouTubeCollector {
             )
             .setApplicationName("Humanitarian-Logistics-Analyzer")
             .build();
-            
-            statusLabel.setText("✓ YouTube client initialized");
+            this.initialize = true;
         } catch (Exception e) {
-            statusLabel.setText("✗ Failed to initialize YouTube client: " + e.getMessage());
-            throw new RuntimeException("YouTube initialization failed", e);
+        	this.initialize = false;
         }
+    }
+    
+    public boolean getInitialize() {
+    	return this.initialize;
     }
     
     /**

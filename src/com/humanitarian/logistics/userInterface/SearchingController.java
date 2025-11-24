@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
-import com.humanitarian.logistics.collector.YouTubeCollector;
+import com.humanitarian.logistics.collector.youtube.YouTubeCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.dataStructure.InputData;
@@ -67,22 +67,6 @@ public class SearchingController {
             }
     	};
     }
-
-	@FXML
-	public void cancelSearch(ActionEvent e) throws IOException {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/InputInterface.fxml"));
-        root = loader.load();
-        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        
-        scene = new Scene(root);
-//        String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
-//        scene.getStylesheets().add(css);
-    	stage.setScene(scene);
-    	
-    	stage.setTitle("Input Search Criteria");
-    	stage.centerOnScreen();
-    	stage.show();
-	}
 	
 	public void savePost(List<SocialPost> resultPost) throws IOException {
         java.io.File dataDir = new java.io.File("data");

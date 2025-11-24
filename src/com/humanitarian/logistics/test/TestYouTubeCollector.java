@@ -3,8 +3,7 @@ package com.humanitarian.logistics.test;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.google.gson.*;
-
-import com.humanitarian.logistics.collector.YouTubeCollector;
+import com.humanitarian.logistics.collector.youtube.YouTubeCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;

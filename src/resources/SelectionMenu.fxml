@@ -15,5 +15,6 @@
       <Button fx:id="buttonProblem1" layoutX="105.0" layoutY="188.0" mnemonicParsing="false" onAction="#problem1" text="Problem 1" />
       <Button fx:id="buttonProblem2" layoutX="265.0" layoutY="188.0" mnemonicParsing="false" onAction="#problem2" text="Problem 2" />
       <Button fx:id="buttonProblem3" layoutX="426.0" layoutY="188.0" mnemonicParsing="false" onAction="#problem3" text="Problem 3" />
+      <Button fx:id="buttonCollectData" layoutX="260.0" layoutY="276.0" mnemonicParsing="false" onAction="#collectData" text="Collect Data" />
    </children>
 </AnchorPane>
