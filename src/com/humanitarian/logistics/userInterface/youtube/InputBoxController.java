@@ -1,10 +1,10 @@
 package com.humanitarian.logistics.userInterface.youtube;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 import com.humanitarian.logistics.dataStructure.InputData;
-import com.humanitarian.logistics.userInterface.SearchingController;
 
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;

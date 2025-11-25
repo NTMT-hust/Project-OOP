@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="126.0" prefWidth="302.0" spacing="10.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.SearchingController">
+<VBox alignment="CENTER" prefHeight="126.0" prefWidth="302.0" spacing="10.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.youtube.SearchingController">
     
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />
