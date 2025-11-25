@@ -40,7 +40,7 @@ public class InputBoxController {
     private Parent root;
     
     @FXML
-    public void submit(ActionEvent e) throws IOException {
+    public void submit(ActionEvent event) throws IOException {
     	keyWord = userKeyword.getText();
     	hashTags = userKeyword.getText().split(",");
     	startDate = userStartDate.getValue().atStartOfDay();
@@ -54,7 +54,7 @@ public class InputBoxController {
     	
     	SearchingController searchController = loader.getController();
     	
-    	stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+    	stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     	scene = new Scene(root);
     	stage.setScene(scene);
     	stage.setTitle("Searching data...");
@@ -62,7 +62,28 @@ public class InputBoxController {
     	stage.centerOnScreen();
     	stage.show();
     
-    	searchController.searchProcedure(userInput);
+    	try {
+    		searchController.searchProcedure(userInput);
+    	} catch (Exception e) {
+    		stage.close();
+    		try {
+    			FXMLLoader loaderError = new FXMLLoader(getClass().getResource("/resources/youtube/Error.fxml"));
+    			Parent rootError = loaderError.load();
+    			Stage stageError = new Stage();
+            	
+    			Scene sceneError = new Scene(rootError);
+//	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//	        	scene.getStylesheets().add(css);
+    			stageError.setScene(sceneError);
+    			stageError.setTitle("Error");
+    			stageError.centerOnScreen();
+    			stageError.show();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+    		e.printStackTrace();
+    	}
     }
     
     @FXML

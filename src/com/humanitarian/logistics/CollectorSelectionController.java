@@ -49,7 +49,7 @@ public class CollectorSelectionController {
 	public void startSearching(ActionEvent e) throws IOException {
 		switch (selection) {
 			case "Youtube":
-	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/InputInterface.fxml"));
+	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/InitializeCollector.fxml"));
 	    		root = loader.load();
 	    		stage = (Stage)((Node)e.getSource()).getScene().getWindow();
 	        
@@ -57,8 +57,7 @@ public class CollectorSelectionController {
 //	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
 //	        	scene.getStylesheets().add(css);
 	    		stage.setScene(scene);
-	    	
-	    		stage.setTitle("Input Search Criteria");
+	    		stage.setTitle("Initializing Collector...");
 	    		stage.centerOnScreen();
 	    		stage.show();
 	    	

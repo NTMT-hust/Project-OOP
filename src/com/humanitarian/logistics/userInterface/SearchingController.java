@@ -38,35 +38,14 @@ public class SearchingController {
 	@FXML
 	private Label statusLabel;
 	
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-    
-    private Task<Void> searchTask;
-    
-    public void startSearch() {
-    	searchTask = new Task<Void>() {
-    		@Override
-    		protected Void call() throws Exception {
-    			return null;
-    		}
-    		
-    		@Override
-            protected void succeeded() {
-                statusLabel.setText("Search Done!");
-            }
-
-            @Override
-            protected void cancelled() {
-                statusLabel.setText("Search Cancelled.");
-            }
-
-            @Override
-            protected void failed() {
-                statusLabel.setText("Error occurred!");
-            }
-    	};
-    }
+	private AppConfig appConfig = new AppConfig();
+	private YouTubeConfig config = new YouTubeConfig(appConfig);
+	private YouTubeCollector youtubeCollector;
+	
+	@FXML
+	public void initialize() throws IOException {
+		youtubeCollector = new YouTubeCollector(config);
+	}
 	
 	public void savePost(List<SocialPost> resultPost) throws IOException {
         java.io.File dataDir = new java.io.File("data");
@@ -87,9 +66,6 @@ public class SearchingController {
 	}
 	
 	public void searchProcedure(InputData inputData) throws IOException {
-		AppConfig appConfig = new AppConfig();
-		YouTubeConfig config = new YouTubeConfig(appConfig);
-		YouTubeCollector youtubeCollector = new YouTubeCollector(config);
 		SearchCriteria searchCriteria = new SearchCriteria.Builder()
 				.keyword(inputData.getKeyWord())
 				.hashtags(inputData.getHashTags())
