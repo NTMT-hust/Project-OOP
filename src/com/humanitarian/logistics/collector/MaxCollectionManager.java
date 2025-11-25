@@ -1,8 +1,9 @@
 package com.humanitarian.logistics.collector;
 
-import com.humanitarian.logistics.collector.strategy.MaxCollectionStrategy;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
+import com.humanitarian.logistics.collector.strategy.MaxCollectionStrategy;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -202,7 +203,7 @@ public class MaxCollectionManager {
             String timestamp = LocalDateTime.now().format(
                     DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
 
-            String filename = String.format("output/max_collection_%s.txt", timestamp);
+            String filename = String.format("data/max_collection_%s.txt", timestamp);
 
             try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
                 writer.println("MAXIMUM COLLECTION RESULTS");

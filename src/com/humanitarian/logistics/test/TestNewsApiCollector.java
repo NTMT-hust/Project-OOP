@@ -59,7 +59,7 @@ public class TestNewsApiCollector {
         // Build criteria
         logger.info("--- Building Search Criteria ---");
         SearchCriteria criteria = new SearchCriteria.Builder()
-                .keyword("Bão")
+                .keyword("bão")
                 .dateRange(
                         LocalDateTime.now().minusDays(30), // NewsAPI free: max 1 month back
                         LocalDateTime.now())

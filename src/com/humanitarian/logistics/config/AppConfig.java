@@ -8,13 +8,13 @@ import java.util.Properties;
 public class AppConfig {
     private Properties properties;
     private String apiName;
-    
+
     public AppConfig(String apiName) {
         properties = new Properties();
         this.apiName = apiName;
         loadConfig();
     }
-    
+
     private void loadConfig() {
         try {
             // Try loading from resources folder
@@ -27,7 +27,7 @@ public class AppConfig {
             loadDefaults();
         }
     }
-    
+
     private void loadDefaults() {
         System.out.println("Using default configuration");
         properties.setProperty("search.max.results", "100");
@@ -35,15 +35,15 @@ public class AppConfig {
         properties.setProperty("data.dir", "./data");
         properties.setProperty("output.dir", "./output");
     }
-    
+
     public String get(String key) {
         return properties.getProperty(key);
     }
-    
+
     public String get(String key, String defaultValue) {
         return properties.getProperty(key, defaultValue);
     }
-    
+
     public int getInt(String key, int defaultValue) {
         String value = properties.getProperty(key);
         return value != null ? Integer.parseInt(value) : defaultValue;
@@ -51,8 +51,8 @@ public class AppConfig {
 
     public boolean getBoolean(String key) {
         String value = properties.getProperty(key);
-        if (value == null) return false;  // default
+        if (value == null)
+            return false; // default
         return Boolean.parseBoolean(value.trim());
     }
-
 }

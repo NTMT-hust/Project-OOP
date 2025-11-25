@@ -1,8 +1,8 @@
 package com.humanitarian.logistics.test;
 
+import com.humanitarian.logistics.collector.YouTubeCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
-import com.humanitarian.logistics.collector.YouTubeCollector;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
@@ -48,13 +48,13 @@ public class TestYouTubeCollector {
         // Build criteria
         System.out.println("\n--- Building Search Criteria ---");
         SearchCriteria criteria = new SearchCriteria.Builder()
-                .keyword("Bão Yagi")
+                .keyword("Bão")
                 // .hashtags("", "")
                 .dateRange(
-                        LocalDateTime.of(2021, 9, 6, 0, 0),
+                        LocalDateTime.of(2025, 9, 6, 0, 0),
                         LocalDateTime.of(2025, 12, 15, 23, 59))
                 .language("vi")
-                .maxResults(100)
+                .maxResults(2000)
                 .build();
 
         System.out.println("Keyword: " + criteria.getKeyword());

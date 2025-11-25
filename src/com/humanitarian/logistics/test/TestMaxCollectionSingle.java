@@ -128,6 +128,7 @@ package com.humanitarian.logistics.test;
 import com.humanitarian.logistics.collector.MaxCollectionManager;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -174,6 +175,7 @@ public class TestMaxCollectionSingle {
 
         if (!manager.getAvailableSources().contains(sourceName)) {
             logger.error("Source not available: {}", sourceName);
+            scanner.close();
             return;
         }
 
@@ -183,8 +185,8 @@ public class TestMaxCollectionSingle {
 
         // Build criteria
         SearchCriteria criteria = new SearchCriteria.Builder()
-                .keyword("bão Yagi")
-                .hashtags("baoYagi", "cuutro")
+                .keyword("bão")
+                .hashtags("bao", "cuutro", "thientai")
                 .dateRange(
                         LocalDateTime.now().minusDays(30),
                         LocalDateTime.now())

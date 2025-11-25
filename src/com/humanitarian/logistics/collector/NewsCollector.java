@@ -157,14 +157,13 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
             int toFetch = Math.min(pageSize, maxResults - totalFetched);
 
             logger.debug("Fetching page {} size {}", page, toFetch);
-            String url = buildTopHeadlinesUrl(buildQuery(criteria), pageSize);
+            // String url = buildTopHeadlinesUrl(buildQuery(criteria), pageSize);
             // Build URL
-            // String url = buildEverythingUrl(
-            // buildQuery(criteria),
-            // page,
-            // criteria.getStartDate().format(formatter),
-            // criteria.getEndDate().format(formatter)
-            // );
+            String url = buildEverythingUrl(
+                    buildQuery(criteria),
+                    page,
+                    criteria.getStartDate().format(formatter),
+                    criteria.getEndDate().format(formatter));
 
             List<SocialPost> pagePosts;
             try {
