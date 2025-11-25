@@ -61,29 +61,9 @@ public class InputBoxController {
     	
     	stage.centerOnScreen();
     	stage.show();
-    
-    	try {
-    		searchController.searchProcedure(userInput);
-    	} catch (Exception e) {
-    		stage.close();
-    		try {
-    			FXMLLoader loaderError = new FXMLLoader(getClass().getResource("/resources/youtube/Error.fxml"));
-    			Parent rootError = loaderError.load();
-    			Stage stageError = new Stage();
-            	
-    			Scene sceneError = new Scene(rootError);
-//	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
-//	        	scene.getStylesheets().add(css);
-    			stageError.setScene(sceneError);
-    			stageError.setTitle("Error");
-    			stageError.centerOnScreen();
-    			stageError.show();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-    		e.printStackTrace();
-    	}
+    	
+    	searchController.searchProcedure(userInput);
+    	stage.close();
     }
     
     @FXML

@@ -9,6 +9,11 @@ import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -102,8 +107,22 @@ public class YouTubeCollector {
             System.out.println("Total posts: " + posts.size());
             
         } catch (Exception e) {
-            System.err.println("Collection failed: " + e.getMessage());
-            e.printStackTrace();
+        	try {
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/Error.fxml"));
+    			Parent root = loader.load();
+    			Stage stage = new Stage();
+            	
+    			Scene scene = new Scene(root);
+//	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//	        	scene.getStylesheets().add(css);
+    			stage.setScene(scene);
+    			stage.setTitle("Error");
+    			stage.centerOnScreen();
+    			stage.show();
+			} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+			}
         }
         
         return posts;
