@@ -47,22 +47,36 @@ public class TestYouTubeCollector {
 
         // Build criteria
         System.out.println("\n--- Building Search Criteria ---");
-        SearchCriteria criteria = new SearchCriteria.Builder()
+        SearchCriteria criteria1 = new SearchCriteria.Builder()
                 .keyword("Bão")
                 // .hashtags("", "")
                 .dateRange(
                         LocalDateTime.of(2025, 9, 6, 0, 0),
                         LocalDateTime.of(2025, 12, 15, 23, 59))
                 .language("vi")
-                .maxResults(2000)
+                .maxResults(50)
                 .build();
 
-        System.out.println("Keyword: " + criteria.getKeyword());
-        System.out.println("Max results: " + criteria.getMaxResults());
+        // Build criteria for searching short video
+        System.out.println("\n--- Building Search Criteria ---");
+        SearchCriteria criteria2 = new SearchCriteria.Builder()
+                .keyword("Bão #shorts")
+                // .hashtags("", "")
+                .dateRange(
+                        LocalDateTime.of(2025, 9, 6, 0, 0),
+                        LocalDateTime.of(2025, 12, 15, 23, 59))
+                .language("vi")
+                .maxResults(500000)
+                .build();
+
+        System.out.println("Keyword: " + criteria1.getKeyword());
+        System.out.println("Max results: " + criteria1.getMaxResults());
 
         // Collect
         System.out.println("\n--- Starting Collection ---");
-        List<SocialPost> posts = collector.collect(criteria);
+        List<SocialPost> posts = collector.collect(criteria1);
+        List<SocialPost> posts2 = collector.collect(criteria2);
+        posts.addAll(posts2);
 
         // Display results
         System.out.println("\n========================================");

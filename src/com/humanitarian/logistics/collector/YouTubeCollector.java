@@ -8,6 +8,7 @@ import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -74,7 +75,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 
         try {
             System.out.println("Step 1: Searching for videos...");
-            List<String> videoIds = searchVideos(criteria);
+            List<String> videoIds = searchWithPagination(criteria);
             System.out.println("Found " + videoIds.size() + " videos");
 
             if (videoIds.isEmpty()) {
@@ -122,6 +123,52 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         return posts;
     }
 
+    public List<String> searchWithPagination(SearchCriteria criteria)
+            throws IOException {
+        List<SearchResult> allVideos = new ArrayList<>();
+        List<String> videoIds = new ArrayList<>();
+        String nextPageToken = null;
+
+        while (allVideos.size() < 1000) {
+            // 1. Create request
+            YouTube.Search.List search = youtube.search().list(Arrays.asList("id", "snippet"));
+            search.setKey(config.getApiKey());
+
+            // Build query
+            String query = criteria.getKeyword();
+            if (criteria.getHashtags() != null && !criteria.getHashtags().isEmpty()) {
+                query += " " + String.join(" ", criteria.getHashtags());
+            }
+            search.setQ(query);
+
+            search.setQ(query);
+            search.setType(List.of("video"));
+            search.setMaxResults(50L); // Max per page
+            search.setPageToken(nextPageToken); // Give me the NEXT page
+
+            // 2. Execute
+            SearchListResponse response = search.execute();
+            List<SearchResult> results = response.getItems();
+            for (SearchResult item : response.getItems()) {
+                videoIds.add(item.getId().getVideoId());
+            }
+
+            // 3. Add to list
+            if (results == null || results.isEmpty())
+                break;
+            allVideos.addAll(results);
+
+            // 4. Update Token
+            nextPageToken = response.getNextPageToken();
+
+            // 5. Stop if no more pages
+            if (nextPageToken == null)
+                break;
+        }
+
+        return videoIds;
+    }
+
     /**
      * Tìm kiếm videos
      */
@@ -140,7 +187,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 
         // Filters
         search.setType(List.of("video"));
-        search.setMaxResults(100L); // Tìm tối đa 10 videos
+        search.setMaxResults(1000L); // Tìm tối đa 10 videos
         search.setOrder("date"); // Sắp xếp theo ngày mới nhất
 
         // Date filters
