@@ -20,6 +20,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="userMaxResult" layoutX="226.0" layoutY="251.0" promptText="Max total results:" />
+      <TextField fx:id="userMaxResult" layoutX="130.0" layoutY="251.0" promptText="Max total results:" />
+      <TextField fx:id="userMaxVideo" layoutX="312.0" layoutY="251.0" promptText="Max total video:" />
    </children>
 </AnchorPane>

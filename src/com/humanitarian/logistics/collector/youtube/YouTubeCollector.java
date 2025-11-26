@@ -65,17 +65,11 @@ public class YouTubeCollector {
         List<SocialPost> posts = new ArrayList<>();
         
         try {
-            System.out.println("Searching for videos...");
             List<String> videoIds = searchVideos(criteria);
-            System.out.println("Found " + videoIds.size() + " videos");
             
             if (videoIds.isEmpty()) {
-                System.out.println("No videos found matching criteria");
                 return posts;
             }
-            
-            System.out.println("\nStep 2: Collecting comments from videos...");
-            int totalComments = 0;
             
             for (int i = 0; i < videoIds.size(); i++) {
                 String videoId = videoIds.get(i);
@@ -84,27 +78,15 @@ public class YouTubeCollector {
                 try {
                     List<SocialPost> videoComments = getVideoComments(videoId, criteria);
                     posts.addAll(videoComments);
-                    totalComments += videoComments.size();
-                    
-                    System.out.println("    → Collected " + videoComments.size() + " comments");
                     
                     if (posts.size() >= criteria.getMaxResults()) {
-                        System.out.println("    → Reached max results limit");
                         break;
                     }
                     
-//                    Rate limiting - wait 1 second between videos
-                    if (i < videoIds.size() - 1) {
-                        Thread.sleep(1000);
-                    }
-//                    
                 } catch (Exception e) {
                     System.err.println("    ✗ Error getting comments: " + e.getMessage());
                 }
             }
-            
-            System.out.println("\n✓ YouTube collection completed");
-            System.out.println("Total posts: " + posts.size());
             
         } catch (Exception e) {
         	try {
@@ -124,14 +106,13 @@ public class YouTubeCollector {
 					e1.printStackTrace();
 			}
         }
-        
         return posts;
     }
     
     /**
      * Tìm kiếm videos
      */
-    private List<String> searchVideos(SearchCriteria criteria) throws Exception {
+    public List<String> searchVideos(SearchCriteria criteria) throws Exception {
         List<String> videoIds = new ArrayList<>();
         
         YouTube.Search.List search = youtube.search().list(Arrays.asList("id", "snippet"));
@@ -146,7 +127,7 @@ public class YouTubeCollector {
         
         // Filters
         search.setType(List.of("video"));
-        search.setMaxResults(10L); // Tìm tối đa 10 videos
+        search.setMaxResults(criteria.getMaxVideos()); // Tìm tối đa 1 lượng videos
         search.setOrder("date"); // Sắp xếp theo ngày mới nhất
         
         // Date filters
@@ -182,7 +163,7 @@ public class YouTubeCollector {
     /**
      * Lấy comments từ một video
      */
-    private List<SocialPost> getVideoComments(String videoId, SearchCriteria criteria) 
+    public List<SocialPost> getVideoComments(String videoId, SearchCriteria criteria) 
             throws Exception {
         
         List<SocialPost> posts = new ArrayList<>();
@@ -329,7 +310,7 @@ public class YouTubeCollector {
         public String getVideoId() { return videoId; }
         public String getVideoTitle() { return videoTitle; }
         public String getChannelTitle() { return channelTitle; }
-        public long getViewCount() { return viewCount; }
+		public long getViewCount() { return viewCount; }
         public long getLikeCount() { return likeCount; }
         public long getCommentCount() { return commentCount; }
         

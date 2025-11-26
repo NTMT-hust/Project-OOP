@@ -19,10 +19,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.DialogPane;
 
 public class InputBoxController {
     @FXML
-    private TextField userKeyword, userHashtags, userMaxResult;
+    private TextField userKeyword, userHashtags, userMaxResult, userMaxVideo;
     @FXML
     private Button OK, Cancel;
     @FXML
@@ -34,6 +35,7 @@ public class InputBoxController {
     private String[] hashTags;
     private LocalDateTime startDate, endDate;
     private int maxResult;
+    private long maxVideo;
     
     private Stage stage;
     private Scene scene;
@@ -46,8 +48,9 @@ public class InputBoxController {
     	startDate = userStartDate.getValue().atStartOfDay();
     	endDate = userEndDate.getValue().atTime(23, 59, 59);
     	maxResult = Integer.parseInt(userMaxResult.getText());
+    	maxVideo = Long.parseLong(userMaxVideo.getText());
     	
-    	InputData userInput = new InputData(keyWord, hashTags, startDate, endDate, maxResult);
+    	InputData userInput = new InputData(keyWord, hashTags, startDate, endDate, maxResult, maxVideo);
     	
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/SearchingInterface.fxml"));
     	root = loader.load();
@@ -63,7 +66,6 @@ public class InputBoxController {
     	stage.show();
     	
     	searchController.searchProcedure(userInput);
-    	stage.close();
     }
     
     @FXML

@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.humanitarian.logistics.collector.youtube.YouTubeCollector;
+import com.humanitarian.logistics.collector.youtube.YouTubeTaskCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.dataStructure.InputData;
@@ -25,8 +26,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.concurrent.Task;
@@ -36,7 +40,9 @@ public class SearchingController {
 	@FXML
 	private ProgressBar progressBar;
 	@FXML
-	private Label statusLabel;
+	private VBox scenePane;
+	
+	List<SocialPost> resultPost;
 	
 	private AppConfig appConfig = new AppConfig();
 	private YouTubeConfig config = new YouTubeConfig(appConfig);
@@ -75,8 +81,43 @@ public class SearchingController {
 						)
 				.language("vi")
 				.maxResults(inputData.getMaxResult())
+				.maxVideos(inputData.getMaxVideo())
 				.build();
-		List<SocialPost> resultPost = youtubeCollector.collect(searchCriteria);
+//		List<SocialPost> resultPost = youtubeCollector.collect(searchCriteria);
+		
+		YouTubeTaskCollector collectTask = new YouTubeTaskCollector(searchCriteria, this.youtubeCollector);
+		
+		progressBar.progressProperty().bind(collectTask.progressProperty());
+		
+		collectTask.setOnSucceeded(event -> {
+			try {
+				resultPost = collectTask.getValue();
+				
+	        	Stage currentStage = (Stage) scenePane.getScene().getWindow();
+	        	currentStage.close();
+				
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/SearchComplete.fxml"));
+				Parent root;
+
+				root = loader.load();
+				Stage stage = new Stage();
+        	
+				Scene scene = new Scene(root);
+//        		String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//        		scene.getStylesheets().add(css);
+				stage.setScene(scene);
+				stage.setTitle("Complete searching!");
+				stage.centerOnScreen();
+				stage.show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		Thread t = new Thread(collectTask);
+		t.setDaemon(true);
+		t.start();
 		
 		savePost(resultPost);
 	}
