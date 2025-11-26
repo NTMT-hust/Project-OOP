@@ -24,59 +24,40 @@ public class YouTubeTaskCollector extends Task<List<SocialPost>> {
 	}
 	
 	@Override
-	protected List<SocialPost> call() {
+	protected List<SocialPost> call() throws Exception {
 		List<SocialPost> posts = new ArrayList<>();
         
-        try {
-        	updateMessage("Step 1: Searching for videos...");
-            List<String> videoIds = collector.searchVideos(criteria);
-            updateMessage("Found " + videoIds.size() + " videos");
+		updateMessage("Step 1: Searching for videos...");
+		List<String> videoIds = collector.searchVideos(criteria);
+		updateMessage("Found " + videoIds.size() + " videos");
+		
+		if (videoIds.isEmpty()) {
+			updateMessage("No videos found matching criteria");
+			return posts;
+		}
             
-            if (videoIds.isEmpty()) {
-            	updateMessage("No videos found matching criteria");
-                return posts;
-            }
-            
-            updateMessage("\nStep 2: Collecting comments from videos...");
-            
-            for (int i = 0; i < videoIds.size(); i++) {
-                String videoId = videoIds.get(i);
-                updateMessage("  [" + (i+1) + "/" + videoIds.size() + "] Video: " + videoId);
+		updateMessage("\nStep 2: Collecting comments from videos...");
+		
+		for (int i = 0; i < videoIds.size(); i++) {
+			String videoId = videoIds.get(i);
+			updateMessage("  [" + (i+1) + "/" + videoIds.size() + "] Video: " + videoId);
                 
-                try {
-                    List<SocialPost> videoComments = collector.getVideoComments(videoId, criteria);
-                    posts.addAll(videoComments);
+			try {
+				List<SocialPost> videoComments = collector.getVideoComments(videoId, criteria);
+				posts.addAll(videoComments);
                     
-                    updateMessage("    → Collected " + videoComments.size() + " comments");
+				updateMessage("    → Collected " + videoComments.size() + " comments");
                     
-                    if (posts.size() >= criteria.getMaxResults()) {
-                        break;
-                    }
+				if (posts.size() >= criteria.getMaxResults()) {
+					break;
+				}
                     
-                } catch (Exception e) {
-                    updateMessage("    ✗ Error getting comments: " + e.getMessage());
-                }
-            }
-            updateMessage("Done searching");
-            
-        } catch (Exception e) {
-        	try {
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/Error.fxml"));
-    			Parent root = loader.load();
-    			Stage stage = new Stage();
-            	
-    			Scene scene = new Scene(root);
-//	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
-//	        	scene.getStylesheets().add(css);
-    			stage.setScene(scene);
-    			stage.setTitle("Error");
-    			stage.centerOnScreen();
-    			stage.show();
-			} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			} catch (Exception e) {
+				updateMessage("    ✗ Error getting comments: " + e.getMessage());
 			}
-        }
+		}
+		updateMessage("Done searching");
+            
         return posts;
 	}
 }

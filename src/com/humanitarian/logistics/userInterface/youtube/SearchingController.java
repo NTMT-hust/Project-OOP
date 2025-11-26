@@ -115,6 +115,28 @@ public class SearchingController {
 			}
 		});
 		
+		collectTask.setOnFailed(event -> {
+			try {
+				Stage currentStage = (Stage) scenePane.getScene().getWindow();
+	        	currentStage.close();
+				
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/Error.fxml"));
+    			Parent root = loader.load();
+    			Stage stage = new Stage();
+            	
+    			Scene scene = new Scene(root);
+//	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//	        	scene.getStylesheets().add(css);
+    			stage.setScene(scene);
+    			stage.setTitle("Error");
+    			stage.centerOnScreen();
+    			stage.show();
+			} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+			}
+		});
+		
 		Thread t = new Thread(collectTask);
 		t.setDaemon(true);
 		t.start();
