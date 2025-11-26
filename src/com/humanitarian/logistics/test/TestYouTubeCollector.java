@@ -54,7 +54,7 @@ public class TestYouTubeCollector {
                         LocalDateTime.of(2025, 9, 6, 0, 0),
                         LocalDateTime.of(2025, 12, 15, 23, 59))
                 .language("vi")
-                .maxResults(50)
+                .maxResults(500000)
                 .build();
 
         // Build criteria for searching short video
