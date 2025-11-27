@@ -27,7 +27,7 @@ public class YouTubeTaskCollector extends Task<List<SocialPost>> {
 	protected List<SocialPost> call() throws Exception {
 		List<SocialPost> posts = new ArrayList<>();
         
-		updateMessage("Step 1: Searching for videos...");
+		updateMessage("Searching for videos...");
 		List<String> videoIds = collector.searchVideos(criteria);
 		updateMessage("Found " + videoIds.size() + " videos");
 		
@@ -36,7 +36,7 @@ public class YouTubeTaskCollector extends Task<List<SocialPost>> {
 			return posts;
 		}
             
-		updateMessage("\nStep 2: Collecting comments from videos...");
+		updateMessage("\nCollecting comments from videos...");
 		
 		for (int i = 0; i < videoIds.size(); i++) {
 			String videoId = videoIds.get(i);

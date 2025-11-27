@@ -41,6 +41,8 @@ public class SearchingController {
 	private ProgressBar progressBar;
 	@FXML
 	private VBox scenePane;
+	@FXML
+	private Label statusLabel;
 	
 	List<SocialPost> resultPost;
 	
@@ -88,6 +90,7 @@ public class SearchingController {
 		YouTubeTaskCollector collectTask = new YouTubeTaskCollector(searchCriteria, this.youtubeCollector);
 		
 		progressBar.progressProperty().bind(collectTask.progressProperty());
+		statusLabel.textProperty().bind(collectTask.messageProperty());
 		
 		collectTask.setOnSucceeded(event -> {
 			try {
@@ -109,6 +112,8 @@ public class SearchingController {
 				stage.setTitle("Complete searching!");
 				stage.centerOnScreen();
 				stage.show();
+				
+				savePost(resultPost);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -140,8 +145,6 @@ public class SearchingController {
 		Thread t = new Thread(collectTask);
 		t.setDaemon(true);
 		t.start();
-		
-		savePost(resultPost);
 	}
 	
 }

@@ -79,9 +79,9 @@ public class YouTubeCollector {
                     List<SocialPost> videoComments = getVideoComments(videoId, criteria);
                     posts.addAll(videoComments);
                     
-                    if (posts.size() >= criteria.getMaxResults()) {
-                        break;
-                    }
+//                    if (posts.size() >= criteria.getMaxResults()) {
+//                        break;
+//                    }
                     
                 } catch (Exception e) {
                     System.err.println("    ✗ Error getting comments: " + e.getMessage());
@@ -207,7 +207,7 @@ public class YouTubeCollector {
             
         } catch (com.google.api.client.googleapis.json.GoogleJsonResponseException e) {
             if (e.getMessage().contains("commentsDisabled")) {
-                System.out.println("    ⚠ Comments disabled for this video");
+//                System.out.println("    ⚠ Comments disabled for this video");
             } else {
                 throw e;
             }

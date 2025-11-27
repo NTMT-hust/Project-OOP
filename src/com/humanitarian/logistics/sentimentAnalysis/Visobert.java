@@ -1,91 +1,84 @@
 package com.humanitarian.logistics.sentimentAnalysis;
 
-import ai.djl.huggingface.tokenizers.Encoding;
 import ai.djl.huggingface.tokenizers.HuggingFaceTokenizer;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.Classifications;
 import ai.djl.ndarray.NDArray;
 import ai.djl.ndarray.NDList;
 import ai.djl.ndarray.NDManager;
-import ai.djl.translate.Translator;
-import ai.djl.translate.TranslatorContext;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
+import ai.djl.translate.Batchifier;
+import ai.djl.translate.Translator;
+import ai.djl.translate.TranslatorContext;
+
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-public class Visobert {
+public class Visobert implements AutoCloseable {
 
-    public static void main(String[] args) throws Exception {
-        // 1. Setup paths
-        Path modelPath = Paths.get("src/resources/visobert/model.onnx");
-        Path tokenizerPath = Paths.get("src/resources/visobert/tokenizer.json");
+    private final ZooModel<String, Classifications> model;
+    private final Predictor<String, Classifications> predictor;
 
-        // 2. Load the Tokenizer (You already did this part)
-        // We use HuggingFaceTokenizer via DJL
-        HuggingFaceTokenizer tokenizer = HuggingFaceTokenizer.builder()
+    public Visobert(Path modelPath, Path tokenizerPath) throws Exception {
+        // 1. Setup Tokenizer
+    	HuggingFaceTokenizer tokenizer = HuggingFaceTokenizer.builder()
                 .optTokenizerPath(tokenizerPath)
                 .build();
 
-        // 3. Define the Translator
-        // This tells DJL how to feed the text into the ONNX model
+        // 2. Define Translator (Encapsulated logic)
         Translator<String, Classifications> translator = new Translator<String, Classifications>() {
+            @Override
+            public NDList processInput(TranslatorContext ctx, String input) {
+                ai.djl.huggingface.tokenizers.Encoding encoding = tokenizer.encode(input);
+                NDManager manager = ctx.getNDManager();
 
-        	@Override
-        	public NDList processInput(TranslatorContext ctx, String input) {
-        	    // 1. Tokenize
-        	    Encoding encoding = tokenizer.encode(input);
-        	    NDManager manager = ctx.getNDManager();
+                NDArray inputIdArray = manager.create(encoding.getIds());
+                inputIdArray.setName("input_ids");
 
-        	    // 2. Get data
-        	    long[] inputIds = encoding.getIds();
-        	    long[] attentionMask = encoding.getAttentionMask();
+                NDArray attentionMaskArray = manager.create(encoding.getAttentionMask());
+                attentionMaskArray.setName("attention_mask");
 
-        	    // 3. Create NDArrays
-        	    NDArray inputIdArray = manager.create(inputIds);
-        	    NDArray attentionMaskArray = manager.create(attentionMask);
+                return new NDList(inputIdArray, attentionMaskArray);
+            }
 
-        	    // 4. Set Names (Must be done separately)
-        	    inputIdArray.setName("input_ids");
-        	    attentionMaskArray.setName("attention_mask");
-        	    
-        	    return new NDList(inputIdArray, attentionMaskArray);
-        	}
+            @Override
+            public Classifications processOutput(TranslatorContext ctx, NDList list) {
+                NDArray logits = list.get(0);
+                NDArray probabilities = logits.softmax(0); // The fix we made earlier
+                List<String> classes = Arrays.asList("Negative", "Positive");
+                return new Classifications(classes, probabilities);
+            }
 
-        	@Override
-        	public Classifications processOutput(TranslatorContext ctx, NDList list) {
-        	    // 1. Get the raw output (logits) from the model
-        	    ai.djl.ndarray.NDArray logits = list.get(0);
-        	    
-        	    // 2. Apply Softmax directly on the NDArray
-        	    // We use axis 0 assuming the output is a simple 1D array of probabilities for this specific input
-        	    ai.djl.ndarray.NDArray probabilities = logits.softmax(0);
-
-        	    // 3. Create the Classifications object
-        	    List<String> classes = Arrays.asList("Negative", "Positive"); // Make sure order matches your training!
-        	    
-        	    // Classifications requires a List<Double> or similar, so we use a helper to convert
-        	    return new Classifications(classes, probabilities);
-        	}
+            @Override
+            public Batchifier getBatchifier() {
+                return Batchifier.STACK;
+            }
         };
 
-        // 4. Build Criteria
+        // 3. Build Criteria
         Criteria<String, Classifications> criteria = Criteria.builder()
                 .setTypes(String.class, Classifications.class)
                 .optModelPath(modelPath)
-                .optEngine("OnnxRuntime") // Explicitly ask for ONNX
+                .optEngine("OnnxRuntime")
                 .optTranslator(translator)
                 .build();
 
-        // 5. Run Inference
-        try (ZooModel<String, Classifications> model = criteria.loadModel();
-             Predictor<String, Classifications> predictor = model.newPredictor()) {
-            
-            String text = "tôi buồn vì bạn đánh tôi";
-            Classifications result = predictor.predict(text);
-            System.out.println("Sentiment: " + result);
-        }
+        // 4. Load Model and create Predictor
+        this.model = criteria.loadModel();
+        this.predictor = model.newPredictor();
+    }
+
+    // A clean public method for other classes to use
+    public Classifications predict(String text) throws Exception {
+        return predictor.predict(text);
+    }
+
+    @Override
+    public void close() {
+        // Clean up resources when done
+        if (predictor != null) predictor.close();
+        if (model != null) model.close();
     }
 }
