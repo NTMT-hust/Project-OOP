@@ -1,8 +1,9 @@
-package com.humanitarian.logistics.collector.youtube;
+package com.humanitarian.logistics.collector.task;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.humanitarian.logistics.collector.YouTubeCollector;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 

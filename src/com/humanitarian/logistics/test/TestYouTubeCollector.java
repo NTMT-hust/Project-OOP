@@ -1,6 +1,6 @@
 package com.humanitarian.logistics.test;
 
-import com.humanitarian.logistics.collector.youtube.YouTubeCollector;
+import com.humanitarian.logistics.collector.YouTubeCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;

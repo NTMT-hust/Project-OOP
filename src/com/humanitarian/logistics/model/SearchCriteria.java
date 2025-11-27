@@ -12,7 +12,6 @@ public class SearchCriteria {
     private LocalDateTime endDate;
     private String language;
     private int maxResults;
-    private long maxVideos;
     private List<String> keywords;
 
     private SearchCriteria() {
@@ -48,10 +47,6 @@ public class SearchCriteria {
     public int getMaxResults() {
         return maxResults;
     }
-    
-    public long getMaxVideos() {
-    	return maxVideos;
-    }
 
     // Builder
     public static class Builder {
@@ -86,11 +81,6 @@ public class SearchCriteria {
         public Builder maxResults(int maxResults) {
             criteria.maxResults = maxResults;
             return this;
-        }
-        
-        public Builder maxVideos(long maxVideos) {
-        	criteria.maxVideos = maxVideos;
-        	return this;
         }
         
         public SearchCriteria build() {

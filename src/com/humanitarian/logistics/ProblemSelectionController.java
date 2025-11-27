@@ -27,7 +27,7 @@ public class ProblemSelectionController {
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         
         scene = new Scene(root);
-//        String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//        String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
 //        scene.getStylesheets().add(css);
     	stage.setScene(scene);
     	

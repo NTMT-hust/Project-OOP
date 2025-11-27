@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 import java.util.*;
 import org.slf4j.*;
 
+import com.humanitarian.logistics.collector.task.*;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.GoogleCseConfig;
 import com.humanitarian.logistics.config.NewsApiConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
-import com.humanitarian.logistics.collector.youtube.*;
 import com.humanitarian.logistics.model.*;
 
 public class Crawler {

@@ -242,7 +242,7 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     /**
      * Build search query from criteria
      */
-    private String buildQuery(SearchCriteria criteria) {
+    public String buildQuery(SearchCriteria criteria) {
         StringBuilder query = new StringBuilder();
 
         if (criteria.getKeyword() != null && !criteria.getKeyword().isEmpty()) {
@@ -276,7 +276,7 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     /**
      * Build Google CSE API URL
      */
-    private String buildSearchUrl(String query, int num, int start) throws Exception {
+    public String buildSearchUrl(String query, int num, int start) throws Exception {
         StringBuilder url = new StringBuilder(config.getBaseUrl());
         url.append("?key=").append(config.getApiKey());
         url.append("&cx=").append(config.getSearchEngineId());
@@ -322,7 +322,7 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     /**
      * Execute search request
      */
-    private List<SocialPost> executeSearchRequest(String url, SearchCriteria criteria)
+    public List<SocialPost> executeSearchRequest(String url, SearchCriteria criteria)
             throws IOException {
 
         List<SocialPost> posts = new ArrayList<>();
@@ -612,4 +612,9 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     public GoogleCseConfig getConfig() {
         return config;
     }
+
+	public CustomRateLimiter getRateLimiter() {
+		// TODO Auto-generated method stub
+		return rateLimiter;
+	}
 }

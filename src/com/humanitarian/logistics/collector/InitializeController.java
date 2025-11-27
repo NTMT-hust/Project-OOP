@@ -1,9 +1,8 @@
-package com.humanitarian.logistics.collector.youtube;
+package com.humanitarian.logistics.collector;
 
 import java.io.IOException;
 
-import com.humanitarian.logistics.config.AppConfig;
-import com.humanitarian.logistics.config.YouTubeConfig;
+import com.humanitarian.logistics.config.*;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -33,25 +32,36 @@ public class InitializeController {
 	private Scene scene;
 	private Parent root;
 	
-	private AppConfig appConfig = new AppConfig("youtube");
-	private YouTubeConfig config = new YouTubeConfig(appConfig);
-	private YouTubeCollector youtubeCollector;
+	private AppConfig appConfig;
+	private Collector collector;
 	
-	@FXML
-	public void initialize() throws IOException {
-		initializeCollector();
-		simulateInitialize();
-	}
-	
-	public void initializeCollector() throws IOException {
-		 this.youtubeCollector = new YouTubeCollector(config);
+	public void initializeCollector(String collectorName) throws IOException {
+		 switch (collectorName) {
+		 	case "Youtube":
+		 		appConfig = new AppConfig("youtube");
+		 		YouTubeConfig youtubeConfig = new YouTubeConfig(appConfig);
+		 		collector = new YouTubeCollector(youtubeConfig);
+		 	
+		 	case "GoogleCSE":
+		 		appConfig = new AppConfig("google.cse");
+		 		GoogleCseConfig googleCseConfig = new GoogleCseConfig(appConfig);
+		 		collector = new GoogleCseCollector(googleCseConfig);
+		 	
+		 	case "NewsAPI":
+		 		appConfig = new AppConfig("newsapi");
+		 		NewsApiConfig newsApiConfig = new NewsApiConfig(appConfig);
+		 		collector = new NewsCollector(newsApiConfig);
+		 }
+		 statusLabel.setText("Initializing " + collectorName + " Collector...");
+		 
+		 simulateInitialize();
 	}
 	
 	public void simulateInitialize() throws IOException {
 		
 		KeyValue endValue;
 		
-        if (youtubeCollector.getInitialize()) {
+        if (collector.testConnection()) {
     		// 1. Define the END value we want (Progress = 1.0)
             endValue = new KeyValue(progressBar.progressProperty(), 1.0);
         } else {
@@ -68,14 +78,14 @@ public class InitializeController {
         	Stage currentStage = (Stage) rootPane.getScene().getWindow();
         	currentStage.close();
             
-        	if (youtubeCollector.getInitialize()) {
+        	if (collector.testConnection()) {
         		try {
-        			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/InputInterface.fxml"));
+        			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/InputInterface.fxml"));
         			root = loader.load();
         			stage = new Stage();
             	
         			scene = new Scene(root);
-//	        		String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//	        		String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
 //	        		scene.getStylesheets().add(css);
         			stage.setScene(scene);
         			stage.setTitle("Input your request...");
@@ -87,12 +97,12 @@ public class InitializeController {
         			} 
         	} else {
         		try {
-        			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/Error.fxml"));
+        			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Error.fxml"));
         			root = loader.load();
         			stage = new Stage();
                 	
         			scene = new Scene(root);
-//    	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//    	        	String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
 //    	        	scene.getStylesheets().add(css);
         			stage.setScene(scene);
         			stage.setTitle("Input your request...");
@@ -104,7 +114,7 @@ public class InitializeController {
    				}
         	}
         });
-
+        
         timeline.play();
 	}
 }

@@ -7,9 +7,8 @@ public class InputData {
 	private String[] hashTags;
 	private LocalDateTime startDate, endDate;
 	private int maxResult;
-	private long maxVideo;
 	
-	public InputData(String keyWord, String[] hashTags, LocalDateTime startDate, LocalDateTime endDate, int maxResult, long maxVideo) {
+	public InputData(String keyWord, String[] hashTags, LocalDateTime startDate, LocalDateTime endDate, int maxResult) {
 		this.keyWord = keyWord;
 		this.hashTags = hashTags;
 		
@@ -17,15 +16,10 @@ public class InputData {
 		this.endDate = endDate;
 		
 		this.maxResult = maxResult;
-		this.maxVideo = maxVideo;
 	}
 
 	public int getMaxResult() {
 		return maxResult;
-	}
-	
-	public long getMaxVideo() {
-		return maxVideo;
 	}
 
 	public String getKeyWord() {

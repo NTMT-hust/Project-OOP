@@ -1,12 +1,10 @@
-package com.humanitarian.logistics.userInterface.youtube;
+package com.humanitarian.logistics.userInterface;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 import com.humanitarian.logistics.dataStructure.InputData;
 
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.DialogPane;
 
 public class InputBoxController {
     @FXML
@@ -35,7 +31,6 @@ public class InputBoxController {
     private String[] hashTags;
     private LocalDateTime startDate, endDate;
     private int maxResult;
-    private long maxVideo;
     
     private Stage stage;
     private Scene scene;
@@ -48,11 +43,10 @@ public class InputBoxController {
     	startDate = userStartDate.getValue().atStartOfDay();
     	endDate = userEndDate.getValue().atTime(23, 59, 59);
     	maxResult = Integer.parseInt(userMaxResult.getText());
-    	maxVideo = Long.parseLong(userMaxVideo.getText());
     	
-    	InputData userInput = new InputData(keyWord, hashTags, startDate, endDate, maxResult, maxVideo);
+    	InputData userInput = new InputData(keyWord, hashTags, startDate, endDate, maxResult);
     	
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/SearchingInterface.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SearchingInterface.fxml"));
     	root = loader.load();
     	
     	SearchingController searchController = loader.getController();
@@ -70,7 +64,7 @@ public class InputBoxController {
     
     @FXML
     public void cancel(ActionEvent e) throws IOException {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/CancellingInterface.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/CancellingInterface.fxml"));
     	root = loader.load();
     	stage = (Stage)((Node)e.getSource()).getScene().getWindow();
     	scene = new Scene(root);

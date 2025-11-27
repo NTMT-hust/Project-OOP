@@ -1,10 +1,9 @@
-package com.humanitarian.logistics.collector.youtube;
+package com.humanitarian.logistics.collector;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.*;
-import com.humanitarian.logistics.collector.Collector;
 import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
@@ -54,10 +53,6 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         } catch (Exception e) {
         	this.initialize = false;
         }
-    }
-    
-    public boolean getInitialize() {
-    	return this.initialize;
     }
     
 	@Override
@@ -111,12 +106,12 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 
         } catch (Exception e) {
         	try {
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/Error.fxml"));
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Error.fxml"));
     			Parent root = loader.load();
     			Stage stage = new Stage();
             	
     			Scene scene = new Scene(root);
-//	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//	        	String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
 //	        	scene.getStylesheets().add(css);
     			stage.setScene(scene);
     			stage.setTitle("Error");
@@ -137,7 +132,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         List<String> videoIds = new ArrayList<>();
         String nextPageToken = null;
 
-        while (allVideos.size() < criteria.getMaxVideos()) {
+        while (allVideos.size() < 100) {
             // 1. Create request
             YouTube.Search.List search = youtube.search().list(Arrays.asList("id", "snippet"));
             search.setKey(config.getApiKey());
@@ -151,7 +146,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 
             search.setQ(query);
             search.setType(List.of("video"));
-            search.setMaxResults((criteria.getMaxVideos() > 50L) ? 50L : criteria.getMaxVideos()); // Max per page
+            search.setMaxResults(50L); // Max per page
             search.setPageToken(nextPageToken); // Give me the NEXT page
 
             // 2. Execute
@@ -195,7 +190,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 
         // Filters
         search.setType(List.of("video"));
-        search.setMaxResults(criteria.getMaxVideos()); // Tìm tối đa 1 lượng videos
+        search.setMaxResults(1000L); // Tìm tối đa 1 lượng videos
         search.setOrder("date"); // Sắp xếp theo ngày mới nhất
 
         // Date filters
@@ -246,7 +241,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
             request.setKey(config.getApiKey());
             request.setVideoId(videoId);
             request.setTextFormat("plainText");
-            request.setMaxResults(1000000L);
+            request.setMaxResults(100L);
 
             CommentThreadListResponse response = request.execute();
 

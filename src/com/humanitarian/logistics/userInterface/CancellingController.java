@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userInterface.youtube;
+package com.humanitarian.logistics.userInterface;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -24,7 +24,7 @@ public class CancellingController {
         KeyValue endValue = new KeyValue(progressBar.progressProperty(), 1.0);
 
         // 2. Create a KeyFrame that says "Reach the endValue at 0.5 seconds"
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.5), endValue);
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.25), endValue);
 
         // 3. Create the Timeline with that frame
         Timeline timeline = new Timeline(keyFrame);

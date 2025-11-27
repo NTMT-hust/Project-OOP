@@ -102,7 +102,7 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
 
     }
 
-    private String buildEverythingUrl(String query, int page, String from, String to) {
+    public String buildEverythingUrl(String query, int page, String from, String to) {
         StringBuilder sb = new StringBuilder("https://newsapi.org/v2/everything?");
         sb.append("apikey=").append(config.getApiKey());
         sb.append("&q=").append(URLEncoder.encode(query, StandardCharsets.UTF_8));
@@ -242,7 +242,7 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
         return new ArrayList<>();
     }
 
-    private String buildQuery(SearchCriteria criteria) {
+    public String buildQuery(SearchCriteria criteria) {
         StringBuilder sb = new StringBuilder();
         if (criteria.getKeyword() != null && !criteria.getKeyword().isEmpty()) {
             sb.append(criteria.getKeyword());
@@ -263,7 +263,7 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
         return new Request.Builder().url(url).get().addHeader("User-Agent", "ProjectOOP/1.0").build();
     }
 
-    private List<SocialPost> executeRequest(String url) throws IOException {
+    public List<SocialPost> executeRequest(String url) throws IOException {
         List<SocialPost> posts = new ArrayList<>();
 
         Request request = buildRequest(url);
@@ -434,5 +434,9 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
 
     public NewsApiConfig getConfig() {
         return config;
+    }
+    
+    public CustomRateLimiter getRateLimiter() {
+    	return rateLimiter;
     }
 }

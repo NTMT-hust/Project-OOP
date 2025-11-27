@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userInterface.youtube;
+package com.humanitarian.logistics.userInterface;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -9,8 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
-import com.humanitarian.logistics.collector.youtube.YouTubeCollector;
-import com.humanitarian.logistics.collector.youtube.YouTubeTaskCollector;
+import com.humanitarian.logistics.collector.Collector;
+import com.humanitarian.logistics.collector.YouTubeCollector;
+import com.humanitarian.logistics.collector.task.YouTubeTaskCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.dataStructure.InputData;
@@ -37,13 +38,10 @@ public class SearchingController {
 	
 	List<SocialPost> resultPost;
 	
-	private AppConfig appConfig = new AppConfig("youtube");
-	private YouTubeConfig config = new YouTubeConfig(appConfig);
-	private YouTubeCollector youtubeCollector;
+	private YouTubeCollector collector;
 	
-	@FXML
-	public void initialize() throws IOException {
-		youtubeCollector = new YouTubeCollector(config);
+	public SearchingController(YouTubeCollector collector) {
+		this.collector = collector;
 	}
 	
 	public void savePost(List<SocialPost> resultPost) throws IOException {
@@ -62,8 +60,6 @@ public class SearchingController {
         
         try (java.io.FileWriter writer = new java.io.FileWriter(fileName)) {
             gson.toJson(resultPost, writer);
-        } catch (Exception e) {
-        	e.printStackTrace();
         };
 	}
 	
@@ -77,11 +73,9 @@ public class SearchingController {
 						)
 				.language("vi")
 				.maxResults(inputData.getMaxResult())
-				.maxVideos(inputData.getMaxVideo())
 				.build();
-//		List<SocialPost> resultPost = youtubeCollector.collect(searchCriteria);
 		
-		YouTubeTaskCollector collectTask = new YouTubeTaskCollector(searchCriteria, this.youtubeCollector);
+		YouTubeTaskCollector collectTask = new YouTubeTaskCollector(searchCriteria, this.collector);
 		
 		progressBar.progressProperty().bind(collectTask.progressProperty());
 		statusLabel.textProperty().bind(collectTask.messageProperty());
@@ -93,14 +87,14 @@ public class SearchingController {
 	        	Stage currentStage = (Stage) scenePane.getScene().getWindow();
 	        	currentStage.close();
 				
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/SearchComplete.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SearchComplete.fxml"));
 				Parent root;
 
 				root = loader.load();
 				Stage stage = new Stage();
         	
 				Scene scene = new Scene(root);
-//        		String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//        		String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
 //        		scene.getStylesheets().add(css);
 				stage.setScene(scene);
 				stage.setTitle("Complete searching!");
@@ -119,12 +113,12 @@ public class SearchingController {
 				Stage currentStage = (Stage) scenePane.getScene().getWindow();
 	        	currentStage.close();
 				
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/youtube/Error.fxml"));
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Error.fxml"));
     			Parent root = loader.load();
     			Stage stage = new Stage();
             	
     			Scene scene = new Scene(root);
-//	        	String css = this.getClass().getResource("/resources/youtube/InputInterface.css").toExternalForm();
+//	        	String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
 //	        	scene.getStylesheets().add(css);
     			stage.setScene(scene);
     			stage.setTitle("Error");
