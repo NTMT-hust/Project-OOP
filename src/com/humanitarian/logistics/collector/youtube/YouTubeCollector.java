@@ -4,7 +4,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.*;
-
+import com.humanitarian.logistics.collector.Collector;
 import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
@@ -58,7 +58,14 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
     
     public boolean getInitialize() {
     	return this.initialize;
-
+    }
+    
+	@Override
+	public boolean testConnection() {
+		// TODO Auto-generated method stub
+		return this.initialize;
+	}
+    
     /**
      * Thu thập comments từ YouTube
      */
@@ -130,7 +137,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         List<String> videoIds = new ArrayList<>();
         String nextPageToken = null;
 
-        while (allVideos.size() < 1000) {
+        while (allVideos.size() < criteria.getMaxVideos()) {
             // 1. Create request
             YouTube.Search.List search = youtube.search().list(Arrays.asList("id", "snippet"));
             search.setKey(config.getApiKey());
@@ -144,7 +151,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 
             search.setQ(query);
             search.setType(List.of("video"));
-            search.setMaxResults(50L); // Max per page
+            search.setMaxResults((criteria.getMaxVideos() > 50L) ? 50L : criteria.getMaxVideos()); // Max per page
             search.setPageToken(nextPageToken); // Give me the NEXT page
 
             // 2. Execute
@@ -418,4 +425,5 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
             this.commentCount = commentCount;
         }
     }
+
 }

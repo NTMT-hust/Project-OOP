@@ -17,23 +17,14 @@ import com.humanitarian.logistics.dataStructure.InputData;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.concurrent.Task;
 
 public class SearchingController {
 	
@@ -46,7 +37,7 @@ public class SearchingController {
 	
 	List<SocialPost> resultPost;
 	
-	private AppConfig appConfig = new AppConfig();
+	private AppConfig appConfig = new AppConfig("youtube");
 	private YouTubeConfig config = new YouTubeConfig(appConfig);
 	private YouTubeCollector youtubeCollector;
 	

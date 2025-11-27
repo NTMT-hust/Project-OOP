@@ -33,7 +33,7 @@ public class InitializeController {
 	private Scene scene;
 	private Parent root;
 	
-	private AppConfig appConfig = new AppConfig();
+	private AppConfig appConfig = new AppConfig("youtube");
 	private YouTubeConfig config = new YouTubeConfig(appConfig);
 	private YouTubeCollector youtubeCollector;
 	
