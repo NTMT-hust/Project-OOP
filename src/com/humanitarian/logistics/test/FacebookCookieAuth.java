@@ -64,7 +64,7 @@ public class FacebookCookieAuth {
 
             // --- INSERT YOUR SCRAPING LOGIC HERE ---
             // (The parsing logic from the previous answer goes here)
-            Thread.sleep(10000); // Just to verify visual login
+            Thread.sleep(500); // Just to verify visual login
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

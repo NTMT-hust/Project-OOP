@@ -60,8 +60,11 @@ public class SearchingController {
             .setPrettyPrinting()
             .create();
         
-        java.io.FileWriter writer = new java.io.FileWriter(fileName);
-        gson.toJson(resultPost, writer);
+        try (java.io.FileWriter writer = new java.io.FileWriter(fileName)) {
+            gson.toJson(resultPost, writer);
+        } catch (Exception e) {
+        	e.printStackTrace();
+        };
 	}
 	
 	public void searchProcedure(InputData inputData) throws IOException {

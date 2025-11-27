@@ -8,8 +8,8 @@ import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.GoogleCseConfig;
 import com.humanitarian.logistics.config.NewsApiConfig;
 import com.humanitarian.logistics.config.YouTubeConfig;
+import com.humanitarian.logistics.collector.youtube.*;
 import com.humanitarian.logistics.model.*;
-import com.humanitarian.logistics.collector.*;
 
 public class Crawler {
     private static final Logger logger = LoggerFactory.getLogger(Crawler.class);
