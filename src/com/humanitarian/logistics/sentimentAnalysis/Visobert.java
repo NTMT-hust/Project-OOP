@@ -47,7 +47,7 @@ public class Visobert implements AutoCloseable {
             public Classifications processOutput(TranslatorContext ctx, NDList list) {
                 NDArray logits = list.get(0);
                 NDArray probabilities = logits.softmax(0); // The fix we made earlier
-                List<String> classes = Arrays.asList("Negative", "Positive");
+                List<String> classes = Arrays.asList("Negative", "Positive", "Neutral");
                 return new Classifications(classes, probabilities);
             }
 
