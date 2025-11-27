@@ -3,5 +3,6 @@
 /.vscode
 /.settings
 /.project
-/src/resources/visobert/
+/src/resources/visobert/*.json
+/src/resources/visobert/*.onnx
 /data
