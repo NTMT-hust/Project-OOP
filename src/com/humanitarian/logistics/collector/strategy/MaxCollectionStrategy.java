@@ -215,7 +215,7 @@ public class MaxCollectionStrategy {
                 SearchCriteria dayCriteria = new SearchCriteria.Builder()
                         .keyword(baseCriteria.getKeyword())
                         .dateRange(dayStart, dayEnd)
-                        .maxResults(100)
+                        .maxResults(10000)
                         .build();
 
                 List<SocialPost> posts = collector.collect(dayCriteria);
@@ -225,7 +225,7 @@ public class MaxCollectionStrategy {
                         posts.size(), allPosts.size());
 
                 // Rate limit
-                Thread.sleep(1000);
+                Thread.sleep(100);
 
             } catch (Exception e) {
                 logger.error("Day {} failed: {}", day + 1, e.getMessage());

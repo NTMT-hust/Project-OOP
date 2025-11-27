@@ -2,6 +2,10 @@ package com.humanitarian.logistics.test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
+import com.google.gson.reflect.TypeToken;
 import com.humanitarian.logistics.collector.NewsCollector;
 import com.humanitarian.logistics.config.AppConfig;
 import com.humanitarian.logistics.config.NewsApiConfig;
@@ -12,8 +16,12 @@ import com.humanitarian.logistics.util.LocalDateTimeAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,7 +71,7 @@ public class TestNewsApiCollector {
                 .dateRange(
                         LocalDateTime.now().minusDays(30), // NewsAPI free: max 1 month back
                         LocalDateTime.now())
-                .maxResults(50)
+                .maxResults(5000000)
                 .build();
 
         logger.info("Keyword: {}", criteria.getKeyword());
@@ -121,21 +129,50 @@ public class TestNewsApiCollector {
                 .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
                 .limit(5)
                 .forEach(entry -> logger.info("  {}: {} articles", entry.getKey(), entry.getValue()));
+        System.out.println("\n--- Saving Results ---");
         try {
-            // 5. Write to JSON file
+            java.io.File dataDir = new java.io.File("data");
+            if (!dataDir.exists())
+                dataDir.mkdirs();
+
+            String fileName = "data/youtube_posts.json";
+            java.io.File file = new java.io.File(fileName);
+
             Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                    .registerTypeAdapter(LocalDateTime.class,
+                            (JsonSerializer<LocalDateTime>) (src, typeOfSrc,
+                                    context) -> new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                    .registerTypeAdapter(LocalDateTime.class,
+                            (JsonDeserializer<LocalDateTime>) (json, type, context) -> LocalDateTime
+                                    .parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                     .setPrettyPrinting()
                     .create();
-            try (FileWriter writer = new FileWriter(".\\data\\news_api_results.json")) {
-                gson.toJson(posts, writer);
+
+            List<SocialPost> allPosts = new ArrayList<>();
+
+            if (file.exists() && file.length() > 0) {
+                try (FileReader reader = new FileReader(file)) {
+                    Type listType = new TypeToken<List<SocialPost>>() {
+                    }.getType();
+                    List<SocialPost> existingPosts = gson.fromJson(reader, listType);
+                    if (existingPosts != null) {
+                        allPosts.addAll(existingPosts);
+                    }
+                }
             }
 
-            System.out.println("Saved " + posts.size() + " results to news_api_results.json");
+            allPosts.addAll(posts);
 
+            try (java.io.FileWriter writer = new java.io.FileWriter(fileName)) {
+                gson.toJson(allPosts, writer);
+            }
+
+            System.out.println("✓ Saved " + posts.size() + " new posts. Total: " + allPosts.size());
         } catch (Exception e) {
+            System.err.println("✗ Failed to save data: " + e.getMessage());
             e.printStackTrace();
         }
+
         // Date distribution
         LocalDateTime earliest = posts.stream()
                 .map(SocialPost::getTimestamp)
