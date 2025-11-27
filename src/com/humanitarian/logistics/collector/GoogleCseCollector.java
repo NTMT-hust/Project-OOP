@@ -120,72 +120,83 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
 
         logger.info("Using Google Custom Search Engine");
 
+        // 1. Determine how many we WANT (e.g., 50)
         int maxResults = Math.min(criteria.getMaxResults(), config.getMaxResults());
-        int resultsPerPage = config.getResultsPerPage();
+
+        // 2. Google CSE pages are fixed at 10 results
+        int resultsPerPage = 10;
+
+        // 3. Start at index 1 (Google uses 1-based indexing: 1, 11, 21...)
         int startIndex = 1;
         int totalFetched = 0;
 
         try {
+            // FIX: Loop while we haven't reached OUR limit (maxResults),
+            // NOT the API limit (91). The API limit is checked inside.
             while (totalFetched < maxResults) {
+
                 // Rate limiter
                 if (rateLimiter != null) {
                     rateLimiter.acquire();
                 }
 
+                // Calculate how many to fetch this time (usually 10, unless we only need 4
+                // more)
                 int toFetch = Math.min(resultsPerPage, maxResults - totalFetched);
 
-                logger.debug("Fetching results {}-{}", startIndex, startIndex + toFetch - 1);
+                logger.debug("Fetching page starting at index {}", startIndex);
 
                 String query = buildQuery(criteria);
+
+                // Pass the dynamic 'startIndex' to get the next page
                 String url = buildSearchUrl(query, toFetch, startIndex);
 
                 List<SocialPost> pagePosts;
                 try {
                     pagePosts = executeSearchRequest(url, criteria);
                 } catch (IOException e) {
-                    logger.error("Network error during Google CSE request: {}", e.getMessage());
-                    break; // or return posts; depending on your app behavior
-                } catch (Exception e) {
-                    logger.error("Unexpected error executing Google CSE search: {}", e.getMessage(), e);
+                    logger.error("Network error: {}", e.getMessage());
                     break;
                 }
 
                 if (pagePosts.isEmpty()) {
-                    logger.info("No more results available");
+                    logger.info("No more results returned by Google");
                     break;
                 }
 
                 posts.addAll(pagePosts);
                 totalFetched += pagePosts.size();
 
-                logger.info("Fetched {} results (total: {})", pagePosts.size(), totalFetched);
-
-                if (pagePosts.size() < toFetch) {
-                    break; // no more data
-                }
-
-                startIndex += resultsPerPage;
-
-                if (startIndex > 91) {
-                    logger.warn("Reached Google CSE pagination limit (100 results max)");
+                // Stop if we have enough
+                if (totalFetched >= maxResults) {
                     break;
                 }
 
+                // MATH FOR NEXT PAGE:
+                // Move start index forward by 10 (1 -> 11 -> 21)
+                startIndex += resultsPerPage;
+
+                // HARD LIMIT CHECK:
+                // Google CSE cannot return results past index 100.
+                // If startIndex is 91, we fetch 91-100.
+                // If startIndex becomes 101, the API will fail, so we stop.
+                if (startIndex > 91) {
+                    logger.warn("Reached Google CSE 100-result limit.");
+                    break;
+                }
+
+                // Be polite to the API
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    logger.warn("Fetch delay interrupted");
-                    Thread.currentThread().interrupt(); // restore interrupted flag
+                    Thread.currentThread().interrupt();
                 }
             }
 
         } catch (Exception e) {
             logger.error("Fatal error in collect(): {}", e.getMessage(), e);
-            // You can decide: rethrow or return partial results
-            // throw e;
         }
 
-        logger.info("Collected {} articles from Google CSE", posts.size());
         return posts;
     }
 

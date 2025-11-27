@@ -112,6 +112,7 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
             sb.append("&from=").append(from);
         if (to != null)
             sb.append("&to=").append(to);
+        System.out.println(sb.toString());
         return sb.toString();
     }
 
@@ -159,6 +160,7 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
             logger.debug("Fetching page {} size {}", page, toFetch);
             // String url = buildTopHeadlinesUrl(buildQuery(criteria), pageSize);
             // Build URL
+
             String url = buildEverythingUrl(
                     buildQuery(criteria),
                     page,

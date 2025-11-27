@@ -6,15 +6,15 @@ import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.google.gson.*;
-import com.humanitarian.logistics.collector.youtube.YouTubeCollector;
-import com.humanitarian.logistics.config.AppConfig;
-import com.humanitarian.logistics.config.YouTubeConfig;
-import com.humanitarian.logistics.model.SearchCriteria;
-import com.humanitarian.logistics.model.SocialPost;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestYouTubeCollector {
@@ -60,7 +60,7 @@ public class TestYouTubeCollector {
                         LocalDateTime.of(2025, 9, 6, 0, 0),
                         LocalDateTime.of(2025, 12, 15, 23, 59))
                 .language("vi")
-                .maxResults(500000)
+                .maxResults(5)
                 .build();
 
         // Build criteria for searching short video
@@ -72,7 +72,7 @@ public class TestYouTubeCollector {
                         LocalDateTime.of(2025, 9, 6, 0, 0),
                         LocalDateTime.of(2025, 12, 15, 23, 59))
                 .language("vi")
-                .maxResults(500000)
+                .maxResults(5)
                 .build();
 
         System.out.println("Keyword: " + criteria1.getKeyword());
@@ -135,25 +135,42 @@ public class TestYouTubeCollector {
                 dataDir.mkdirs();
 
             String fileName = "data/youtube_posts.json";
+            java.io.File file = new java.io.File(fileName);
 
-            // Custom Gson with LocalDateTime support
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(LocalDateTime.class,
                             (JsonSerializer<LocalDateTime>) (src, typeOfSrc,
                                     context) -> new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                    .registerTypeAdapter(LocalDateTime.class,
+                            (JsonDeserializer<LocalDateTime>) (json, type, context) -> LocalDateTime
+                                    .parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                     .setPrettyPrinting()
                     .create();
 
-            try (java.io.FileWriter writer = new java.io.FileWriter(fileName)) {
-                gson.toJson(posts, writer);
+            List<SocialPost> allPosts = new ArrayList<>();
+
+            if (file.exists() && file.length() > 0) {
+                try (FileReader reader = new FileReader(file)) {
+                    Type listType = new TypeToken<List<SocialPost>>() {
+                    }.getType();
+                    List<SocialPost> existingPosts = gson.fromJson(reader, listType);
+                    if (existingPosts != null) {
+                        allPosts.addAll(existingPosts);
+                    }
+                }
             }
 
-            System.out.println("✓ Saved " + posts.size() + " posts to " + fileName);
+            allPosts.addAll(posts);
+
+            try (java.io.FileWriter writer = new java.io.FileWriter(fileName)) {
+                gson.toJson(allPosts, writer);
+            }
+
+            System.out.println("✓ Saved " + posts.size() + " new posts. Total: " + allPosts.size());
         } catch (Exception e) {
             System.err.println("✗ Failed to save data: " + e.getMessage());
             e.printStackTrace();
         }
-
         System.out.println("\n========================================");
         System.out.println("✓ Test completed successfully!");
         System.out.println("========================================");
