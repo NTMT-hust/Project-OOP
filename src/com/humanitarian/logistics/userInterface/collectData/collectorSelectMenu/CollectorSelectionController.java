@@ -1,9 +1,9 @@
-package com.humanitarian.logistics.userInterface.collectorSelectMenu;
+package com.humanitarian.logistics.userInterface.collectData.collectorSelectMenu;
 
 import java.io.IOException;
 import java.util.List;
 
-import com.humanitarian.logistics.userInterface.intializeCollector.InitializeController;
+import com.humanitarian.logistics.userInterface.collectData.intializeCollector.InitializeController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +50,7 @@ public class CollectorSelectionController {
 	@FXML
 	public void startSearching(ActionEvent e) throws IOException {
 		
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/intializeCollector/InitializeCollector.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/collectData/intializeCollector/InitializeCollector.fxml"));
 		
 		root = loader.load();
 		stage = (Stage)((Node)e.getSource()).getScene().getWindow();

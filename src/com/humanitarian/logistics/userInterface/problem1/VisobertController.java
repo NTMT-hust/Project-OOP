@@ -1,7 +1,9 @@
-package com.humanitarian.logistics.sentimentAnalysis;
+package com.humanitarian.logistics.userInterface.problem1;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.humanitarian.logistics.sentimentAnalysis.Visobert;
+
 import ai.djl.modality.Classifications;
 
 import java.io.BufferedReader;
@@ -18,7 +20,7 @@ public class VisobertController {
         // Update these paths to where your actual files are on your disk
         Path modelPath = Paths.get("src/resources/visobert/model.onnx");
         Path tokenizerPath = Paths.get("src/resources/visobert/tokenizer.json");
-        Path dataPath = Paths.get("data", "youtube_posts.json");
+        Path dataPath = Paths.get("data", "GoogleCSE_posts.json");
 
         // Use try-with-resources to ensure the model closes automatically
         try (Visobert analyzer = new Visobert(modelPath, tokenizerPath)) {

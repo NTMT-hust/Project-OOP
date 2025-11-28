@@ -40,49 +40,6 @@ public abstract class Collector<T, A, R> {
     public abstract boolean testConnection();
 
     /**
-     * Main collection method
-     * TEMPLATE METHOD PATTERN: Defines algorithm structure
-     */
-    public R collect(T criteria) {
-        if (!initialized) {
-            log("Client not initialized, initializing now...");
-            initializeClient();
-        }
-
-        if (!testConnection()) {
-            log("ERROR: Connection test failed!");
-            return getEmptyResult();
-        }
-
-        log("Starting collection...");
-
-        try {
-            // Pre-collection hook
-            beforeCollect(criteria);
-
-            // Actual collection - implemented by subclasses
-            R result = doCollect(criteria);
-
-            // Post-collection hook
-            afterCollect(result);
-
-            log("Collection completed successfully");
-            return result;
-
-        } catch (Exception e) {
-            log("ERROR: " + e.getMessage());
-            handleError(e);
-            return getEmptyResult();
-        }
-    }
-
-    /**
-     * Actual collection logic - must be implemented
-     * ABSTRACT METHOD: Each collector has different implementation
-     */
-    protected abstract R doCollect(T criteria) throws Exception;
-
-    /**
      * Get API client
      */
     public A getApiClient() {

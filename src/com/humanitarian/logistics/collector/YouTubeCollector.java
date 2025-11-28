@@ -8,11 +8,6 @@ import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -60,72 +55,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 		// TODO Auto-generated method stub
 		return this.initialize;
 	}
-    
-    /**
-     * Thu thập comments từ YouTube
-     */
-    @Override
-    public List<SocialPost> doCollect(SearchCriteria criteria) {
-        List<SocialPost> posts = new ArrayList<>();
-
-        try {
-            System.out.println("Step 1: Searching for videos...");
-            List<String> videoIds = searchWithPagination(criteria);
-            System.out.println("Found " + videoIds.size() + " videos");
-
-            if (videoIds.isEmpty()) {
-                return posts;
-            }
-
-            System.out.println("\nStep 2: Collecting comments from videos...");
-            int totalComments = 0;
-
-            for (int i = 0; i < videoIds.size(); i++) {
-                String videoId = videoIds.get(i);
-                System.out.println("  [" + (i + 1) + "/" + videoIds.size() + "] Video: " + videoId);
-
-                try {
-                    List<SocialPost> videoComments = getVideoComments(videoId, criteria);
-                    posts.addAll(videoComments);
-                    totalComments += videoComments.size();
-
-                    System.out.println("    → Collected " + videoComments.size() + " comments");
-
-                    if (posts.size() >= criteria.getMaxResults()) {
-                        System.out.println("    → Reached max results limit");
-                        break;
-                    }
-                    
-                } catch (Exception e) {
-                    System.err.println("    ✗ Error getting comments: " + e.getMessage());
-                }
-            }
-
-            System.out.println("\n✓ YouTube collection completed");
-            System.out.println("Total posts: " + posts.size());
-
-        } catch (Exception e) {
-        	try {
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Error.fxml"));
-    			Parent root = loader.load();
-    			Stage stage = new Stage();
-            	
-    			Scene scene = new Scene(root);
-//	        	String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
-//	        	scene.getStylesheets().add(css);
-    			stage.setScene(scene);
-    			stage.setTitle("Error");
-    			stage.centerOnScreen();
-    			stage.show();
-			} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-			}
-        }
-
-        return posts;
-    }
-
+	
     public List<String> searchWithPagination(SearchCriteria criteria)
             throws IOException {
         List<SearchResult> allVideos = new ArrayList<>();

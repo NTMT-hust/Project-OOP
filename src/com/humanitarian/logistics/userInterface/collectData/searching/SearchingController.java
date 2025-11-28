@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userInterface.searching;
+package com.humanitarian.logistics.userInterface.collectData.searching;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -17,6 +17,8 @@ import com.humanitarian.logistics.collector.task.TaskCollector;
 import com.humanitarian.logistics.dataStructure.InputData;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
+import com.humanitarian.logistics.userInterface.collectData.inputBox.InputBoxController;
+import com.humanitarian.logistics.userInterface.collectData.searchComplete.CompleteController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -76,8 +78,19 @@ public class SearchingController {
 				Stage currentStage = (Stage) scenePane.getScene().getWindow();
 				currentStage.close();
 			
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SearchComplete.fxml"));
-			
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/collectData/searchComplete/SearchComplete.fxml"));
+				
+				loader.setControllerFactory(type -> {
+    				if (type == CompleteController.class) {
+    					return new CompleteController(this.collectorType);
+    				}
+    				try {
+    					return type.getDeclaredConstructor().newInstance();
+    				} catch (Exception except) {
+    					throw new RuntimeException(except);
+    				}
+    			});
+				
 				Parent root = loader.load();
 				Stage stage = new Stage();
     	
@@ -112,6 +125,7 @@ public class SearchingController {
 				stage.setTitle("Error");
 				stage.centerOnScreen();
 				stage.show();
+				
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -123,24 +137,8 @@ public class SearchingController {
         java.io.File dataDir = new java.io.File("data");
         if (!dataDir.exists()) dataDir.mkdirs();
         
-        String fileName;
+        String fileName = "data/" + collectorType + "_posts.json";
         
-        switch (collectorType) {
-        	case "Youtube":
-        		fileName = "data/youtube_posts.json";
-        		break;
-        		
-        	case "GoogleCSE":
-        		fileName = "data/googlecse_posts.json";
-        		break;
-        	
-        	case "NewsAPI":
-        		fileName = "data/newsapi_posts.json";
-        		break;
-        	default:
-        		fileName = "data/nosource_posts.json";
-        		break;
-        }
         // Custom Gson with LocalDateTime support
         Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, 

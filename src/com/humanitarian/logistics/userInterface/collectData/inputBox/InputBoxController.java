@@ -1,11 +1,11 @@
-package com.humanitarian.logistics.userInterface.inputBox;
+package com.humanitarian.logistics.userInterface.collectData.inputBox;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 import com.humanitarian.logistics.collector.Collector;
 import com.humanitarian.logistics.dataStructure.InputData;
-import com.humanitarian.logistics.userInterface.searching.SearchingController;
+import com.humanitarian.logistics.userInterface.collectData.searching.SearchingController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -56,7 +56,7 @@ public class InputBoxController {
     	
     	InputData userInput = new InputData(keyWord, hashTags, startDate, endDate, maxResult);
     	
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/searching/SearchingInterface.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/collectData/searching/SearchingInterface.fxml"));
     	
     	loader.setControllerFactory(type -> {
     		if (type == SearchingController.class) {
