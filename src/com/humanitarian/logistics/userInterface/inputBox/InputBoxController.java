@@ -1,10 +1,11 @@
-package com.humanitarian.logistics.userInterface;
+package com.humanitarian.logistics.userInterface.inputBox;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 import com.humanitarian.logistics.collector.Collector;
 import com.humanitarian.logistics.dataStructure.InputData;
+import com.humanitarian.logistics.userInterface.searching.SearchingController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,7 +56,7 @@ public class InputBoxController {
     	
     	InputData userInput = new InputData(keyWord, hashTags, startDate, endDate, maxResult);
     	
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SearchingInterface.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/searching/SearchingInterface.fxml"));
     	
     	loader.setControllerFactory(type -> {
     		if (type == SearchingController.class) {
@@ -85,7 +86,7 @@ public class InputBoxController {
     
     @FXML
     public void cancel(ActionEvent e) throws IOException {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/CancellingInterface.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/cancelling/CancellingInterface.fxml"));
     	root = loader.load();
     	stage = (Stage)((Node)e.getSource()).getScene().getWindow();
     	scene = new Scene(root);

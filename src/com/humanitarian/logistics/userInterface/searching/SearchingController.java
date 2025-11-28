@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userInterface;
+package com.humanitarian.logistics.userInterface.searching;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -82,7 +82,7 @@ public class SearchingController {
 				Stage stage = new Stage();
     	
 				Scene scene = new Scene(root);
-//    			String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
+//    			String css = this.getClass().getResource("/com/humanitarian/logistics/userInterface/inputBox/InputInterface.css").toExternalForm();
 //    			scene.getStylesheets().add(css);
 				stage.setScene(scene);
 				stage.setTitle("Complete searching!");

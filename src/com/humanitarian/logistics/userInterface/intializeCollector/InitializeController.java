@@ -1,9 +1,10 @@
-package com.humanitarian.logistics.collector;
+package com.humanitarian.logistics.userInterface.intializeCollector;
 
 import java.io.IOException;
 
+import com.humanitarian.logistics.collector.*;
 import com.humanitarian.logistics.config.*;
-import com.humanitarian.logistics.userInterface.InputBoxController;
+import com.humanitarian.logistics.userInterface.inputBox.InputBoxController;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -87,7 +88,7 @@ public class InitializeController {
             
         	if (collector.testConnection()) {
         		try {
-        			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/InputInterface.fxml"));
+        			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/inputBox/InputInterface.fxml"));
         			
         			loader.setControllerFactory(type -> {
         				if (type == InputBoxController.class) {

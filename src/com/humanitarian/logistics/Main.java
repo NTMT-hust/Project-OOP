@@ -13,7 +13,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
         // Load the FXML file
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SelectionMenu.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/problemSelectMenu/SelectionMenu.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         

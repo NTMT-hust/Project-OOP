@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userInterface;
+package com.humanitarian.logistics.userInterface.cancelling;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

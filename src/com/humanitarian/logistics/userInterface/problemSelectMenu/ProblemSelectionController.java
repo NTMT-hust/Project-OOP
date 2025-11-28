@@ -1,4 +1,4 @@
-package com.humanitarian.logistics;
+package com.humanitarian.logistics.userInterface.problemSelectMenu;
 
 import java.io.IOException;
 
@@ -22,7 +22,7 @@ public class ProblemSelectionController {
 
 	@FXML
 	public void collectData(ActionEvent e) throws IOException {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/CollectorSelectionMenu.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/collectorSelectMenu/CollectorSelectionMenu.fxml"));
         root = loader.load();
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         
