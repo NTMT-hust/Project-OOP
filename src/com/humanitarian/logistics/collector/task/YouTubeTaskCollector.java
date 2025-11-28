@@ -3,20 +3,24 @@ package com.humanitarian.logistics.collector.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.humanitarian.logistics.collector.Collector;
 import com.humanitarian.logistics.collector.YouTubeCollector;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
 import javafx.concurrent.Task;
 
-public class YouTubeTaskCollector extends Task<List<SocialPost>> {
+public class YouTubeTaskCollector extends TaskCollector {
 	
 	private SearchCriteria criteria;
 	private YouTubeCollector collector;
 	
-	public YouTubeTaskCollector(SearchCriteria criteria, YouTubeCollector collector) {
+	public YouTubeTaskCollector(Collector collector) {
+		this.collector = (YouTubeCollector) collector;
+	}
+	
+	public void setCriteria(SearchCriteria criteria) {
 		this.criteria = criteria;
-		this.collector = collector;
 	}
 	
 	@Override

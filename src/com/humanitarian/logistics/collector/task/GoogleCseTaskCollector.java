@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.humanitarian.logistics.collector.Collector;
 import com.humanitarian.logistics.collector.GoogleCseCollector;
 import com.humanitarian.logistics.config.GoogleCseConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
@@ -13,14 +14,17 @@ import com.humanitarian.logistics.util.CustomRateLimiter;
 
 import javafx.concurrent.Task;
 
-public class GoogleCseTaskCollector extends Task<List<SocialPost>> {
+public class GoogleCseTaskCollector extends TaskCollector {
 
 	private SearchCriteria criteria;
 	private GoogleCseCollector googleCseCollector;
 	
-	public GoogleCseTaskCollector(SearchCriteria criteria, GoogleCseCollector googleCseCollector) {
+	public GoogleCseTaskCollector(Collector googleCseCollector) {
+		this.googleCseCollector = (GoogleCseCollector) googleCseCollector;
+	}
+	
+	public void setCriteria(SearchCriteria criteria) {
 		this.criteria = criteria;
-		this.googleCseCollector = googleCseCollector;
 	}
 	
 	@Override
@@ -97,13 +101,6 @@ public class GoogleCseTaskCollector extends Task<List<SocialPost>> {
                 if (startIndex > 91) {
                     updateMessage("Reached Google CSE 100-result limit.");
                     break;
-                }
-
-                // Be polite to the API
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                 }
             }
 

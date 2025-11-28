@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.humanitarian.logistics.collector.Collector;
 import com.humanitarian.logistics.collector.NewsCollector;
 import com.humanitarian.logistics.config.NewsApiConfig;
 import com.humanitarian.logistics.model.SearchCriteria;
@@ -13,14 +14,17 @@ import com.humanitarian.logistics.util.CustomRateLimiter;
 
 import javafx.concurrent.Task;
 
-public class NewsApiTaskCollector extends Task<List<SocialPost>> {
+public class NewsApiTaskCollector extends TaskCollector {
 	
 	private SearchCriteria criteria;
 	private NewsCollector newsCollector;
 	
-	public NewsApiTaskCollector(SearchCriteria criteria, NewsCollector newsCollector) {
+	public NewsApiTaskCollector(Collector newsCollector) {
+		this.newsCollector = (NewsCollector) newsCollector;
+	}
+	
+	public void setCriteria(SearchCriteria criteria) {
 		this.criteria = criteria;
-		this.newsCollector = newsCollector;
 	}
 
 	protected List<SocialPost> call() throws Exception {

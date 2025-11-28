@@ -3,6 +3,7 @@ package com.humanitarian.logistics.userInterface;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import com.humanitarian.logistics.collector.Collector;
 import com.humanitarian.logistics.dataStructure.InputData;
 
 import javafx.event.ActionEvent;
@@ -36,6 +37,14 @@ public class InputBoxController {
     private Scene scene;
     private Parent root;
     
+    private Collector collector;
+    private String collectorType;
+    
+    public InputBoxController(Collector collector, String collectorType) {
+    	this.collector = collector;
+    	this.collectorType = collectorType;
+    }
+    
     @FXML
     public void submit(ActionEvent event) throws IOException {
     	keyWord = userKeyword.getText();
@@ -47,8 +56,20 @@ public class InputBoxController {
     	InputData userInput = new InputData(keyWord, hashTags, startDate, endDate, maxResult);
     	
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SearchingInterface.fxml"));
-    	root = loader.load();
     	
+    	loader.setControllerFactory(type -> {
+    		if (type == SearchingController.class) {
+    			return new SearchingController(collector, collectorType);
+    		}
+    		
+    		try {
+    			return type.getDeclaredConstructor().newInstance();
+    		} catch (Exception e) {
+    			throw new RuntimeException(e);
+    		}
+    	});
+    	
+    	root = loader.load();
     	SearchingController searchController = loader.getController();
     	
     	stage = (Stage)((Node)event.getSource()).getScene().getWindow();

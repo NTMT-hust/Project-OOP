@@ -10,10 +10,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.humanitarian.logistics.collector.Collector;
-import com.humanitarian.logistics.collector.YouTubeCollector;
+import com.humanitarian.logistics.collector.task.GoogleCseTaskCollector;
 import com.humanitarian.logistics.collector.task.YouTubeTaskCollector;
-import com.humanitarian.logistics.config.AppConfig;
-import com.humanitarian.logistics.config.YouTubeConfig;
+import com.humanitarian.logistics.collector.task.NewsApiTaskCollector;
+import com.humanitarian.logistics.collector.task.TaskCollector;
 import com.humanitarian.logistics.dataStructure.InputData;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
@@ -36,12 +36,87 @@ public class SearchingController {
 	@FXML
 	private Label statusLabel;
 	
-	List<SocialPost> resultPost;
+	private List<SocialPost> resultPost;
+	private TaskCollector collectTask;
 	
-	private YouTubeCollector collector;
+	private Collector collector;
+	private String collectorType;
 	
-	public SearchingController(YouTubeCollector collector) {
+	public SearchingController(Collector collector, String collectorType) {
 		this.collector = collector;
+		this.collectorType = collectorType;
+	}
+	
+	@FXML
+	public void initialize() {
+		switch (collectorType) {
+			case "Youtube":
+				collectTask = new YouTubeTaskCollector(this.collector);
+				break;
+		
+			case "GoogleCSE":
+				collectTask = new GoogleCseTaskCollector(this.collector);
+				break;
+			
+			case "NewsAPI":
+				collectTask = new NewsApiTaskCollector(this.collector);
+				break;
+			
+			default:
+				collectTask = null;
+		}
+	
+		progressBar.progressProperty().bind(collectTask.progressProperty());
+		statusLabel.textProperty().bind(collectTask.messageProperty());
+	
+		collectTask.setOnSucceeded(event -> {
+			try {
+				resultPost = collectTask.getValue();
+			
+				Stage currentStage = (Stage) scenePane.getScene().getWindow();
+				currentStage.close();
+			
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SearchComplete.fxml"));
+			
+				Parent root = loader.load();
+				Stage stage = new Stage();
+    	
+				Scene scene = new Scene(root);
+//    			String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
+//    			scene.getStylesheets().add(css);
+				stage.setScene(scene);
+				stage.setTitle("Complete searching!");
+				stage.centerOnScreen();
+				stage.show();
+			
+				savePost(resultPost);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+	
+		collectTask.setOnFailed(event -> {
+			try {
+				Stage currentStage = (Stage) scenePane.getScene().getWindow();
+				currentStage.close();
+			
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Error.fxml"));
+				Parent root = loader.load();
+				Stage stage = new Stage();
+        	
+				Scene scene = new Scene(root);
+//        		String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
+//        		scene.getStylesheets().add(css);
+				stage.setScene(scene);
+				stage.setTitle("Error");
+				stage.centerOnScreen();
+				stage.show();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 	}
 	
 	public void savePost(List<SocialPost> resultPost) throws IOException {
@@ -75,60 +150,7 @@ public class SearchingController {
 				.maxResults(inputData.getMaxResult())
 				.build();
 		
-		YouTubeTaskCollector collectTask = new YouTubeTaskCollector(searchCriteria, this.collector);
-		
-		progressBar.progressProperty().bind(collectTask.progressProperty());
-		statusLabel.textProperty().bind(collectTask.messageProperty());
-		
-		collectTask.setOnSucceeded(event -> {
-			try {
-				resultPost = collectTask.getValue();
-				
-	        	Stage currentStage = (Stage) scenePane.getScene().getWindow();
-	        	currentStage.close();
-				
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/SearchComplete.fxml"));
-				Parent root;
-
-				root = loader.load();
-				Stage stage = new Stage();
-        	
-				Scene scene = new Scene(root);
-//        		String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
-//        		scene.getStylesheets().add(css);
-				stage.setScene(scene);
-				stage.setTitle("Complete searching!");
-				stage.centerOnScreen();
-				stage.show();
-				
-				savePost(resultPost);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-		
-		collectTask.setOnFailed(event -> {
-			try {
-				Stage currentStage = (Stage) scenePane.getScene().getWindow();
-	        	currentStage.close();
-				
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Error.fxml"));
-    			Parent root = loader.load();
-    			Stage stage = new Stage();
-            	
-    			Scene scene = new Scene(root);
-//	        	String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
-//	        	scene.getStylesheets().add(css);
-    			stage.setScene(scene);
-    			stage.setTitle("Error");
-    			stage.centerOnScreen();
-    			stage.show();
-			} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-			}
-		});
+		collectTask.setCriteria(searchCriteria);
 		
 		Thread t = new Thread(collectTask);
 		t.setDaemon(true);
