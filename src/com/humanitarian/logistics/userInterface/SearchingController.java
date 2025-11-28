@@ -122,9 +122,25 @@ public class SearchingController {
 	public void savePost(List<SocialPost> resultPost) throws IOException {
         java.io.File dataDir = new java.io.File("data");
         if (!dataDir.exists()) dataDir.mkdirs();
-
-        String fileName = "data/youtube_posts.json";
-
+        
+        String fileName;
+        
+        switch (collectorType) {
+        	case "Youtube":
+        		fileName = "data/youtube_posts.json";
+        		break;
+        		
+        	case "GoogleCSE":
+        		fileName = "data/googlecse_posts.json";
+        		break;
+        	
+        	case "NewsAPI":
+        		fileName = "data/newsapi_posts.json";
+        		break;
+        	default:
+        		fileName = "data/nosource_posts.json";
+        		break;
+        }
         // Custom Gson with LocalDateTime support
         Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, 
