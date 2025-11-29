@@ -37,6 +37,10 @@ public class CancellingController {
         	
         // 4. Cleanup when done
         timeline.setOnFinished(e -> {
+        	
+        	Stage currentStage = (Stage) progressBar.getScene().getWindow();
+        	currentStage.close();
+        	
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/collectData/problemSelectMenu/SelectionMenu.fxml"));
 			try {
 				Parent root = loader.load();
