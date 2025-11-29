@@ -1,12 +1,18 @@
 package com.humanitarian.logistics.userInterface.collectData.cancelling;
 
+import java.io.IOException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class CancellingController {
@@ -31,8 +37,22 @@ public class CancellingController {
         	
         // 4. Cleanup when done
         timeline.setOnFinished(e -> {
-            Platform.exit(); 
-            System.exit(0);
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/collectData/problemSelectMenu/SelectionMenu.fxml"));
+			try {
+				Parent root = loader.load();
+				Scene scene = new Scene(root);
+	            
+//	            String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
+//	            scene.getStylesheets().add(css);
+	            
+	            Stage newStage = new Stage();
+	            newStage.setTitle("Humanitarian Logistics Project");
+	            newStage.setScene(scene);
+	            newStage.show();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         });
 
         timeline.play();
