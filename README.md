@@ -1,6 +1,8 @@
 ## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Please download the sentiment model here: `https://drive.google.com/file/d/1qSo4s3jF9AsiCDm_zRClddvRCx7UPU5E/view?usp=drive_link`
+Extract the model at `Project-OOP/src/resources/visobert`
+Remember to extract only the `.zip` file contents
 
 ## Folder Structure
 
