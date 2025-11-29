@@ -9,7 +9,7 @@
    <children>
       <Label fx:id="statusLabel" text="Label">
          <font>
-            <Font size="14.0" />
+            <Font size="20.0" />
          </font></Label>
       <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" />
    </children>

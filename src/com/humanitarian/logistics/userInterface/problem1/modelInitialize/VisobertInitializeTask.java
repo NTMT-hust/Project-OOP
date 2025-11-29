@@ -17,6 +17,7 @@ public class VisobertInitializeTask extends Task<Visobert> {
 		// TODO Auto-generated method stub
     	Visobert analyzer;
 		try {
+			updateMessage("Initializing...");
 			analyzer = new Visobert(modelPath, tokenizerPath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

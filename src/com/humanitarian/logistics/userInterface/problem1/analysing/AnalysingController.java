@@ -1,9 +1,10 @@
-package com.humanitarian.logistics.userInterface.problem1.modelInitialize;
+package com.humanitarian.logistics.userInterface.problem1.analysing;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import com.humanitarian.logistics.sentimentAnalysis.Visobert;
-import com.humanitarian.logistics.userInterface.problem1.startAnalysis.StartAnalysisController;
+import com.humanitarian.logistics.userInterface.problem1.analyseComplete.AnalyseCompleteController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,41 +14,49 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
-public class VisobertInitializeController {
-	
-	@FXML
-	private Label statusLabel;
+public class AnalysingController {
+
 	@FXML
 	private ProgressBar progressBar;
 	
-	private VisobertInitializeTask initializeTask = new VisobertInitializeTask();
+	@FXML
+	private Label statusLabel;
+	
+	private Path dataPath;
 	private Visobert sentimentModel;
+	private AnalysingTask analyseTask;
+	
+	public AnalysingController(Path dataPath, Visobert sentimentModel) {
+		this.dataPath = dataPath;
+		this.sentimentModel = sentimentModel;
+	}
 	
 	@FXML
-    public void initialize() {
+	public void initialize() {
+		analyseTask = new AnalysingTask(dataPath, sentimentModel);
 		
-		progressBar.progressProperty().bind(initializeTask.progressProperty());
-		statusLabel.textProperty().bind(initializeTask.messageProperty());
-        
-		initializeTask.setOnSucceeded(event -> {
+		progressBar.progressProperty().bind(analyseTask.progressProperty());
+		statusLabel.textProperty().bind(analyseTask.messageProperty());
+		
+		analyseTask.setOnSucceeded(event -> {
 			try {
-				sentimentModel = initializeTask.getValue();
+				totalResult analyseResults = analyseTask.getValue();
 			
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();
 			
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/problem1/startAnalysis/StartAnalysis.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/problem1/analyseComplete/AnalyseComplete.fxml"));
 				
 				loader.setControllerFactory(type -> {
-					if (type == StartAnalysisController.class) {
-						return new StartAnalysisController(this.sentimentModel);
-					}
-					try {
-						return type.getDeclaredConstructor().newInstance();
-					} catch (Exception except) {
-						throw new RuntimeException(except);
-					}
-				});
+    				if (type == AnalyseCompleteController.class) {
+    					return new AnalyseCompleteController(analyseResults.getString(), analyseResults.getTotalSentiment());
+    				}
+    				try {
+    					return type.getDeclaredConstructor().newInstance();
+    				} catch (Exception except) {
+    					throw new RuntimeException(except);
+    				}
+    			});
 				
 				Parent root = loader.load();
 				Stage stage = new Stage();
@@ -56,17 +65,18 @@ public class VisobertInitializeController {
 //    			String css = this.getClass().getResource("/com/humanitarian/logistics/userInterface/inputBox/InputInterface.css").toExternalForm();
 //    			scene.getStylesheets().add(css);
 				stage.setScene(scene);
-				stage.setTitle("Humanitarian Logistics Sentiment Analysis Model");
+				stage.setTitle("Analyse Results");
 				stage.centerOnScreen();
 				stage.show();
-				
+			
+//				savePost(resultPost);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
 	
-		initializeTask.setOnFailed(event -> {
+		analyseTask.setOnFailed(event -> {
 			try {
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();
@@ -88,11 +98,11 @@ public class VisobertInitializeController {
 				e1.printStackTrace();
 			}
 		});
-		
-    	Thread t = new Thread(initializeTask);
-    	t.setDaemon(true);
-    	t.start();
-
 	}
 	
+	public void analyseProcedure() {
+		Thread t = new Thread(analyseTask);
+		t.setDaemon(true);
+		t.start();
+	}
 }
