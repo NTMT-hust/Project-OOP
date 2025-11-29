@@ -295,9 +295,6 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         private String videoId;
         private String videoTitle;
         private String channelTitle;
-        private long viewCount;
-        private long likeCount;
-        private long commentCount;
         private String description;
 
         public VideoDetails(String videoId, String videoTitle, String channelTitle) {
@@ -318,18 +315,6 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
             return channelTitle;
         }
 
-        public long getViewCount() {
-            return viewCount;
-        }
-
-        public long getLikeCount() {
-            return likeCount;
-        }
-
-        public long getCommentCount() {
-            return commentCount;
-        }
-
         public String getDescription() {
             return description;
         }
@@ -339,15 +324,12 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         }
 
         public void setViewCount(long viewCount) {
-            this.viewCount = viewCount;
         }
 
         public void setLikeCount(long likeCount) {
-            this.likeCount = likeCount;
         }
 
         public void setCommentCount(long commentCount) {
-            this.commentCount = commentCount;
         }
     }
 

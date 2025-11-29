@@ -32,10 +32,6 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
     private static final Logger logger = LoggerFactory.getLogger(NewsCollector.class);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    // API Endpoints
-    private static final String ENDPOINT_EVERYTHING = "/everything";
-    private static final String ENDPOINT_TOP_HEADLINES = "/top-headlines";
-
     public NewsCollector(NewsApiConfig config) {
         super("newsapi");
         this.config = config;
@@ -114,27 +110,6 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
             sb.append("&to=").append(to);
         System.out.println(sb.toString());
         return sb.toString();
-    }
-
-    /**
-     * Build URL for /top-headlines endpoint (alternative)
-     */
-    private String buildTopHeadlinesUrl(String query, int pageSize) {
-        StringBuilder url = new StringBuilder(config.getBaseUrl());
-        url.append(ENDPOINT_TOP_HEADLINES);
-        url.append("?apiKey=").append(config.getApiKey());
-        url.append("&pageSize=").append(pageSize);
-
-        if (query != null && !query.isEmpty()) {
-            url.append("&q=").append(URLEncoder.encode(query, StandardCharsets.UTF_8));
-        }
-
-        // Country
-        if (config.getDefaultCountry() != null) {
-            url.append("&country=").append(config.getDefaultCountry());
-        }
-
-        return url.toString();
     }
 
     @Override

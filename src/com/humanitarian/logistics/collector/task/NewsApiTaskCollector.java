@@ -12,14 +12,12 @@ import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 import com.humanitarian.logistics.util.CustomRateLimiter;
 
-import javafx.concurrent.Task;
-
 public class NewsApiTaskCollector extends TaskCollector {
 	
 	private SearchCriteria criteria;
 	private NewsCollector newsCollector;
 	
-	public NewsApiTaskCollector(Collector newsCollector) {
+	public NewsApiTaskCollector(Collector<?, ?, ?> newsCollector) {
 		this.newsCollector = (NewsCollector) newsCollector;
 	}
 	

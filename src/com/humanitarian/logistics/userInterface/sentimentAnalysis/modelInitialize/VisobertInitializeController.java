@@ -1,9 +1,9 @@
-package com.humanitarian.logistics.userInterface.problem1.modelInitialize;
+package com.humanitarian.logistics.userInterface.sentimentAnalysis.modelInitialize;
 
 import java.io.IOException;
 
-import com.humanitarian.logistics.sentimentAnalysis.Visobert;
-import com.humanitarian.logistics.userInterface.problem1.startAnalysis.StartAnalysisController;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.startAnalysis.StartAnalysisController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,14 +29,14 @@ public class VisobertInitializeController {
 		progressBar.progressProperty().bind(initializeTask.progressProperty());
 		statusLabel.textProperty().bind(initializeTask.messageProperty());
         
-		initializeTask.setOnSucceeded(event -> {
+		initializeTask.setOnSucceeded(_ -> {
 			try {
 				sentimentModel = initializeTask.getValue();
 			
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();
 			
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/problem1/startAnalysis/StartAnalysis.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/sentimentAnalysis/startAnalysis/StartAnalysis.fxml"));
 				
 				loader.setControllerFactory(type -> {
 					if (type == StartAnalysisController.class) {
@@ -66,7 +66,7 @@ public class VisobertInitializeController {
 			}
 		});
 	
-		initializeTask.setOnFailed(event -> {
+		initializeTask.setOnFailed(_ -> {
 			try {
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();

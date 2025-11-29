@@ -38,7 +38,7 @@ public class CollectorSelectionController {
 		for (String option: collectorList) {
 			MenuItem item = new MenuItem(option);
 			
-			item.setOnAction(event -> {
+			item.setOnAction(_ -> {
 				menuSelection.setText(option);
 				this.selection = option;
 			});

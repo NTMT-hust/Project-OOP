@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userInterface.problem1.analyseComplete;
+package com.humanitarian.logistics.userInterface.sentimentAnalysis.analyseComplete;
 
 import java.io.IOException;
 import java.util.List;

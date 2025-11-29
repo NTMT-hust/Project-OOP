@@ -8,14 +8,12 @@ import com.humanitarian.logistics.collector.YouTubeCollector;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 
-import javafx.concurrent.Task;
-
 public class YouTubeTaskCollector extends TaskCollector {
 	
 	private SearchCriteria criteria;
 	private YouTubeCollector collector;
 	
-	public YouTubeTaskCollector(Collector collector) {
+	public YouTubeTaskCollector(Collector<?, ?, ?> collector) {
 		this.collector = (YouTubeCollector) collector;
 	}
 	

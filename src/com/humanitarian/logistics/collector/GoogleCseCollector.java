@@ -1,30 +1,34 @@
 package com.humanitarian.logistics.collector;
 
-import com.humanitarian.logistics.config.GoogleCseConfig;
-import com.humanitarian.logistics.model.SearchCriteria;
-import com.humanitarian.logistics.model.SocialPost;
-import com.humanitarian.logistics.util.CustomRateLimiter;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.humanitarian.logistics.config.GoogleCseConfig;
+import com.humanitarian.logistics.model.SearchCriteria;
+import com.humanitarian.logistics.model.SocialPost;
+import com.humanitarian.logistics.util.CustomRateLimiter;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, List<SocialPost>> {
     private static final Logger logger = LoggerFactory.getLogger(GoogleCseCollector.class);
@@ -34,8 +38,6 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     private int totalRequests;
     private int remainingQuota;
     private OkHttpClient apiClient;
-    private boolean initialized;
-
     // Date patterns for parsing
     private static final Pattern DATE_PATTERN = Pattern.compile(
             "(\\d{1,2})\\s+(tháng|thg)\\s+(\\d{1,2})[,\\s]+(\\d{4})");
@@ -68,12 +70,10 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
                     .writeTimeout(config.getTimeout(), TimeUnit.MILLISECONDS)
                     .build();
 
-            this.initialized = true;
             logger.info("Google CSE HTTP client initialized successfully");
 
         } catch (Exception e) {
             logger.error("Failed to initialize Google CSE client", e);
-            this.initialized = false;
         }
     }
 
@@ -199,24 +199,6 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
         url.append("&num=").append(num);
         url.append("&start=").append(start);
 
-        // // Language restriction
-        // if (config.getDefaultLanguage() != null) {
-        // url.append("&lr=").append(config.getDefaultLanguage());
-        // }
-
-        // // Country restriction
-        // if (config.getDefaultCountry() != null) {
-        // url.append("&cr=").append(config.getDefaultCountry());
-        // }
-
-        // // Safe search
-        // url.append("&safe=").append(config.getSafeSearch());
-
-        // // Sort by date (if news search)
-        // if ("news".equals(config.getSearchType())) {
-        // url.append("&sort=date");
-        // }
-        System.out.println(url.toString());
         return url.toString();
     }
 

@@ -38,7 +38,7 @@ public class ProblemSelectionController {
 	
 	@FXML
 	public void problem1(ActionEvent e) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/problem1/modelInitialize/ModelInitialize.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/sentimentAnalysis/modelInitialize/ModelInitialize.fxml"));
         root = loader.load();
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
         

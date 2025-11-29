@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userInterface.problem1.analysing;
+package com.humanitarian.logistics.userInterface.sentimentAnalysis.analysing;
 
 import java.io.BufferedReader;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.humanitarian.logistics.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
 
 import ai.djl.modality.Classifications;
 import javafx.concurrent.Task;

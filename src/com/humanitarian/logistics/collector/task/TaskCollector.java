@@ -9,10 +9,7 @@ import javafx.concurrent.Task;
 
 public class TaskCollector extends Task<List<SocialPost>> {
 
-	private SearchCriteria criteria;
-	
 	public void setCriteria(SearchCriteria criteria) {
-		this.criteria = criteria;
 	}
 
 	@Override

@@ -17,7 +17,6 @@ import com.humanitarian.logistics.collector.task.TaskCollector;
 import com.humanitarian.logistics.dataStructure.InputData;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
-import com.humanitarian.logistics.userInterface.collectData.inputBox.InputBoxController;
 import com.humanitarian.logistics.userInterface.collectData.searchComplete.CompleteController;
 
 import javafx.fxml.FXML;
@@ -41,10 +40,10 @@ public class SearchingController {
 	private List<SocialPost> resultPost;
 	private TaskCollector collectTask;
 	
-	private Collector collector;
+	private Collector<?, ?, ?> collector;
 	private String collectorType;
 	
-	public SearchingController(Collector collector, String collectorType) {
+	public SearchingController(Collector<?, ?, ?> collector, String collectorType) {
 		this.collector = collector;
 		this.collectorType = collectorType;
 	}
@@ -71,7 +70,7 @@ public class SearchingController {
 		progressBar.progressProperty().bind(collectTask.progressProperty());
 		statusLabel.textProperty().bind(collectTask.messageProperty());
 	
-		collectTask.setOnSucceeded(event -> {
+		collectTask.setOnSucceeded(_ -> {
 			try {
 				resultPost = collectTask.getValue();
 			
@@ -109,7 +108,7 @@ public class SearchingController {
 			}
 		});
 	
-		collectTask.setOnFailed(event -> {
+		collectTask.setOnFailed(_ -> {
 			try {
 				Stage currentStage = (Stage) scenePane.getScene().getWindow();
 				currentStage.close();
@@ -142,7 +141,7 @@ public class SearchingController {
         // Custom Gson with LocalDateTime support
         Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, 
-                (JsonSerializer<LocalDateTime>) (src, typeOfSrc, context) -> 
+                (JsonSerializer<LocalDateTime>) (src, _, _) -> 
                     new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
             .setPrettyPrinting()
             .create();

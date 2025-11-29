@@ -1,12 +1,12 @@
-package com.humanitarian.logistics.userInterface.problem1.startAnalysis;
+package com.humanitarian.logistics.userInterface.sentimentAnalysis.startAnalysis;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import com.humanitarian.logistics.sentimentAnalysis.Visobert;
-import com.humanitarian.logistics.userInterface.problem1.analysing.AnalysingController;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.analysing.AnalysingController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,7 +48,7 @@ public class StartAnalysisController {
 		for (String option: dataSourceList) {
 			MenuItem item = new MenuItem(option);
 			
-			item.setOnAction(event -> {
+			item.setOnAction(_ -> {
 				menuButton.setText(option);
 				this.selection = option;
 			});
@@ -65,7 +65,7 @@ public class StartAnalysisController {
 		
 		Path dataPath = Paths.get("data", this.selection + "_posts.json");
 		
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/problem1/analysing/Analysing.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/sentimentAnalysis/analysing/Analysing.fxml"));
 		
 		loader.setControllerFactory(type -> {
 			if (type == AnalysingController.class) {

@@ -1,9 +1,9 @@
-package com.humanitarian.logistics.userInterface.problem1.modelInitialize;
+package com.humanitarian.logistics.userInterface.sentimentAnalysis.modelInitialize;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.humanitarian.logistics.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
 
 import javafx.concurrent.Task;
 

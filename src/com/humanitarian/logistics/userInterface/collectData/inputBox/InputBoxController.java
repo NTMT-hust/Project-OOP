@@ -38,10 +38,10 @@ public class InputBoxController {
     private Scene scene;
     private Parent root;
     
-    private Collector collector;
+    private Collector<?, ?, ?> collector;
     private String collectorType;
     
-    public InputBoxController(Collector collector, String collectorType) {
+    public InputBoxController(Collector<?, ?, ?> collector, String collectorType) {
     	this.collector = collector;
     	this.collectorType = collectorType;
     }

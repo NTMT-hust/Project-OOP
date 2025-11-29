@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,7 +34,7 @@ public class CancellingController {
         Timeline timeline = new Timeline(keyFrame);
         	
         // 4. Cleanup when done
-        timeline.setOnFinished(e -> {
+        timeline.setOnFinished(_ -> {
         	
         	Stage currentStage = (Stage) progressBar.getScene().getWindow();
         	currentStage.close();

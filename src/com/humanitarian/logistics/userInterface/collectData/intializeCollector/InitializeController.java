@@ -35,7 +35,7 @@ public class InitializeController {
 	private Parent root;
 	
 	private AppConfig appConfig;
-	private Collector collector;
+	private Collector<?, ?, ?> collector;
 	private String collectorType;
 	
 	public void initializeCollector(String collectorName) throws IOException {
@@ -82,7 +82,7 @@ public class InitializeController {
         Timeline timeline = new Timeline(keyFrame);
         	
         // 4. Cleanup when done
-        timeline.setOnFinished(e -> {        	
+        timeline.setOnFinished(_ -> {        	
         	Stage currentStage = (Stage) rootPane.getScene().getWindow();
         	currentStage.close();
             

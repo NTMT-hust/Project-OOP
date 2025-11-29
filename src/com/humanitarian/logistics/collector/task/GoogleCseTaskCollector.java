@@ -1,7 +1,6 @@
 package com.humanitarian.logistics.collector.task;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,17 +11,16 @@ import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
 import com.humanitarian.logistics.util.CustomRateLimiter;
 
-import javafx.concurrent.Task;
-
 public class GoogleCseTaskCollector extends TaskCollector {
 
 	private SearchCriteria criteria;
 	private GoogleCseCollector googleCseCollector;
 	
-	public GoogleCseTaskCollector(Collector googleCseCollector) {
+	public GoogleCseTaskCollector(Collector<?, ?, ?> googleCseCollector) {
 		this.googleCseCollector = (GoogleCseCollector) googleCseCollector;
 	}
 	
+	@Override
 	public void setCriteria(SearchCriteria criteria) {
 		this.criteria = criteria;
 	}
@@ -32,7 +30,6 @@ public class GoogleCseTaskCollector extends TaskCollector {
 		
 		GoogleCseConfig config = googleCseCollector.getConfig();
 		CustomRateLimiter rateLimiter = googleCseCollector.getRateLimiter();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 		List<SocialPost> posts = new ArrayList<>();
 

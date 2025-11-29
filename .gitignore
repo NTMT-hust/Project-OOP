@@ -7,3 +7,4 @@
 /src/resources/visobert/*.json
 /src/resources/visobert/*.onnx
 /data
+/resources

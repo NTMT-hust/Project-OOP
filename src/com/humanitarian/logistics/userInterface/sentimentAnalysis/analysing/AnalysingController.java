@@ -1,10 +1,10 @@
-package com.humanitarian.logistics.userInterface.problem1.analysing;
+package com.humanitarian.logistics.userInterface.sentimentAnalysis.analysing;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.humanitarian.logistics.sentimentAnalysis.Visobert;
-import com.humanitarian.logistics.userInterface.problem1.analyseComplete.AnalyseCompleteController;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.analyseComplete.AnalyseCompleteController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,14 +38,15 @@ public class AnalysingController {
 		progressBar.progressProperty().bind(analyseTask.progressProperty());
 		statusLabel.textProperty().bind(analyseTask.messageProperty());
 		
-		analyseTask.setOnSucceeded(event -> {
+		analyseTask.setOnSucceeded(_ -> {
 			try {
+				sentimentModel.close();
 				totalResult analyseResults = analyseTask.getValue();
 			
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();
 			
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/problem1/analyseComplete/AnalyseComplete.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/sentimentAnalysis/analyseComplete/AnalyseComplete.fxml"));
 				
 				loader.setControllerFactory(type -> {
     				if (type == AnalyseCompleteController.class) {
@@ -76,7 +77,7 @@ public class AnalysingController {
 			}
 		});
 	
-		analyseTask.setOnFailed(event -> {
+		analyseTask.setOnFailed(_ -> {
 			try {
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();

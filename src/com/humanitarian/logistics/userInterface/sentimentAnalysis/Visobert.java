@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.sentimentAnalysis;
+package com.humanitarian.logistics.userInterface.sentimentAnalysis;
 
 import ai.djl.huggingface.tokenizers.HuggingFaceTokenizer;
 import ai.djl.inference.Predictor;
