@@ -1,10 +1,11 @@
-package com.humanitarian.logistics.userInterface.sentimentAnalysis.analysing;
+package com.humanitarian.logistics.userInterface.textExtraction.extracting;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 
-import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
-import com.humanitarian.logistics.userInterface.sentimentAnalysis.analyseComplete.AnalyseCompleteController;
+import com.humanitarian.logistics.userInterface.textExtraction.extractComplete.ExtractCompleteController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,38 +15,36 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
-public class AnalysingController {
-
-	@FXML
-	private ProgressBar progressBar;
+public class ExtractingController {
 	
 	@FXML
 	private Label statusLabel;
+	@FXML
+	private ProgressBar progressBar;
+
+	private TextExtractTask extractTask;
 	
-	private AnalysingTask analyseTask;
-	
-	public AnalysingController(Path dataPath, Visobert sentimentModel) {
-		analyseTask = new AnalysingTask(dataPath, sentimentModel);
+	public ExtractingController(Path dataPath, List<String> damageType) {
+		this.extractTask = new TextExtractTask(dataPath, damageType);
 	}
 	
 	@FXML
 	public void initialize() {
+		progressBar.progressProperty().bind(extractTask.progressProperty());
+		statusLabel.textProperty().bind(extractTask.messageProperty());
 		
-		progressBar.progressProperty().bind(analyseTask.progressProperty());
-		statusLabel.textProperty().bind(analyseTask.messageProperty());
-		
-		analyseTask.setOnSucceeded(_ -> {
+		extractTask.setOnSucceeded(_ -> {
 			try {
-				totalResult analyseResults = analyseTask.getValue();
+				Map<String, Integer> extractResults = extractTask.getValue();
 			
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();
 			
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/sentimentAnalysis/analyseComplete/AnalyseComplete.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/textExtraction/extractComplete/ExtractComplete.fxml"));
 				
 				loader.setControllerFactory(type -> {
-    				if (type == AnalyseCompleteController.class) {
-    					return new AnalyseCompleteController(analyseResults.getString(), analyseResults.getTotalSentiment());
+    				if (type == ExtractCompleteController.class) {
+    					return new ExtractCompleteController(extractResults);
     				}
     				try {
     					return type.getDeclaredConstructor().newInstance();
@@ -71,7 +70,7 @@ public class AnalysingController {
 			}
 		});
 	
-		analyseTask.setOnFailed(_ -> {
+		extractTask.setOnFailed(_ -> {
 			try {
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();
@@ -93,11 +92,13 @@ public class AnalysingController {
 				e1.printStackTrace();
 			}
 		});
+
 	}
 	
-	public void analyseProcedure() {
-		Thread t = new Thread(analyseTask);
+	public void extractProcedure() {
+		Thread t = new Thread(extractTask);
 		t.setDaemon(true);
 		t.start();
 	}
+	
 }
