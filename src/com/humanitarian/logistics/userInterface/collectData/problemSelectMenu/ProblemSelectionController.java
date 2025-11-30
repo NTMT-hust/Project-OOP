@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class ProblemSelectionController {
 	
 	@FXML
-	private Button buttonProblem1, buttonProblem2, buttonProblem3, buttonCollectData;
+	private Button button1, button2, buttonCollectData;
 	
     private Stage stage;
     private Scene scene;
@@ -37,7 +37,7 @@ public class ProblemSelectionController {
 	}
 	
 	@FXML
-	public void problem1(ActionEvent e) throws IOException {
+	public void sentimentAnalysis(ActionEvent e) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/sentimentAnalysis/modelInitialize/ModelInitialize.fxml"));
         root = loader.load();
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
@@ -53,12 +53,8 @@ public class ProblemSelectionController {
 	}
 	
 	@FXML
-	public void problem2(ActionEvent e) {
+	public void textExtraction(ActionEvent e) {
 		return;
 	}
 	
-	@FXML
-	public void problem3(ActionEvent e) {
-		return;
-	}
 }

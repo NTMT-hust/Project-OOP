@@ -2,17 +2,23 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.sentimentAnalysis.analysing.AnalysingController">
+
+<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.sentimentAnalysis.analysing.AnalysingController">
    <children>
-      <Label text="Analysing...">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" />
-      <Label fx:id="statusLabel" text="Label" />
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0">
+         <children>
+            <Label text="Analysing...">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" />
+            <Label fx:id="statusLabel" text="Label" />
+         </children>
+      </VBox>
    </children>
-</VBox>
+</StackPane>

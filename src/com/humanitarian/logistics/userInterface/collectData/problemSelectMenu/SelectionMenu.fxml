@@ -3,18 +3,25 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.collectData.problemSelectMenu.ProblemSelectionController">
+
+<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.collectData.problemSelectMenu.ProblemSelectionController">
    <children>
-      <Label alignment="CENTER" layoutX="140.0" layoutY="115.0" text="Humanitarian Logistics Project">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Button fx:id="buttonProblem1" layoutX="105.0" layoutY="188.0" mnemonicParsing="false" onAction="#problem1" text="Problem 1" />
-      <Button fx:id="buttonProblem2" layoutX="265.0" layoutY="188.0" mnemonicParsing="false" onAction="#problem2" text="Problem 2" />
-      <Button fx:id="buttonProblem3" layoutX="426.0" layoutY="188.0" mnemonicParsing="false" onAction="#problem3" text="Problem 3" />
-      <Button fx:id="buttonCollectData" layoutX="260.0" layoutY="276.0" mnemonicParsing="false" onAction="#collectData" text="Collect Data" />
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label alignment="CENTER" layoutX="140.0" layoutY="115.0" text="Humanitarian Logistics Project">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="button1" layoutX="82.0" layoutY="230.0" mnemonicParsing="false" onAction="#sentimentAnalysis" text="Sentiment Analysis" />
+            <Button fx:id="button2" layoutX="253.0" layoutY="230.0" mnemonicParsing="false" onAction="#textExtraction" text="Text Extraction" />
+            <Button fx:id="buttonCollectData" layoutX="421.0" layoutY="230.0" mnemonicParsing="false" onAction="#collectData" text="Collect Data" />
+            <VBox layoutX="250.0" layoutY="115.0" prefHeight="35.0" prefWidth="100.0" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</StackPane>
