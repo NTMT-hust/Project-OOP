@@ -43,6 +43,7 @@ public class ExtractCompleteController {
         xAxis.setLabel("Keywords");
         yAxis.setLabel("Frequency");
         barChart.setTitle("Damage Frequency based on News");
+        barChart.setLegendVisible(false);
 
         // 2. Create a Series (a group of data bars)
         XYChart.Series<String, Number> series = new XYChart.Series<>();
