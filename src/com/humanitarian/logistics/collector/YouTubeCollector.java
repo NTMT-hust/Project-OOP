@@ -22,9 +22,7 @@ import java.util.Map;
 public class YouTubeCollector extends Collector<SearchCriteria, Object, List<SocialPost>> {
     private YouTube youtube;
     private YouTubeConfig config;
-    
-    private boolean initialize;
-    
+
     public YouTubeCollector(YouTubeConfig config) {
         super("youtube");
         this.config = config;
@@ -38,31 +36,100 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
     public void initializeClient() {
         try {
             youtube = new YouTube.Builder(
-                GoogleNetHttpTransport.newTrustedTransport(),
-                GsonFactory.getDefaultInstance(),
-                null)
-                .setApplicationName("Humanitarian-Logistics-Analyzer")
-                .build();
-                    
-            this.initialize = true;
+                    GoogleNetHttpTransport.newTrustedTransport(),
+                    GsonFactory.getDefaultInstance(),
+                    null)
+                    .setApplicationName("Humanitarian-Logistics-Analyzer")
+                    .build();
+
+            System.out.println("✓ YouTube client initialized");
         } catch (Exception e) {
-        	this.initialize = false;
+            System.err.println("✗ Failed to initialize YouTube client: " + e.getMessage());
+            throw new RuntimeException("YouTube initialization failed", e);
         }
     }
-    
-	@Override
-	public boolean testConnection() {
-		// TODO Auto-generated method stub
-		return this.initialize;
-	}
-	
+
+    @Override
+    public boolean testConnection() {
+        try {
+            YouTube.Search.List search = youtube.search().list(Collections.singletonList("snippet"));
+            search.setKey(config.getApiKey());
+            search.setQ("test");
+            search.setMaxResults(1L);
+            search.execute();
+
+            System.out.println("✓ YouTube connection successful");
+            return true;
+        } catch (Exception e) {
+            System.err.println("✗ YouTube connection failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Thu thập comments từ YouTube
+     */
+    @Override
+    public List<SocialPost> doCollect(SearchCriteria criteria) {
+        List<SocialPost> posts = new ArrayList<>();
+
+        try {
+            System.out.println("Step 1: Searching for videos...");
+            List<String> videoIds = searchWithPagination(criteria);
+            System.out.println("Found " + videoIds.size() + " videos");
+
+            if (videoIds.isEmpty()) {
+                System.out.println("No videos found matching criteria");
+                return posts;
+            }
+
+            System.out.println("\nStep 2: Collecting comments from videos...");
+            int totalComments = 0;
+
+            for (int i = 0; i < videoIds.size(); i++) {
+                String videoId = videoIds.get(i);
+                System.out.println("  [" + (i + 1) + "/" + videoIds.size() + "] Video: " + videoId);
+
+                try {
+                    List<SocialPost> videoComments = getVideoComments(videoId, criteria);
+                    posts.addAll(videoComments);
+                    totalComments += videoComments.size();
+
+                    System.out.println("    → Collected " + videoComments.size() + " comments");
+
+                    if (posts.size() >= criteria.getMaxResults()) {
+                        System.out.println("    → Reached max results limit");
+                        break;
+                    }
+
+                    // Rate limiting - wait 1 second between videos
+                    if (i < videoIds.size() - 1) {
+                        Thread.sleep(1000);
+                    }
+
+                } catch (Exception e) {
+                    System.err.println("    ✗ Error getting comments: " + e.getMessage());
+                }
+            }
+
+            System.out.println("\n✓ YouTube collection completed");
+            System.out.println("Total posts: " + posts.size());
+
+        } catch (Exception e) {
+            System.err.println("Collection failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return posts;
+    }
+
     public List<String> searchWithPagination(SearchCriteria criteria)
             throws IOException {
         List<SearchResult> allVideos = new ArrayList<>();
         List<String> videoIds = new ArrayList<>();
         String nextPageToken = null;
 
-        while (allVideos.size() < 100) {
+        while (allVideos.size() < 1000) {
             // 1. Create request
             YouTube.Search.List search = youtube.search().list(Arrays.asList("id", "snippet"));
             search.setKey(config.getApiKey());
@@ -105,7 +172,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
     /**
      * Tìm kiếm videos
      */
-    public List<String> searchVideos(SearchCriteria criteria) throws Exception {
+    private List<String> searchVideos(SearchCriteria criteria) throws Exception {
         List<String> videoIds = new ArrayList<>();
 
         YouTube.Search.List search = youtube.search().list(Arrays.asList("id", "snippet"));
@@ -120,7 +187,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 
         // Filters
         search.setType(List.of("video"));
-        search.setMaxResults(1000L); // Tìm tối đa 1 lượng videos
+        search.setMaxResults(1000L); // Tìm tối đa 10 videos
         search.setOrder("date"); // Sắp xếp theo ngày mới nhất
 
         // Date filters
@@ -156,7 +223,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
     /**
      * Lấy comments từ một video
      */
-    public List<SocialPost> getVideoComments(String videoId, SearchCriteria criteria) 
+    private List<SocialPost> getVideoComments(String videoId, SearchCriteria criteria)
             throws Exception {
 
         List<SocialPost> posts = new ArrayList<>();
@@ -171,7 +238,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
             request.setKey(config.getApiKey());
             request.setVideoId(videoId);
             request.setTextFormat("plainText");
-            request.setMaxResults(100L);
+            request.setMaxResults(1000000L);
 
             CommentThreadListResponse response = request.execute();
 
@@ -200,7 +267,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
 
         } catch (com.google.api.client.googleapis.json.GoogleJsonResponseException e) {
             if (e.getMessage().contains("commentsDisabled")) {
-//                System.out.println("    ⚠ Comments disabled for this video");
+                System.out.println("    ⚠ Comments disabled for this video");
             } else {
                 throw e;
             }
@@ -295,6 +362,9 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         private String videoId;
         private String videoTitle;
         private String channelTitle;
+        private long viewCount;
+        private long likeCount;
+        private long commentCount;
         private String description;
 
         public VideoDetails(String videoId, String videoTitle, String channelTitle) {
@@ -315,6 +385,18 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
             return channelTitle;
         }
 
+        public long getViewCount() {
+            return viewCount;
+        }
+
+        public long getLikeCount() {
+            return likeCount;
+        }
+
+        public long getCommentCount() {
+            return commentCount;
+        }
+
         public String getDescription() {
             return description;
         }
@@ -324,13 +406,15 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         }
 
         public void setViewCount(long viewCount) {
+            this.viewCount = viewCount;
         }
 
         public void setLikeCount(long likeCount) {
+            this.likeCount = likeCount;
         }
 
         public void setCommentCount(long commentCount) {
+            this.commentCount = commentCount;
         }
     }
-
 }

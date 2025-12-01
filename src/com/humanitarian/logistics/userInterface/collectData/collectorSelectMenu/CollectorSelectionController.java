@@ -17,50 +17,52 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 public class CollectorSelectionController {
-	
+
 	List<String> collectorList = List.of("Youtube", "GoogleCSE", "NewsAPI");
 	private String selection;
-	
+
 	@FXML
 	private MenuButton menuSelection = new MenuButton("             ");
-	
+
 	@FXML
 	private Button startButton;
-	
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-	
-    @FXML
+
+	private Stage stage;
+	private Scene scene;
+	private Parent root;
+
+	@FXML
 	public void initialize() {
-    	menuSelection.getItems().clear();
-    	
-		for (String option: collectorList) {
+		menuSelection.getItems().clear();
+
+		for (String option : collectorList) {
 			MenuItem item = new MenuItem(option);
-			
+
 			item.setOnAction(_ -> {
 				menuSelection.setText(option);
 				this.selection = option;
 			});
-			
+
 			menuSelection.getItems().add(item);
 		}
 	}
-	
+
 	@FXML
 	public void startSearching(ActionEvent e) throws IOException {
-		
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/collectData/intializeCollector/InitializeCollector.fxml"));
-		
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(
+				"/com/humanitarian/logistics/userInterface/collectData/intializeCollector/InitializeCollector.fxml"));
+
 		root = loader.load();
-		stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-		
+		stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
 		InitializeController init = loader.getController();
 		init.initializeCollector(this.selection);
-    
+
 		scene = new Scene(root);
-//    	String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
-//    	scene.getStylesheets().add(css);
+		// String css =
+		// this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
+		// scene.getStylesheets().add(css);
 		stage.setScene(scene);
 		stage.setTitle("Initializing Collector...");
 		stage.centerOnScreen();

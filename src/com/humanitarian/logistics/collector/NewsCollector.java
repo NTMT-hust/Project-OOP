@@ -32,6 +32,10 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
     private static final Logger logger = LoggerFactory.getLogger(NewsCollector.class);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    // API Endpoints
+    private static final String ENDPOINT_EVERYTHING = "/everything";
+    private static final String ENDPOINT_TOP_HEADLINES = "/top-headlines";
+
     public NewsCollector(NewsApiConfig config) {
         super("newsapi");
         this.config = config;
@@ -98,7 +102,7 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
 
     }
 
-    public String buildEverythingUrl(String query, int page, String from, String to) {
+    private String buildEverythingUrl(String query, int page, String from, String to) {
         StringBuilder sb = new StringBuilder("https://newsapi.org/v2/everything?");
         sb.append("apikey=").append(config.getApiKey());
         sb.append("&q=").append(URLEncoder.encode(query, StandardCharsets.UTF_8));
@@ -110,6 +114,93 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
             sb.append("&to=").append(to);
         System.out.println(sb.toString());
         return sb.toString();
+    }
+
+    /**
+     * Build URL for /top-headlines endpoint (alternative)
+     */
+    private String buildTopHeadlinesUrl(String query, int pageSize) {
+        StringBuilder url = new StringBuilder(config.getBaseUrl());
+        url.append(ENDPOINT_TOP_HEADLINES);
+        url.append("?apiKey=").append(config.getApiKey());
+        url.append("&pageSize=").append(pageSize);
+
+        if (query != null && !query.isEmpty()) {
+            url.append("&q=").append(URLEncoder.encode(query, StandardCharsets.UTF_8));
+        }
+
+        // Country
+        if (config.getDefaultCountry() != null) {
+            url.append("&country=").append(config.getDefaultCountry());
+        }
+
+        return url.toString();
+    }
+
+    @Override
+    public List<SocialPost> doCollect(SearchCriteria criteria) {
+        List<SocialPost> posts = new ArrayList<>();
+        logger.info("Collecting ....");
+        int maxResults = Math.min(criteria.getMaxResults(), config.getMaxResults());
+        int pageSize = config.getDefaultPageSize();
+        int page = 1;
+        int totalFetched = 0;
+
+        while (totalFetched < maxResults) {
+            if (rateLimiter != null) {
+                try {
+                    rateLimiter.acquire();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt(); // good practice
+                    logger.warn("Thread interrupted while acquiring permit", e);
+                }
+            }
+            int toFetch = Math.min(pageSize, maxResults - totalFetched);
+
+            logger.debug("Fetching page {} size {}", page, toFetch);
+            // String url = buildTopHeadlinesUrl(buildQuery(criteria), pageSize);
+            // Build URL
+
+            String url = buildEverythingUrl(
+                    buildQuery(criteria),
+                    page,
+                    criteria.getStartDate().format(formatter),
+                    criteria.getEndDate().format(formatter));
+
+            List<SocialPost> pagePosts;
+            try {
+                pagePosts = executeRequest(url);
+            } catch (IOException e) {
+                logger.error("IOException, execute request");
+                pagePosts = new ArrayList<>();
+            }
+            if (pagePosts.isEmpty()) {
+                logger.info("No more articles available");
+                break;
+            }
+            posts.addAll(pagePosts);
+            totalFetched += pagePosts.size();
+
+            logger.info("Fetched {} articles (total: {})", pagePosts.size(), totalFetched);
+
+            // If we got less than pageSize, no more pages
+            if (pagePosts.size() < pageSize) {
+                break;
+            }
+
+            page++;
+
+            // Small delay between requests
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Thread was interrupted: " + e.getMessage());
+            }
+
+        }
+        logger.info("Collected {} articles from NewsAPI", posts.size());
+        return posts;
     }
 
     @Override
@@ -151,7 +242,7 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
         return new ArrayList<>();
     }
 
-    public String buildQuery(SearchCriteria criteria) {
+    private String buildQuery(SearchCriteria criteria) {
         StringBuilder sb = new StringBuilder();
         if (criteria.getKeyword() != null && !criteria.getKeyword().isEmpty()) {
             sb.append(criteria.getKeyword());
@@ -172,7 +263,7 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
         return new Request.Builder().url(url).get().addHeader("User-Agent", "ProjectOOP/1.0").build();
     }
 
-    public List<SocialPost> executeRequest(String url) throws IOException {
+    private List<SocialPost> executeRequest(String url) throws IOException {
         List<SocialPost> posts = new ArrayList<>();
 
         Request request = buildRequest(url);
@@ -343,9 +434,5 @@ public class NewsCollector extends Collector<SearchCriteria, OkHttpClient, List<
 
     public NewsApiConfig getConfig() {
         return config;
-    }
-    
-    public CustomRateLimiter getRateLimiter() {
-    	return rateLimiter;
     }
 }

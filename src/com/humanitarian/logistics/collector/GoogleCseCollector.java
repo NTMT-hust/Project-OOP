@@ -1,34 +1,30 @@
 package com.humanitarian.logistics.collector;
 
+import com.humanitarian.logistics.config.GoogleCseConfig;
+import com.humanitarian.logistics.model.SearchCriteria;
+import com.humanitarian.logistics.model.SocialPost;
+import com.humanitarian.logistics.util.CustomRateLimiter;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.humanitarian.logistics.config.GoogleCseConfig;
-import com.humanitarian.logistics.model.SearchCriteria;
-import com.humanitarian.logistics.model.SocialPost;
-import com.humanitarian.logistics.util.CustomRateLimiter;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, List<SocialPost>> {
     private static final Logger logger = LoggerFactory.getLogger(GoogleCseCollector.class);
@@ -38,6 +34,8 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     private int totalRequests;
     private int remainingQuota;
     private OkHttpClient apiClient;
+    private boolean initialized;
+
     // Date patterns for parsing
     private static final Pattern DATE_PATTERN = Pattern.compile(
             "(\\d{1,2})\\s+(tháng|thg)\\s+(\\d{1,2})[,\\s]+(\\d{4})");
@@ -70,10 +68,12 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
                     .writeTimeout(config.getTimeout(), TimeUnit.MILLISECONDS)
                     .build();
 
+            this.initialized = true;
             logger.info("Google CSE HTTP client initialized successfully");
 
         } catch (Exception e) {
             logger.error("Failed to initialize Google CSE client", e);
+            this.initialized = false;
         }
     }
 
@@ -102,7 +102,12 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
                 } else if (code == 403) {
                     logger.error("Connection test failed: API not enabled or quota exceeded");
                     return false;
-                } else {
+                } else if (code == 429) {
+                    logger.error("Connection test failed: quota exceeded");
+                    return false;
+                }
+
+                else {
                     logger.error("Connection test failed: HTTP {}", code);
                     return false;
                 }
@@ -112,6 +117,92 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
             logger.error("Connection test failed", e);
             return false;
         }
+    }
+
+    @Override
+    public List<SocialPost> doCollect(SearchCriteria criteria) {
+        List<SocialPost> posts = new ArrayList<>();
+
+        logger.info("Using Google Custom Search Engine");
+
+        // 1. Determine how many we WANT (e.g., 50)
+        int maxResults = Math.min(criteria.getMaxResults(), config.getMaxResults());
+
+        // 2. Google CSE pages are fixed at 10 results
+        int resultsPerPage = 10;
+
+        // 3. Start at index 1 (Google uses 1-based indexing: 1, 11, 21...)
+        int startIndex = 1;
+        int totalFetched = 0;
+
+        try {
+            // FIX: Loop while we haven't reached OUR limit (maxResults),
+            // NOT the API limit (91). The API limit is checked inside.
+            while (totalFetched < maxResults) {
+
+                // Rate limiter
+                if (rateLimiter != null) {
+                    rateLimiter.acquire();
+                }
+
+                // Calculate how many to fetch this time (usually 10, unless we only need 4
+                // more)
+                int toFetch = Math.min(resultsPerPage, maxResults - totalFetched);
+
+                logger.debug("Fetching page starting at index {}", startIndex);
+
+                String query = buildQuery(criteria);
+
+                // Pass the dynamic 'startIndex' to get the next page
+                String url = buildSearchUrl(query, toFetch, startIndex);
+
+                List<SocialPost> pagePosts;
+                try {
+                    pagePosts = executeSearchRequest(url, criteria);
+                } catch (IOException e) {
+                    logger.error("Network error: {}", e.getMessage());
+                    break;
+                }
+
+                if (pagePosts.isEmpty()) {
+                    logger.info("No more results returned by Google");
+                    break;
+                }
+
+                posts.addAll(pagePosts);
+                totalFetched += pagePosts.size();
+
+                // Stop if we have enough
+                if (totalFetched >= maxResults) {
+                    break;
+                }
+
+                // MATH FOR NEXT PAGE:
+                // Move start index forward by 10 (1 -> 11 -> 21)
+                startIndex += resultsPerPage;
+
+                // HARD LIMIT CHECK:
+                // Google CSE cannot return results past index 100.
+                // If startIndex is 91, we fetch 91-100.
+                // If startIndex becomes 101, the API will fail, so we stop.
+                if (startIndex > 91) {
+                    logger.warn("Reached Google CSE 100-result limit.");
+                    break;
+                }
+
+                // Be polite to the API
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+        } catch (Exception e) {
+            logger.error("Fatal error in collect(): {}", e.getMessage(), e);
+        }
+
+        return posts;
     }
 
     @Override
@@ -156,7 +247,7 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     /**
      * Build search query from criteria
      */
-    public String buildQuery(SearchCriteria criteria) {
+    private String buildQuery(SearchCriteria criteria) {
         StringBuilder query = new StringBuilder();
 
         if (criteria.getKeyword() != null && !criteria.getKeyword().isEmpty()) {
@@ -190,7 +281,7 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     /**
      * Build Google CSE API URL
      */
-    public String buildSearchUrl(String query, int num, int start) throws Exception {
+    private String buildSearchUrl(String query, int num, int start) throws Exception {
         StringBuilder url = new StringBuilder(config.getBaseUrl());
         url.append("?key=").append(config.getApiKey());
         url.append("&cx=").append(config.getSearchEngineId());
@@ -199,6 +290,24 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
         url.append("&num=").append(num);
         url.append("&start=").append(start);
 
+        // // Language restriction
+        // if (config.getDefaultLanguage() != null) {
+        // url.append("&lr=").append(config.getDefaultLanguage());
+        // }
+
+        // // Country restriction
+        // if (config.getDefaultCountry() != null) {
+        // url.append("&cr=").append(config.getDefaultCountry());
+        // }
+
+        // // Safe search
+        // url.append("&safe=").append(config.getSafeSearch());
+
+        // // Sort by date (if news search)
+        // if ("news".equals(config.getSearchType())) {
+        // url.append("&sort=date");
+        // }
+        System.out.println(url.toString());
         return url.toString();
     }
 
@@ -218,7 +327,7 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     /**
      * Execute search request
      */
-    public List<SocialPost> executeSearchRequest(String url, SearchCriteria criteria)
+    private List<SocialPost> executeSearchRequest(String url, SearchCriteria criteria)
             throws IOException {
 
         List<SocialPost> posts = new ArrayList<>();
@@ -508,9 +617,4 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     public GoogleCseConfig getConfig() {
         return config;
     }
-
-	public CustomRateLimiter getRateLimiter() {
-		// TODO Auto-generated method stub
-		return rateLimiter;
-	}
 }

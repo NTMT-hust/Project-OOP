@@ -23,7 +23,7 @@ public class Visobert implements AutoCloseable {
 
     public Visobert(Path modelPath, Path tokenizerPath) throws Exception {
         // 1. Setup Tokenizer
-    	HuggingFaceTokenizer tokenizer = HuggingFaceTokenizer.builder()
+        HuggingFaceTokenizer tokenizer = HuggingFaceTokenizer.builder()
                 .optTokenizerPath(tokenizerPath)
                 .build();
 
@@ -78,7 +78,9 @@ public class Visobert implements AutoCloseable {
     @Override
     public void close() {
         // Clean up resources when done
-        if (predictor != null) predictor.close();
-        if (model != null) model.close();
+        if (predictor != null)
+            predictor.close();
+        if (model != null)
+            model.close();
     }
 }
