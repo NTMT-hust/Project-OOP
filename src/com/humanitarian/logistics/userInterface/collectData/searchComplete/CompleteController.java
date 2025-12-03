@@ -22,12 +22,13 @@ public class CompleteController {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	@FXML
-	public void initialize() {
 		statusLabel.setText("Results are saved in data/" + status + "_posts.json");
 	}
+
+//	@FXML
+//	public void initialize() {
+//		statusLabel.setText("Results are saved in data/" + status + "_posts.json");
+//	}
 
 	@FXML
 	public void returnToMenu(ActionEvent e) throws IOException {

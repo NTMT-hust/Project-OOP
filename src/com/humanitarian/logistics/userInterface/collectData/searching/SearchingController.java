@@ -64,7 +64,7 @@ public class SearchingController {
 				GoogleCseConfig googleConfig = new GoogleCseConfig(appConfig);
 				this.collector = new GoogleCseCollector(googleConfig);
 				break;
-			case "NewsA":
+			case "NewsAPI":
 				NewsApiConfig newsConfig = new NewsApiConfig(appConfig);
 				this.collector = new NewsCollector(newsConfig);
 				break;
