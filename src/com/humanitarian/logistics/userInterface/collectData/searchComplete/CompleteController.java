@@ -22,7 +22,7 @@ public class CompleteController {
 
 	public void setStatus(String status) {
 		this.status = status;
-		statusLabel.setText("Results are saved in data/" + status + "_posts.json");
+		statusLabel.setText("Results are saved in data/" + status.toLowerCase() + "_posts.json");
 	}
 
 //	@FXML

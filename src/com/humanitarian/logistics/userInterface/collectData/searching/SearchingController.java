@@ -135,17 +135,17 @@ public class SearchingController {
 
 		List<SocialPost> allPosts = new ArrayList<>();
 
-		if (file.exists() && file.length() > 0) {
-			try (FileReader reader = new FileReader(file)) {
-				Type listType = new TypeToken<List<SocialPost>>() {
-				}.getType();
-				List<SocialPost> existing = gson.fromJson(reader, listType);
-				if (existing != null)
-					allPosts.addAll(existing);
-			} catch (Exception e) {
-				System.err.println("Warning: Could not read existing file. Overwriting.");
-			}
-		}
+//		if (file.exists() && file.length() > 0) {
+//			try (FileReader reader = new FileReader(file)) {
+//				Type listType = new TypeToken<List<SocialPost>>() {
+//				}.getType();
+//				List<SocialPost> existing = gson.fromJson(reader, listType);
+//				if (existing != null)
+//					allPosts.addAll(existing);
+//			} catch (Exception e) {
+//				System.err.println("Warning: Could not read existing file. Overwriting.");
+//			}
+//		}
 
 		allPosts.addAll(newPosts);
 
