@@ -16,11 +16,11 @@ import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
 import ai.djl.modality.Classifications;
 import javafx.concurrent.Task;
 
-class totalResult {
+class TotalResult {
 	StringBuffer buffer;
 	List<Integer> numbers;
 
-	totalResult(StringBuffer buffer, List<Integer> numbers) {
+	TotalResult(StringBuffer buffer, List<Integer> numbers) {
 		this.buffer = buffer;
 		this.numbers = numbers;
 	}
@@ -34,7 +34,7 @@ class totalResult {
 	}
 }
 
-public class AnalysingTask extends Task<totalResult> {
+public class AnalysingTask extends Task<TotalResult> {
 
 	private Path dataPath;
 	private StringBuffer results = new StringBuffer();
@@ -48,7 +48,7 @@ public class AnalysingTask extends Task<totalResult> {
 	}
 
 	@Override
-	protected totalResult call() throws Exception {
+	protected TotalResult call() throws Exception {
 		// TODO Auto-generated method stub
 
 		int positive = 0, negative = 0, neutral = 0;
@@ -72,17 +72,20 @@ public class AnalysingTask extends Task<totalResult> {
 			switch (result.best().getClassName()) {
 				case "Positive":
 					positive += 1;
-
+					break;
+					
 				case "Negative":
 					negative += 1;
-
+					break;
+					
 				case "Neutral":
 					neutral += 1;
+					break;
 			}
 		}
 
 		sentiment = new ArrayList<>(List.of(positive, negative, neutral));
-		totalResult finalResult = new totalResult(results, sentiment);
+		TotalResult finalResult = new TotalResult(results, sentiment);
 
 		return finalResult;
 	}

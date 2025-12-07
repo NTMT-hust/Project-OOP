@@ -36,7 +36,7 @@ public class AnalysingController {
 		
 		analyseTask.setOnSucceeded(_ -> {
 			try {
-				totalResult analyseResults = analyseTask.getValue();
+				TotalResult analyseResults = analyseTask.getValue();
 			
 				Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 				currentStage.close();
