@@ -3,22 +3,22 @@ package com.humanitarian.logistics.userInterface.sentimentAnalysis.modelInitiali
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Model;
 
 import javafx.concurrent.Task;
 
-public class VisobertInitializeTask extends Task<Visobert> {
+public class InitializeTask extends Task<Model> {
 	
     Path modelPath = Paths.get("src/resources/visobert/model.onnx");
     Path tokenizerPath = Paths.get("src/resources/visobert/tokenizer.json");
 	
     @Override
-	protected Visobert call() {
+	protected Model call() {
 		// TODO Auto-generated method stub
-    	Visobert analyzer;
+    	Model analyzer;
 		try {
 			updateMessage("Initializing...");
-			analyzer = new Visobert(modelPath, tokenizerPath);
+			analyzer = new Model(modelPath, tokenizerPath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			analyzer = null;

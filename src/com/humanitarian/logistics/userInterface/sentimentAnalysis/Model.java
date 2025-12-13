@@ -16,12 +16,12 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-public class Visobert implements AutoCloseable {
+public class Model implements AutoCloseable {
 
     private final ZooModel<String, Classifications> model;
     private final Predictor<String, Classifications> predictor;
 
-    public Visobert(Path modelPath, Path tokenizerPath) throws Exception {
+    public Model(Path modelPath, Path tokenizerPath) throws Exception {
         // 1. Setup Tokenizer
         HuggingFaceTokenizer tokenizer = HuggingFaceTokenizer.builder()
                 .optTokenizerPath(tokenizerPath)

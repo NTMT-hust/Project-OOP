@@ -2,7 +2,7 @@ package com.humanitarian.logistics.userInterface.sentimentAnalysis.modelInitiali
 
 import java.io.IOException;
 
-import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Model;
 import com.humanitarian.logistics.userInterface.sentimentAnalysis.startAnalysis.StartAnalysisController;
 
 import javafx.fxml.FXML;
@@ -13,15 +13,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
-public class VisobertInitializeController {
+public class InitializeController {
 	
 	@FXML
 	private Label statusLabel;
 	@FXML
 	private ProgressBar progressBar;
 	
-	private VisobertInitializeTask initializeTask = new VisobertInitializeTask();
-	private Visobert sentimentModel;
+	private InitializeTask initializeTask = new InitializeTask();
+	private Model sentimentModel;
 	
 	@FXML
     public void initialize() {

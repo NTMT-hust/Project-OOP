@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Model;
 import com.humanitarian.logistics.userInterface.sentimentAnalysis.analysing.AnalysingController;
 
 import javafx.event.ActionEvent;
@@ -33,9 +33,9 @@ public class StartAnalysisController {
 	@FXML
 	private Button button;
 	
-	private Visobert sentimentModel;
+	private Model sentimentModel;
 	
-	public StartAnalysisController(Visobert sentimentModel) {
+	public StartAnalysisController(Model sentimentModel) {
 		this.sentimentModel = sentimentModel;
 	}
 	

@@ -3,7 +3,7 @@ package com.humanitarian.logistics.userInterface.sentimentAnalysis.analysing;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Model;
 import com.humanitarian.logistics.userInterface.sentimentAnalysis.analyseComplete.AnalyseCompleteController;
 
 import javafx.fxml.FXML;
@@ -24,7 +24,7 @@ public class AnalysingController {
 	
 	private AnalysingTask analyseTask;
 	
-	public AnalysingController(Path dataPath, Visobert sentimentModel) {
+	public AnalysingController(Path dataPath, Model sentimentModel) {
 		analyseTask = new AnalysingTask(dataPath, sentimentModel);
 	}
 	

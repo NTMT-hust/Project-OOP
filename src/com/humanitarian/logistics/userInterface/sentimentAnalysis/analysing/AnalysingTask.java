@@ -11,7 +11,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.humanitarian.logistics.userInterface.sentimentAnalysis.Visobert;
+import com.humanitarian.logistics.userInterface.sentimentAnalysis.Model;
 
 import ai.djl.modality.Classifications;
 import javafx.concurrent.Task;
@@ -38,11 +38,11 @@ public class AnalysingTask extends Task<TotalResult> {
 
 	private Path dataPath;
 	private StringBuffer results = new StringBuffer();
-	private Visobert sentimentModel;
+	private Model sentimentModel;
 
 	private List<Integer> sentiment;
 
-	public AnalysingTask(Path dataPath, Visobert sentimentModel) {
+	public AnalysingTask(Path dataPath, Model sentimentModel) {
 		this.dataPath = dataPath;
 		this.sentimentModel = sentimentModel;
 	}

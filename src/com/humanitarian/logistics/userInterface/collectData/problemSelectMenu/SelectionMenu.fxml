@@ -17,7 +17,7 @@
                </font>
             </Label>
             <Button fx:id="button1" layoutX="70.0" layoutY="230.0" mnemonicParsing="false" onAction="#sentimentAnalysis" styleClass="action-btn" text="Sentiment Analysis" />
-            <Button fx:id="button2" layoutX="253.0" layoutY="230.0" mnemonicParsing="false" onAction="#textExtraction" styleClass="action-btn" text="Text Extraction" />
+            <Button fx:id="button2" layoutX="245.0" layoutY="230.0" mnemonicParsing="false" onAction="#textExtraction" styleClass="action-btn" text="Damage Analyse" />
             <Button fx:id="buttonCollectData" layoutX="423.0" layoutY="230.0" mnemonicParsing="false" onAction="#collectData" styleClass="action-btn" text="Collect Data" />
             <VBox layoutX="250.0" layoutY="115.0" prefHeight="35.0" prefWidth="100.0" AnchorPane.rightAnchor="0.0" />
          </children>
