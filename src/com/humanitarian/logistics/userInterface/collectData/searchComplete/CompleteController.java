@@ -17,18 +17,10 @@ public class CompleteController {
 
 	@FXML
 	private Label statusLabel;
-
-	private String status;
-
+	
 	public void setStatus(String status) {
-		this.status = status;
 		statusLabel.setText("Results are saved in data/" + status.toLowerCase() + "_posts.json");
 	}
-
-//	@FXML
-//	public void initialize() {
-//		statusLabel.setText("Results are saved in data/" + status + "_posts.json");
-//	}
 
 	@FXML
 	public void returnToMenu(ActionEvent e) throws IOException {
@@ -43,9 +35,6 @@ public class CompleteController {
 		Stage stage = new Stage();
 
 		Scene scene = new Scene(root);
-		// String css =
-		// this.getClass().getResource("/com/humanitarian/logistics/userInterface/inputBox/InputInterface.css").toExternalForm();
-		// scene.getStylesheets().add(css);
 		stage.setScene(scene);
 		stage.setTitle("Complete searching!");
 		stage.centerOnScreen();

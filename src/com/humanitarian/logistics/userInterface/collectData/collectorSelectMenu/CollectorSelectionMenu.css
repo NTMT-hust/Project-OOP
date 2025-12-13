@@ -1,0 +1,109 @@
+/* 1. Main Background Gradient */
+.root {
+    /* Dark blue (top) to light blue (bottom) */
+    -fx-background-color: linear-gradient(to bottom, #051325 0%, #11468a 25%, #4286d7 50%, #6ca9df 85%, #addcee 100%);
+    -fx-font-family: "Segoe UI", "Helvetica", "Arial", sans-serif;
+}
+
+/* 2. The Title "Search configuration" */
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 32px;
+    -fx-font-weight: 700;
+}
+
+/* 7. The Buttons (OK / Cancel) */
+.action-btn {
+    /* Blue capsule gradient */
+    -fx-background-color: linear-gradient(to bottom, #2b6cb0 0%, #103050 100%);
+    -fx-background-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    
+    /* Glow shadow */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 4);
+    -fx-cursor: hand;
+}
+.action-btn:hover {
+    -fx-background-color: linear-gradient(to bottom, #3b7cc0 0%, #204060 100%);
+}
+
+.glass-menu-button {
+    /* Glass Gradient similar to your inputs */
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-background-radius: 20;
+    
+    /* White Border */
+    -fx-border-color: rgba(255, 255, 255);
+    -fx-border-radius: 20;
+    -fx-border-width: 1px;
+    
+    /* Text Styling */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+/* Hover Effect */
+.glass-menu-button:hover {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.10) 100%);
+    -fx-border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* 2. The Arrow Area (Right side) */
+.glass-menu-button .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/* 3. The Arrow Icon */
+.glass-menu-button .arrow {
+    -fx-background-color: white; /* Make the triangle white */
+    -fx-background-insets: 0;
+    -fx-padding: 3px; /* Size of the arrow */
+}
+
+/* 4. The Label inside the button */
+.glass-menu-button .label {
+    -fx-text-fill: #11468a;
+}
+.glass-menu-button:hover .label {
+	-fx-text-fill: white;
+}
+
+/* ==============================================
+   THE DROPDOWN LIST (Context Menu)
+   ============================================== */
+
+/* 1. The Container for the list options */
+.context-menu {
+    /* Dark Blue Background */
+    -fx-background-color: #051628; 
+    
+    /* Border and Shadow */
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 5);
+}
+
+/* 2. The Individual Items */
+.menu-item {
+    -fx-background-color: transparent;
+}
+
+/* 3. The Text inside the items */
+.menu-item .label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+
+/* 4. Hover/Focus State (When you mouse over an option) */
+.menu-item:focused {
+    -fx-background-color: #68aadd; /* Highlight Blue */
+}
+
+/* 5. Fix for text color when hovered (Ensure it stays readable) */
+.menu-item:focused .label {
+    -fx-text-fill: black; /* or keep 'white' if you prefer */
+}

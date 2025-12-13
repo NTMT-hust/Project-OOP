@@ -1,0 +1,67 @@
+/* 1. Main Background Gradient */
+.root {
+    /* Dark blue (top) to light blue (bottom) */
+    -fx-background-color: linear-gradient(to bottom, #051325 0%, #11468a 25%, #4286d7 50%, #6ca9df 85%, #addcee 100%);
+    -fx-font-family: "Segoe UI", "Helvetica", "Arial", sans-serif;
+}
+
+/* 7. The Buttons (OK / Cancel) */
+.action-btn {
+    /* Blue capsule gradient */
+    -fx-background-color: linear-gradient(to bottom, #2b6cb0 0%, #103050 100%);
+    -fx-background-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    
+    /* Glow shadow */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 4);
+    -fx-cursor: hand;
+}
+.action-btn:hover {
+    -fx-background-color: linear-gradient(to bottom, #3b7cc0 0%, #204060 100%);
+}
+
+/* ==============================================
+   GLASS BAR CHART
+   ============================================== */
+
+/* 1. Remove the default white background */
+.glass-bar-chart {
+    -fx-background-color: transparent;
+}
+.glass-bar-chart .chart-plot-background {
+    -fx-background-color: rgba(255, 255, 255, 0.6); /* Or rgba(255,255,255,0.05) for a faint box */
+}
+
+/* 2. Axis Styling (X and Y lines/text) */
+.glass-bar-chart .axis {
+    -fx-tick-mark-stroke: white; /* Little tick lines */
+	-fx-tick-label-font-weight: bold;
+}
+
+/* --- 3. Y-AXIS ONLY (Vertical) --- */
+/* Example: Keep the left text normal/thinner */
+.glass-bar-chart .axis:left {
+    -fx-tick-label-fill: rgba(255, 255, 255, 0.8); /* Slightly dimmed white */
+}
+
+/* 3. Grid Lines (The faint lines behind the bars) */
+.glass-bar-chart .chart-vertical-grid-lines, 
+.glass-bar-chart .chart-horizontal-grid-lines {
+    -fx-stroke: rgba(0, 0, 0, 0.1); /* Very subtle black lines */
+}
+
+/* 4. THE BARS (Color Palette) */
+
+/* Series Bars: Darker Blue Gradient */
+.glass-bar-chart .default-color.chart-bar {
+    -fx-bar-fill: #4286d7;
+    -fx-background-radius: 5 5 0 0;
+}
+
+/* 5. Hover Effect (Optional: Make bars glow when hovered) */
+.glass-bar-chart .chart-bar:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.5), 10, 0, 0, 0);
+    -fx-cursor: hand;
+}

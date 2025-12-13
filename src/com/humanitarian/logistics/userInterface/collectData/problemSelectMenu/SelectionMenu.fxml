@@ -7,19 +7,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.collectData.problemSelectMenu.ProblemSelectionController">
+<StackPane stylesheets="@ProblemSelectionMenu.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.collectData.problemSelectMenu.ProblemSelectionController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Label alignment="CENTER" layoutX="140.0" layoutY="115.0" text="Humanitarian Logistics Project">
+            <Label alignment="CENTER" layoutX="70.0" layoutY="115.0" styleClass="title-label" text="Humanitarian Logistics Project">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button fx:id="button1" layoutX="82.0" layoutY="230.0" mnemonicParsing="false" onAction="#sentimentAnalysis" text="Sentiment Analysis" />
-            <Button fx:id="button2" layoutX="253.0" layoutY="230.0" mnemonicParsing="false" onAction="#textExtraction" text="Text Extraction" />
-            <Button fx:id="buttonCollectData" layoutX="421.0" layoutY="230.0" mnemonicParsing="false" onAction="#collectData" text="Collect Data" />
+            <Button fx:id="button1" layoutX="70.0" layoutY="230.0" mnemonicParsing="false" onAction="#sentimentAnalysis" styleClass="action-btn" text="Sentiment Analysis" />
+            <Button fx:id="button2" layoutX="253.0" layoutY="230.0" mnemonicParsing="false" onAction="#textExtraction" styleClass="action-btn" text="Text Extraction" />
+            <Button fx:id="buttonCollectData" layoutX="423.0" layoutY="230.0" mnemonicParsing="false" onAction="#collectData" styleClass="action-btn" text="Collect Data" />
             <VBox layoutX="250.0" layoutY="115.0" prefHeight="35.0" prefWidth="100.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>

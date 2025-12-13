@@ -34,7 +34,6 @@ public class GoogleCseCollector extends Collector<SearchCriteria, OkHttpClient, 
     private int totalRequests;
     private int remainingQuota;
     private OkHttpClient apiClient;
-    private boolean initialized;
 
     // Date patterns for parsing
     private static final Pattern DATE_PATTERN = Pattern.compile(

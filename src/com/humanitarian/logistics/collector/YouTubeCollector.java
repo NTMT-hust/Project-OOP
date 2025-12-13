@@ -19,9 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class YouTubeCollector extends Collector<SearchCriteria, Object, List<SocialPost>> {
     private YouTube youtube;
     private YouTubeConfig config;
+    
+    private static final Logger logger = LoggerFactory.getLogger(YouTubeCollector.class);
 
     public YouTubeCollector(YouTubeConfig config) {
         super("youtube");
@@ -42,9 +47,9 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
                     .setApplicationName("Humanitarian-Logistics-Analyzer")
                     .build();
 
-            System.out.println("✓ YouTube client initialized");
+            logger.info("✓ YouTube client initialized");
         } catch (Exception e) {
-            System.err.println("✗ Failed to initialize YouTube client: " + e.getMessage());
+        	logger.error("✗ Failed to initialize YouTube client: " + e.getMessage());
             throw new RuntimeException("YouTube initialization failed", e);
         }
     }
@@ -58,10 +63,10 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
             search.setMaxResults(1L);
             search.execute();
 
-            System.out.println("✓ YouTube connection successful");
+            logger.info("✓ YouTube connection successful");
             return true;
         } catch (Exception e) {
-            System.err.println("✗ YouTube connection failed: " + e.getMessage());
+        	logger.error("✗ YouTube connection failed: " + e.getMessage());
             return false;
         }
     }
@@ -74,49 +79,49 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         List<SocialPost> posts = new ArrayList<>();
 
         try {
-            System.out.println("Step 1: Searching for videos...");
+            logger.info("Step 1: Searching for videos...");
             List<String> videoIds = searchWithPagination(criteria);
-            System.out.println("Found " + videoIds.size() + " videos");
+            logger.info("Found " + videoIds.size() + " videos");
 
             if (videoIds.isEmpty()) {
-                System.out.println("No videos found matching criteria");
+                logger.info("No videos found matching criteria");
                 return posts;
             }
 
-            System.out.println("\nStep 2: Collecting comments from videos...");
+            logger.info("\nStep 2: Collecting comments from videos...");
             int totalComments = 0;
 
             for (int i = 0; i < videoIds.size(); i++) {
                 String videoId = videoIds.get(i);
-                System.out.println("  [" + (i + 1) + "/" + videoIds.size() + "] Video: " + videoId);
+                logger.info("  [" + (i + 1) + "/" + videoIds.size() + "] Video: " + videoId);
 
                 try {
                     List<SocialPost> videoComments = getVideoComments(videoId, criteria);
                     posts.addAll(videoComments);
                     totalComments += videoComments.size();
 
-                    System.out.println("    → Collected " + videoComments.size() + " comments");
+                    logger.info("    → Collected " + videoComments.size() + " comments");
 
                     if (posts.size() >= criteria.getMaxResults()) {
-                        System.out.println("    → Reached max results limit");
+                    	logger.info("    → Reached max results limit");
                         break;
                     }
 
                     // Rate limiting - wait 1 second between videos
                     if (i < videoIds.size() - 1) {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     }
 
                 } catch (Exception e) {
-                    System.err.println("    ✗ Error getting comments: " + e.getMessage());
+                	logger.error("    ✗ Error getting comments: " + e.getMessage());
                 }
             }
 
-            System.out.println("\n✓ YouTube collection completed");
-            System.out.println("Total posts: " + posts.size());
+            logger.info("\n✓ YouTube collection completed");
+            logger.info("Total posts: " + posts.size());
 
         } catch (Exception e) {
-            System.err.println("Collection failed: " + e.getMessage());
+        	logger.error("Collection failed: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -129,7 +134,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
         List<String> videoIds = new ArrayList<>();
         String nextPageToken = null;
 
-        while (allVideos.size() < 1000) {
+        while (allVideos.size() < 50) {
             // 1. Create request
             YouTube.Search.List search = youtube.search().list(Arrays.asList("id", "snippet"));
             search.setKey(config.getApiKey());
@@ -238,7 +243,7 @@ public class YouTubeCollector extends Collector<SearchCriteria, Object, List<Soc
             request.setKey(config.getApiKey());
             request.setVideoId(videoId);
             request.setTextFormat("plainText");
-            request.setMaxResults(1000000L);
+            request.setMaxResults(50L);
 
             CommentThreadListResponse response = request.execute();
 

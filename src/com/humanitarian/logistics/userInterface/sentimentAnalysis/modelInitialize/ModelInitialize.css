@@ -1,0 +1,61 @@
+/* 1. Main Background Gradient */
+.root {
+    /* Dark blue (top) to light blue (bottom) */
+    -fx-background-color: linear-gradient(to bottom, #051325 0%, #11468a 25%, #4286d7 50%, #6ca9df 85%, #addcee 100%);
+    -fx-font-family: "Segoe UI", "Helvetica", "Arial", sans-serif;
+}
+
+/* 2. The Title "Search configuration" */
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: 700;
+}
+
+/* ==============================================
+   GLASS PROGRESS BAR
+   ============================================== */
+
+/* 1. The Main Container Setup */
+.glass-progress-bar {
+    /* Remove default padding so it looks like a solid capsule */
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+/* 2. The "Track" (The empty background part) */
+.glass-progress-bar .track {
+    /* Glassy background (semi-transparent white) */
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    
+    /* Rounded corners (Capsule shape) */
+    -fx-background-radius: 20;
+    
+    /* Subtle white border to match your input boxes */
+    -fx-border-color: rgba(255, 255, 255);
+    -fx-border-radius: 20;
+    -fx-border-width: 1px;
+}
+
+/* 3. The "Bar" (The filled progress part) */
+.glass-progress-bar .bar {
+    /* BRIGHT BLUE GRADIENT:
+       'to right' makes it look like it's flowing forward.
+    */
+    -fx-background-color: linear-gradient(to right, #2b6cb0 0%, #68aadd 100%);
+    
+    /* Match the rounded corners so it fits inside the track */
+    -fx-background-radius: 20;
+    
+    /* Ensure it fills the track completely */
+    -fx-background-insets: 0;
+    
+    /* OPTIONAL: Glow effect on the bar itself */
+    -fx-effect: dropshadow(three-pass-box, rgba(104, 170, 221, 0.6), 10, 0, 0, 0);
+}
+
+/* Indeterminate State (Loading...) */
+.glass-progress-bar:indeterminate .bar {
+    /* A shifting blue gradient */
+    -fx-background-color: linear-gradient(to right, transparent, #68aadd, transparent);
+}

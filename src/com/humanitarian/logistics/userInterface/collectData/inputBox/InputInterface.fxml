@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -7,40 +9,100 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.collectData.inputBox.InputBoxController">
+<StackPane stylesheets="@InputInterface.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userInterface.collectData.inputBox.InputBoxController">
    <children>
       <AnchorPane fx:id="scenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <VBox layoutX="226.0" layoutY="76.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="226.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="234.0">
+            <VBox layoutX="42.0" layoutY="194.0" prefHeight="42.0" prefWidth="174.0" styleClass="glass-pane">
                <children>
-                  <Label text="*Required" textFill="RED" />
+                  <TextField fx:id="userHashtags" promptText="Hashtags:">
+                     <styleClass>
+                        <String fx:value="glass-input" />
+                        <String fx:value="text-field" />
+                     </styleClass>
+                  </TextField>
                </children>
             </VBox>
-            <VBox layoutX="375.0" layoutY="12.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="185.0" AnchorPane.leftAnchor="374.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="173.0">
+            <VBox layoutX="42.0" layoutY="112.0" prefHeight="42.0" prefWidth="174.0" styleClass="glass-pane">
                <children>
-                  <Label text="*Required" textFill="RED" />
+                  <TextField fx:id="userKeyword" promptText="Keyword:">
+                     <styleClass>
+                        <String fx:value="text-field" />
+                        <String fx:value="glass-input" />
+                     </styleClass>
+                  </TextField>
                </children>
             </VBox>
-            <VBox layoutX="373.0" layoutY="91.0" prefHeight="42.0" prefWidth="174.0" AnchorPane.leftAnchor="374.0">
+            <VBox layoutX="213.0" layoutY="262.0" prefHeight="42.0" prefWidth="174.0" styleClass="glass-pane" AnchorPane.bottomAnchor="96.39999999999998" AnchorPane.leftAnchor="213.0" AnchorPane.rightAnchor="213.39999999999998" AnchorPane.topAnchor="262.0">
                <children>
-                  <Label text="*Required" textFill="RED" />
+                  <TextField fx:id="userMaxResult" promptText="Max total results:" styleClass="glass-input" />
                </children>
             </VBox>
-            <Button fx:id="OK" layoutX="220.0" layoutY="308.0" mnemonicParsing="false" onAction="#submit" text="OK" />
-            <TextField fx:id="userKeyword" layoutX="55.0" layoutY="108.0" promptText="Keyword:" />
-            <TextField fx:id="userHashtags" layoutX="55.0" layoutY="190.0" promptText="Hashtags" />
-            <Button fx:id="Cancel" layoutX="329.0" layoutY="308.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
-            <DatePicker fx:id="userStartDate" layoutX="374.0" layoutY="108.0" promptText="Start Date:" AnchorPane.leftAnchor="374.0" />
-            <DatePicker fx:id="userEndDate" layoutX="374.0" layoutY="190.0" promptText="End Date:" AnchorPane.bottomAnchor="185.0" AnchorPane.leftAnchor="374.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="190.0" />
-            <Label layoutX="222.0" layoutY="54.0" text="Content Finder">
+            <VBox layoutX="375.0" layoutY="194.0" prefHeight="42.0" prefWidth="174.0" styleClass="glass-pane" AnchorPane.bottomAnchor="163.60000000000002" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="51.39999999999998" AnchorPane.topAnchor="194.0">
+               <children>
+                  <DatePicker fx:id="userEndDate" promptText="End Date:">
+                     <styleClass>
+                        <String fx:value="date-picker" />
+                        <String fx:value="glass-input" />
+                        <String fx:value="text-field" />
+                     </styleClass>
+                  </DatePicker>
+               </children>
+            </VBox>
+            <VBox layoutX="374.0" layoutY="111.0" prefHeight="42.0" prefWidth="174.0" styleClass="glass-pane" AnchorPane.leftAnchor="374.0">
+               <children>
+                  <DatePicker fx:id="userStartDate" prefHeight="0.0" prefWidth="186.0" promptText="Start Date:">
+                     <styleClass>
+                        <String fx:value="glass-input" />
+                        <String fx:value="date-picker" />
+                        <String fx:value="text-field" />
+                     </styleClass>
+                  </DatePicker>
+               </children>
+            </VBox>
+            <Button fx:id="Cancel" layoutX="344.0" layoutY="330.0" mnemonicParsing="false" onAction="#cancel" text="Cancel">
+               <styleClass>
+                  <String fx:value="action-btn" />
+                  <String fx:value="cell" />
+                  <String fx:value="arrow" />
+                  <String fx:value="arrow-button" />
+               </styleClass>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></Button>
+            <Label layoutX="188.0" layoutY="51.0" styleClass="title-label" text="Content Finder">
                <font>
                   <Font size="24.0" />
                </font>
+               <textFill>
+                  <LinearGradient endY="0.33333334055813874" startY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color green="0.6000000238418579" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
             </Label>
-            <TextField fx:id="userMaxResult" layoutX="226.0" layoutY="251.0" promptText="Max total results:" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="226.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="251.0" />
+            <Button fx:id="OK" layoutX="194.0" layoutY="330.0" mnemonicParsing="false" onAction="#submit" prefHeight="7.0" prefWidth="44.0" text="OK">
+               <styleClass>
+                  <String fx:value="arrow-button" />
+                  <String fx:value="arrow" />
+                  <String fx:value="action-btn" />
+               </styleClass>
+            </Button>
          </children>
       </AnchorPane>
    </children>

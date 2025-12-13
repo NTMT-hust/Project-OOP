@@ -67,9 +67,6 @@ public class ExtractCompleteController {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/humanitarian/logistics/userInterface/collectData/problemSelectMenu/SelectionMenu.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        
-//        String css = this.getClass().getResource("/resources/InputInterface.css").toExternalForm();
-//        scene.getStylesheets().add(css);
 
         Stage stage = new Stage();
         stage.setTitle("Humanitarian Logistics Project");

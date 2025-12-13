@@ -1,0 +1,88 @@
+/* 1. Main Background Gradient */
+.root {
+    /* Dark blue (top) to light blue (bottom) */
+    -fx-background-color: linear-gradient(to bottom, #051325 0%, #11468a 11.25%, #4286d7 22.5%, #6ca9df 38.25%, #addcee 45%);
+    -fx-font-family: "Segoe UI", "Helvetica", "Arial", sans-serif;
+}
+
+/* ==============================================
+   GLASS TEXT AREA
+   ============================================== */
+
+/* 1. The Main Container */
+.glass-text-area {
+    /* Glass Background */
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    
+    /* Border */
+    -fx-border-color: rgba(255, 255, 255);
+    -fx-border-width: 1px;
+    
+    /* Text Color */
+    -fx-text-fill: black;
+}
+
+/* 2. The Internal Content Areas (Must be transparent!) */
+.glass-text-area .viewport,
+.glass-text-area .content {
+    -fx-background-color: transparent; /* Remove default white paper look */
+}
+
+/* 3. The Text Itself */
+.glass-text-area .text {
+    -fx-fill: white; /* Ensure text is white */
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* 4. The Scroll Bar (Optional styling to make it blend in) */
+.glass-text-area .scroll-bar:vertical,
+.glass-text-area .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.glass-text-area .scroll-bar .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent handle */
+    -fx-background-radius: 10;
+}
+
+/* 7. The Buttons (OK / Cancel) */
+.action-btn {
+    /* Blue capsule gradient */
+    -fx-background-color: linear-gradient(to bottom, #2b6cb0 0%, #103050 100%);
+    -fx-background-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    
+    /* Glow shadow */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 4);
+    -fx-cursor: hand;
+}
+.action-btn:hover {
+    -fx-background-color: linear-gradient(to bottom, #3b7cc0 0%, #204060 100%);
+}
+
+/* ==============================================
+   GLASS PIE CHART
+   ============================================== */
+
+/* 1. Main Chart Background */
+.glass-pie-chart {
+    -fx-background-color: transparent;
+}
+
+/* 2. The Chart Content Area */
+.glass-pie-chart .chart-content {
+    -fx-background-color: transparent;
+}
+
+/* 3. The Labels (Text connected to slices) */
+.glass-pie-chart .chart-pie-label {
+    -fx-fill: white; /* Text color */
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* 4. The Lines connecting slices to labels */
+.glass-pie-chart .chart-pie-label-line {
+    -fx-stroke: rgba(255, 255, 255, 0.5); /* Semi-transparent white lines */
+}

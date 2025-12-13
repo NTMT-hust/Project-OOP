@@ -90,7 +90,7 @@ public class AnalyseCompleteController {
 
 	    // 2. Create the Label
 	    Label label = new Label(name);
-	    label.setStyle("-fx-font-weight: bold; -fx-padding: 0 0 0 5;");
+	    label.setStyle("-fx-font-weight: bold; -fx-padding: 0 0 0 5; -fx-text-fill: white;");
 
 	    // 3. CRITICAL STEP: Put them side-by-side in an HBox
 	    HBox itemRow = new HBox(10); // 10 is the gap between dot and text
