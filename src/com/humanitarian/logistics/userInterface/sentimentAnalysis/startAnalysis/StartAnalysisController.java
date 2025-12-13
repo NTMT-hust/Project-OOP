@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 
 public class StartAnalysisController {
 	
-	List<String> dataSourceList = List.of("Youtube", "GoogleCSE", "NewsAPI", "All");
+	List<String> dataSourceList = List.of("Youtube", "GoogleCSE", "NewsAPI");
 	private String selection;
 	
 	@FXML
