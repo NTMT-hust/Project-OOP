@@ -65,3 +65,23 @@
     -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.5), 10, 0, 0, 0);
     -fx-cursor: hand;
 }
+
+/* ==============================================
+   COLOR FIXES (TITLE & X-AXIS)
+   ============================================== */
+
+/* 1. Đổi màu Tiêu đề biểu đồ (Chart Title) */
+.glass-bar-chart .chart-title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px; /* Tùy chỉnh kích thước nếu cần */
+}
+
+/* 2. Đổi màu chữ các giá trị dưới trục X (bụi, khói, ô nhiễm...) */
+.glass-bar-chart .axis:bottom {
+    -fx-tick-label-fill: white;
+}
+
+/* 3. Đổi màu tên của trục (Chữ "Keywords" và "Frequency") */
+.glass-bar-chart .axis-label {
+    -fx-text-fill: white;
+}
