@@ -51,7 +51,7 @@ public class InputBoxController {
 		currentStage.close();
 		
 		Stage stage = new Stage();
-		SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userInterface/collectData/searching/SearchingInterface.fxml",
+		SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userinterface/collectdata/searching/SearchingInterface.fxml",
 				"Searching...", type -> new SearchingController(collectorType, userInput, stage));
 		
 	}

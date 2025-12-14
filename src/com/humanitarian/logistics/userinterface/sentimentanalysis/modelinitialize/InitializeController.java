@@ -32,7 +32,7 @@ public class InitializeController {
 			currentStage.close();
 			
 			Stage stage = new Stage();
-			SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userInterface/sentimentAnalysis/startAnalysis/StartAnalysis.fxml",
+			SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userinterface/sentimentanalysis/startanalysis/StartAnalysis.fxml",
 					"Humanitarian Logistics Sentiment Analysis Model", type -> new StartAnalysisController(this.sentimentModel));
 		});
 	

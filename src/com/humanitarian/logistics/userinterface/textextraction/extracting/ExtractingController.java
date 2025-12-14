@@ -37,7 +37,7 @@ public class ExtractingController {
 			currentStage.close();
 
 			Stage stage = new Stage();
-			SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userInterface/textExtraction/extractComplete/ExtractComplete.fxml",
+			SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userinterface/textextraction/extractcomplete/ExtractComplete.fxml",
 					"Analyse Results", type -> new ExtractCompleteController(extractResults));
 		});
 	

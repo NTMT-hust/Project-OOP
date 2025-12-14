@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-    	SceneManager.loadScene(primaryStage, "/com/humanitarian/logistics/userInterface/collectData/problemSelectMenu/SelectionMenu.fxml",
+    	SceneManager.loadScene(primaryStage, "/com/humanitarian/logistics/userinterface/collectdata/problemselectmenu/SelectionMenu.fxml",
     			"Humanitarian Logistics Project");
     }
 

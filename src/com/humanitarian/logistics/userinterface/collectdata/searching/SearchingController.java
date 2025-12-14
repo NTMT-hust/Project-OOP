@@ -96,7 +96,7 @@ public class SearchingController {
 		collectTask.setOnSucceeded(event -> {
 			List<SocialPost> resultPost = collectTask.getValue();
 			savePost(resultPost);
-			SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userInterface/collectData/searchComplete/SearchComplete.fxml",
+			SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userinterface/collectdata/searchcomplete/SearchComplete.fxml",
 					"Complete!", type -> new CompleteController(apiName));
 			this.currentStage.close();
 		});

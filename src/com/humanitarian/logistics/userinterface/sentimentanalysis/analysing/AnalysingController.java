@@ -38,7 +38,7 @@ public class AnalysingController {
 			currentStage.close();
 			
 			Stage stage = new Stage();
-			SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userInterface/sentimentAnalysis/analyseComplete/AnalyseComplete.fxml",
+			SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userinterface/sentimentanalysis/analysecomplete/AnalyseComplete.fxml",
 					"Analyse Results", type -> new AnalyseCompleteController(analyseResults.getString(), analyseResults.getTotalSentiment()));
 		});
 	

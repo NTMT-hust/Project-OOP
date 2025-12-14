@@ -64,7 +64,7 @@ public class StartAnalysisController {
 		Path dataPath = Paths.get("data", this.selection + "_posts.json");
 		
 		Stage stage = new Stage();
-		SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userInterface/sentimentAnalysis/analysing/Analysing.fxml",
+		SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userinterface/sentimentanalysis/analysing/Analysing.fxml",
 				"Analyzing...", type -> new AnalysingController(dataPath, sentimentModel));
 		
 	}

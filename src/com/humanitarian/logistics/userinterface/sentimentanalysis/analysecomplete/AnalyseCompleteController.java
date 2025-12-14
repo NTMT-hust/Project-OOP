@@ -106,7 +106,7 @@ public class AnalyseCompleteController {
 		currentStage.close();
 		
 		Stage stage = new Stage();
-		SceneManager.loadScene(stage, "/com/humanitarian/logistics/userInterface/collectData/problemSelectMenu/SelectionMenu.fxml",
+		SceneManager.loadScene(stage, "/com/humanitarian/logistics/userinterface/collectdata/problemselectmenu/SelectionMenu.fxml",
 				"Humanitarian Logistics Project");
 		
 	}

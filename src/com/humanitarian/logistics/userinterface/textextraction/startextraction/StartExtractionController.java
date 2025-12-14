@@ -65,7 +65,7 @@ public class StartExtractionController {
 		}
 		
 		Stage stage = new Stage();
-		SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userInterface/textExtraction/extracting/Extracting.fxml",
+		SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userinterface/textextraction/extracting/Extracting.fxml",
 				"Analysing...", type -> new ExtractingController(dataPath, List.of(keywords)));
 		
 	}

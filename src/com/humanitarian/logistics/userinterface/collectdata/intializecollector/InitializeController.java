@@ -82,7 +82,7 @@ public class InitializeController {
 			Stage stage = new Stage();
 
 			if (collector.testConnection()) {
-				SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userInterface/collectData/inputBox/InputInterface.fxml",
+				SceneManager.loadSceneWithParam(stage, "/com/humanitarian/logistics/userinterface/collectdata/inputbox/InputInterface.fxml",
 						"Input request...", type -> new InputBoxController(this.collector, this.collectorType));
 				
 			} else {

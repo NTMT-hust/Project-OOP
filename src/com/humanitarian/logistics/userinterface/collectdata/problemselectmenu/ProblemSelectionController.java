@@ -22,7 +22,7 @@ public class ProblemSelectionController {
 		currentStage.close();
 		
 		Stage stage = new Stage();
-		SceneManager.loadScene(stage, "/com/humanitarian/logistics/userInterface/collectData/collectorSelectMenu/CollectorSelectionMenu.fxml"
+		SceneManager.loadScene(stage, "/com/humanitarian/logistics/userinterface/collectdata/collectorselectmenu/CollectorSelectionMenu.fxml"
 				, "Select Collector");
 		
 	}
@@ -34,7 +34,7 @@ public class ProblemSelectionController {
 		currentStage.close();
 		
 		Stage stage = new Stage();
-		SceneManager.loadScene(stage, "/com/humanitarian/logistics/userInterface/sentimentAnalysis/modelInitialize/ModelInitialize.fxml",
+		SceneManager.loadScene(stage, "/com/humanitarian/logistics/userinterface/sentimentanalysis/modelinitialize/ModelInitialize.fxml",
 				"Initializing Sentiment Model...");
 		
 	}

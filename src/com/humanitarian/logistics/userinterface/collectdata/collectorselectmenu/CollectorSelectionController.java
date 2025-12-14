@@ -44,7 +44,7 @@ public class CollectorSelectionController {
 	public void startSearching(ActionEvent e) throws IOException {
 		
 		Stage currentStage = (Stage) menuSelection.getScene().getWindow();
-		SceneManager.loadSceneWithParam(currentStage, "/com/humanitarian/logistics/userInterface/collectData/intializeCollector/InitializeCollector.fxml",
+		SceneManager.loadSceneWithParam(currentStage, "/com/humanitarian/logistics/userinterface/collectdata/intializecollector/InitializeCollector.fxml",
 				"Initializing Collector...", type -> {
 					try {
 						return new InitializeController(this.selection);
