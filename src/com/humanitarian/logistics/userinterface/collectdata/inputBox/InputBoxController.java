@@ -35,10 +35,6 @@ public class InputBoxController {
 	private LocalDateTime startDate, endDate;
 	private int maxResult;
 
-	private Stage stage;
-	private Scene scene;
-	private Parent root;
-
 	private String collectorType;
 
 	public InputBoxController(Collector<?, ?, ?> collector, String collectorType) {
@@ -64,7 +60,10 @@ public class InputBoxController {
 	}
 
 	@FXML
-	public void cancel(ActionEvent e) throws IOException {
+	public void cancel(ActionEvent event) throws IOException {
+		
+		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		currentStage.close();
 		
 		Stage stage = new Stage();
 		SceneManager.loadScene(stage, "/com/humanitarian/logistics/userInterface/collectData/cancelling/CancellingInterface.fxml",
