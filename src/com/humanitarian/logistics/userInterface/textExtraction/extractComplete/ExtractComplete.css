@@ -73,15 +73,16 @@
 /* 1. Đổi màu Tiêu đề biểu đồ (Chart Title) */
 .glass-bar-chart .chart-title {
     -fx-text-fill: white;
-    -fx-font-size: 20px; /* Tùy chỉnh kích thước nếu cần */
+    -fx-font-size: 20px; 
+	-fx-font-weight: bold;
 }
 
 /* 2. Đổi màu chữ các giá trị dưới trục X (bụi, khói, ô nhiễm...) */
 .glass-bar-chart .axis:bottom {
-    -fx-tick-label-fill: white;
+    -fx-tick-label-fill: black;
 }
 
 /* 3. Đổi màu tên của trục (Chữ "Keywords" và "Frequency") */
 .glass-bar-chart .axis-label {
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
