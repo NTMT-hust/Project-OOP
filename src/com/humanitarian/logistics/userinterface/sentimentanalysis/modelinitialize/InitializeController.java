@@ -1,15 +1,10 @@
 package com.humanitarian.logistics.userinterface.sentimentanalysis.modelinitialize;
 
-import java.io.IOException;
-
 import com.humanitarian.logistics.userinterface.sentimentanalysis.Model;
 import com.humanitarian.logistics.userinterface.sentimentanalysis.startanalysis.StartAnalysisController;
 import com.humanitarian.logistics.util.SceneManager;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
@@ -30,7 +25,7 @@ public class InitializeController {
 		progressBar.progressProperty().bind(initializeTask.progressProperty());
 		statusLabel.textProperty().bind(initializeTask.messageProperty());
         
-		initializeTask.setOnSucceeded(_ -> {
+		initializeTask.setOnSucceeded(event -> {
 			sentimentModel = initializeTask.getValue();
 
 			Stage currentStage = (Stage) statusLabel.getScene().getWindow();
@@ -41,7 +36,7 @@ public class InitializeController {
 					"Humanitarian Logistics Sentiment Analysis Model", type -> new StartAnalysisController(this.sentimentModel));
 		});
 	
-		initializeTask.setOnFailed(_ -> {
+		initializeTask.setOnFailed(event -> {
 			Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 			currentStage.close();
 			

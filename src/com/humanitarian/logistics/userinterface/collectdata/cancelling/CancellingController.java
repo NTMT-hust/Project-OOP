@@ -31,7 +31,7 @@ public class CancellingController {
 		Timeline timeline = new Timeline(keyFrame);
 
 		// 4. Cleanup when done
-		timeline.setOnFinished(_ -> {
+		timeline.setOnFinished(event -> {
 
 			Stage currentStage = (Stage) progressBar.getScene().getWindow();
 			currentStage.close();

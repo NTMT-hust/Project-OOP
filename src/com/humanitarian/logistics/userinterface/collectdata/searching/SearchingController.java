@@ -24,7 +24,6 @@ import com.humanitarian.logistics.model.SocialPost;
 import com.humanitarian.logistics.userinterface.collectdata.searchcomplete.CompleteController;
 import com.humanitarian.logistics.util.SceneManager;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;

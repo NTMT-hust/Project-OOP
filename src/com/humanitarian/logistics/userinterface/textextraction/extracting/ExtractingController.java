@@ -30,7 +30,7 @@ public class ExtractingController {
 		progressBar.progressProperty().bind(extractTask.progressProperty());
 		statusLabel.textProperty().bind(extractTask.messageProperty());
 		
-		extractTask.setOnSucceeded(_ -> {
+		extractTask.setOnSucceeded(event -> {
 			Map<String, Integer> extractResults = extractTask.getValue();
 
 			Stage currentStage = (Stage) statusLabel.getScene().getWindow();
@@ -41,7 +41,7 @@ public class ExtractingController {
 					"Analyse Results", type -> new ExtractCompleteController(extractResults));
 		});
 	
-		extractTask.setOnFailed(_ -> {
+		extractTask.setOnFailed(event -> {
 			Stage currentStage = (Stage) statusLabel.getScene().getWindow();
 			currentStage.close();
 			
