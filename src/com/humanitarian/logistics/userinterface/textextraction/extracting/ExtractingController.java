@@ -1,10 +1,10 @@
-package com.humanitarian.logistics.userinterface.textExtraction.extracting;
+package com.humanitarian.logistics.userinterface.textextraction.extracting;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-import com.humanitarian.logistics.userinterface.textExtraction.extractcomplete.ExtractCompleteController;
+import com.humanitarian.logistics.userinterface.textextraction.extractcomplete.ExtractCompleteController;
 import com.humanitarian.logistics.util.SceneManager;
 
 import javafx.fxml.FXML;

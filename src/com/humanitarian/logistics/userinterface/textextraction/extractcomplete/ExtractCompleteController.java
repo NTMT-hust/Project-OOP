@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userinterface.textExtraction.extractcomplete;
+package com.humanitarian.logistics.userinterface.textextraction.extractcomplete;
 
 import java.io.IOException;
 import java.util.Map;

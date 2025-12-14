@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userinterface.textExtraction.extracting;
+package com.humanitarian.logistics.userinterface.textextraction.extracting;
 
 import java.io.Reader;
 import java.nio.file.Files;

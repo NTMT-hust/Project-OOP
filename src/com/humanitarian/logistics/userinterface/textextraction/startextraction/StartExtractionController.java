@@ -1,11 +1,11 @@
-package com.humanitarian.logistics.userinterface.textExtraction.startextraction;
+package com.humanitarian.logistics.userinterface.textextraction.startextraction;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import com.humanitarian.logistics.userinterface.textExtraction.extracting.ExtractingController;
+import com.humanitarian.logistics.userinterface.textextraction.extracting.ExtractingController;
 import com.humanitarian.logistics.util.SceneManager;
 
 import javafx.event.ActionEvent;

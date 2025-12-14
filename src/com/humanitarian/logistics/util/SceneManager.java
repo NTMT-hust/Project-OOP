@@ -8,10 +8,6 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 
-class ParametrizedController<T> {
-	ParametrizedController(T data) {}
-}
-
 public final class SceneManager {
 
     // Prevent instantiation
