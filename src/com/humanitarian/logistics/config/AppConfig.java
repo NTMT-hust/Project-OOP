@@ -20,16 +20,12 @@ public class AppConfig {
             // Try loading from resources folder
             InputStream input = new FileInputStream(".\\resources\\application.properties");
             properties.load(input);
-            System.out.println("✓ Loaded config from resources/application.properties");
-            System.out.println(String.format("DEBUG: %s.api.key = " + get(apiName + ".api.key"), apiName));
         } catch (IOException e) {
-            System.err.println("Error loading config: " + e.getMessage());
             loadDefaults();
         }
     }
 
     private void loadDefaults() {
-        System.out.println("Using default configuration");
         properties.setProperty("search.max.results", "100");
         properties.setProperty("search.language", "vi");
         properties.setProperty("data.dir", "./data");

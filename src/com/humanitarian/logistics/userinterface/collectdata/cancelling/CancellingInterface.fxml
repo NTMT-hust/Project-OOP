@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane stylesheets="@CancellingInterface.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userinterface.collectdata.cancelling.CancellingController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="120.0" prefWidth="300.0" spacing="10.0">
+          
+          <padding>
+              <Insets bottom="20" left="20" right="20" top="20" />
+          </padding>
+      
+          <Label styleClass="title-label" text="Cancelling...">
+              <font>
+                  <Font size="14.0" />
+              </font>
+          </Label>
+      
+          <ProgressBar fx:id="progressBar" prefHeight="19.0" prefWidth="200.0" progress="0.0" styleClass="glass-progress-bar" />
+      
+      </VBox>
+   </children>
+</StackPane>
