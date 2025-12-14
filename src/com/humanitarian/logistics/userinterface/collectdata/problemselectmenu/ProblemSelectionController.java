@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userinterface.collectdata.problemSelectMenu;
+package com.humanitarian.logistics.userinterface.collectdata.problemselectmenu;
 
 import java.io.IOException;
 

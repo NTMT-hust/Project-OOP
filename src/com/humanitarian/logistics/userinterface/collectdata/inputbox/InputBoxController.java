@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userinterface.collectdata.inputBox;
+package com.humanitarian.logistics.userinterface.collectdata.inputbox;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

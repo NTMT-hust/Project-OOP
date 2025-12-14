@@ -21,7 +21,7 @@ import com.humanitarian.logistics.config.YouTubeConfig;
 import com.humanitarian.logistics.datastructure.InputData;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
-import com.humanitarian.logistics.userinterface.collectdata.searchComplete.CompleteController;
+import com.humanitarian.logistics.userinterface.collectdata.searchcomplete.CompleteController;
 import com.humanitarian.logistics.util.SceneManager;
 
 import javafx.application.Platform;

@@ -1,9 +1,9 @@
-package com.humanitarian.logistics.userinterface.collectdata.collectorSelectMenu;
+package com.humanitarian.logistics.userinterface.collectdata.collectorselectmenu;
 
 import java.io.IOException;
 import java.util.List;
 
-import com.humanitarian.logistics.userinterface.collectdata.intializeCollector.InitializeController;
+import com.humanitarian.logistics.userinterface.collectdata.intializecollector.InitializeController;
 import com.humanitarian.logistics.util.SceneManager;
 
 import javafx.event.ActionEvent;

@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userinterface.collectdata.searchComplete;
+package com.humanitarian.logistics.userinterface.collectdata.searchcomplete;
 
 import java.io.IOException;
 

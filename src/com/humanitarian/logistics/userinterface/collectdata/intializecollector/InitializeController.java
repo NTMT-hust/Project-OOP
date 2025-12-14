@@ -1,4 +1,4 @@
-package com.humanitarian.logistics.userinterface.collectdata.intializeCollector;
+package com.humanitarian.logistics.userinterface.collectdata.intializecollector;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,7 +7,7 @@ import com.humanitarian.logistics.collector.*;
 import com.humanitarian.logistics.config.*;
 import com.humanitarian.logistics.model.SearchCriteria;
 import com.humanitarian.logistics.model.SocialPost;
-import com.humanitarian.logistics.userinterface.collectdata.inputBox.InputBoxController;
+import com.humanitarian.logistics.userinterface.collectdata.inputbox.InputBoxController;
 import com.humanitarian.logistics.util.SceneManager;
 
 import javafx.animation.KeyFrame;
