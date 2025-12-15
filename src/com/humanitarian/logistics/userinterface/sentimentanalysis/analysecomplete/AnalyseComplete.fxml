@@ -8,16 +8,16 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane stylesheets="@AnalyseComplete.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userinterface.sentimentanalysis.analysecomplete.AnalyseCompleteController">
+<StackPane stylesheets="@AnalyseComplete.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.humanitarian.logistics.userinterface.sentimentanalysis.analysecomplete.AnalyseCompleteController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <TextArea fx:id="textArea" editable="false" layoutX="24.8" layoutY="181.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="220.0" prefWidth="575.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="181.0">
+            <TextArea fx:id="textArea" editable="false" layoutX="418.4" layoutY="112.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="288.0" prefWidth="182.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="418.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="112.0">
                <styleClass>
                   <String fx:value="text" />
                   <String fx:value="glass-text-area" />
                </styleClass></TextArea>
-            <PieChart fx:id="pieChart" layoutX="87.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="213.0" prefWidth="245.0" AnchorPane.bottomAnchor="195.0" AnchorPane.leftAnchor="87.0" AnchorPane.rightAnchor="268.19999999999993" AnchorPane.topAnchor="5.0">
+            <PieChart fx:id="pieChart" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="420.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="5.0">
                <styleClass>
                   <String fx:value="glass-pie-chart" />
                   <String fx:value="chart-content" />
@@ -27,8 +27,8 @@
                   <String fx:value="chart-legend" />
                   <String fx:value="chart-legend-item" />
                </styleClass></PieChart>
-            <VBox fx:id="customLegend" alignment="CENTER_LEFT" layoutX="326.0" layoutY="57.0" prefHeight="64.0" prefWidth="100.0" />
-            <Button fx:id="returnButton" layoutX="492.0" layoutY="77.0" mnemonicParsing="false" onAction="#returnToMenu" styleClass="action-btn" text="Return" />
+            <VBox fx:id="customLegend" alignment="CENTER_LEFT" layoutX="355.0" layoutY="31.0" prefHeight="64.0" prefWidth="100.0" />
+            <Button fx:id="returnButton" layoutX="509.0" layoutY="49.0" mnemonicParsing="false" onAction="#returnToMenu" styleClass="action-btn" text="Return" />
          </children>
       </AnchorPane>
    </children>
